@@ -1,0 +1,3 @@
+class RoboTotem extends MovableObject{
+
+}
