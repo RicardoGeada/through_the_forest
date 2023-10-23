@@ -1,0 +1,13 @@
+* {
+    font-family: 'at01_PixelFont';
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    background-color: black;
+}
