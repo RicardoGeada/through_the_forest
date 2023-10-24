@@ -11,10 +11,10 @@ class MovableObject {
     }
 
     moveRight() {
-        console.log('Moving right')
+        this.x += 1;
     }
 
     moveLeft() {
-        
+        this.x += -1;
     }
 }
