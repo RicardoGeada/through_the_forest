@@ -1,4 +1,5 @@
 class Character extends MovableObject {
+    world;
     width = 32;
     height = 32;
 
@@ -18,12 +19,29 @@ class Character extends MovableObject {
         this.animate(this.IMAGES_WALKING);
     }
 
-    animate(stateImages) { 
+   
+
+    animate(stateImages) {
+         // MOVEMENT
         setInterval(() => {
-            let path = stateImages[this.currentImage];
-            this.img = this.imageCache[path];
-            this.currentImage == stateImages.length - 1 ? this.currentImage = 0 : this.currentImage++;
-        }, 1000 / 4);
+            if (this.world.keyboard.RIGHT) {
+                this.x += 1;
+                this.flipH = false;
+            }
+            if (this.world.keyboard.LEFT) {
+                this.x -= 1;
+                this.flipH = true;
+            }
+        }, 1000 /60);
+        
+        // FRAME BY FRAME ANIMATION
+        setInterval(() => {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                let path = stateImages[this.currentImage];
+                this.img = this.imageCache[path];
+                this.currentImage == stateImages.length - 1 ? this.currentImage = 0 : this.currentImage++;
+            }
+        }, 1000 / 12);
     }
 
     jump() {

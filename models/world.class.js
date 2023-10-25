@@ -35,15 +35,20 @@ class World {
         new RoboTotem(),    
         new RoboTotem(),    
     ];
+    keyboard;
     canvas;
     ctx;
 
-    constructor(canvas) {
+    constructor(canvas,keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld();
+    }
 
-        this.keyListener();
+    setWorld() {
+        this.character.world = this;
     }
 
     draw() {
@@ -66,17 +71,11 @@ class World {
     }
 
     addToMap(movObj) {
-        this.ctx.drawImage(movObj.img, movObj.x, movObj.y, movObj.width, movObj.height);
+        this.ctx.save();
+        this.ctx.translate(movObj.flipH ? movObj.img.width : 0, 0);
+        this.ctx.scale(movObj.flipH ? -1 : 1, 1);
+        this.ctx.drawImage(movObj.img, movObj.flipH ? -movObj.x : movObj.x, movObj.y, movObj.width, movObj.height);
+        this.ctx.restore();
     }
 
-    keyListener() {
-        document.addEventListener('keydown', (e) => {
-            if (e.key == 'ArrowRight') {
-                this.character.moveRight();
-            }
-            if (e.key == 'ArrowLeft') {
-                this.character.moveLeft();
-            }
-        })
-    }
 }
