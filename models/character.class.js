@@ -32,6 +32,7 @@ class Character extends MovableObject {
                 this.x -= 1;
                 this.flipH = true;
             }
+            this.world.camera_x = this.x - 10;
         }, 1000 /60);
         
         // FRAME BY FRAME ANIMATION
