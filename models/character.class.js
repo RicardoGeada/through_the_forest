@@ -18,12 +18,12 @@ class Character extends MovableObject {
         this.x = 32;
         this.y = 208 - 32 - 16;
 
-        this.animate(this.IMAGES_WALKING);
+        this.animate();
     }
 
    
 
-    animate(stateImages) {
+    animate() {
 
         // MOVEMENT
         setInterval(() => {
@@ -43,9 +43,7 @@ class Character extends MovableObject {
         // FRAME BY FRAME ANIMATION
         setInterval(() => {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                let path = stateImages[this.currentImage];
-                this.img = this.imageCache[path];
-                this.currentImage == stateImages.length - 1 ? this.currentImage = 0 : this.currentImage++;
+                this.playAnimation(this.IMAGES_WALKING);
             }
         }, 1000 / 12);
     }

@@ -3,7 +3,8 @@ const level1 = new Level(
     [
         new RoboTotem(),    
         new RoboTotem(),    
-        new RoboTotem(),    
+        new RoboTotem(),
+        new Endboss(),    
     ],
     (3 * 288) + 32,
 );
