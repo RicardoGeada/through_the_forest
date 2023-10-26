@@ -10,10 +10,12 @@ class Character extends MovableObject {
         'img/1.hero/Walk/walk_4.png',
     ];
 
+    SOUND_WALK = new Audio('../audio/hero_walk.wav');
+
     constructor() {
         super().loadImage('img/1.hero/Idle/idle_1.png');
         this.loadImages(this.IMAGES_WALKING);
-        this.x = 10;
+        this.x = 32;
         this.y = 208 - 32 - 16;
 
         this.animate(this.IMAGES_WALKING);
@@ -22,17 +24,20 @@ class Character extends MovableObject {
    
 
     animate(stateImages) {
-         // MOVEMENT
+
+        // MOVEMENT
         setInterval(() => {
-            if (this.world.keyboard.RIGHT) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += 1;
                 this.flipH = false;
+                this.playSound(this.SOUND_WALK,2);
             }
-            if (this.world.keyboard.LEFT) {
+            if (this.world.keyboard.LEFT && this.x > 32) {
                 this.x -= 1;
                 this.flipH = true;
+                this.playSound(this.SOUND_WALK,2);
             }
-            this.world.camera_x = this.x - 10;
+            this.world.camera_x = this.x - 32;
         }, 1000 /60);
         
         // FRAME BY FRAME ANIMATION
@@ -43,6 +48,11 @@ class Character extends MovableObject {
                 this.currentImage == stateImages.length - 1 ? this.currentImage = 0 : this.currentImage++;
             }
         }, 1000 / 12);
+    }
+
+    playSound(sound,playbackRate) {
+        sound.playbackRate = playbackRate;
+        sound.play() ? null : sound.play();
     }
 
     jump() {
