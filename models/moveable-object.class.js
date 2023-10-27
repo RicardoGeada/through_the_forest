@@ -32,7 +32,7 @@ class MovableObject {
         ctx.drawImage(this.img, this.flipH ? -this.x : this.x, this.y, this.width, this.height);
     }
 
-    drawCollisionRect(ctx) {
+    drawCollisionBox(ctx) {
         ctx.lineWidth = 1;
         ctx.strokeStyle = 'blue';
         ctx.strokeRect(this.flipH ? -this.x : this.x,this.y,this.img.width,this.img.height);

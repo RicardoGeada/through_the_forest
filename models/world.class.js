@@ -46,7 +46,7 @@ class World {
         this.ctx.save();
         movObj.flipImage(this.ctx);
         movObj.draw(this.ctx);
-        movObj.drawCollisionRect(this.ctx);
+        movObj.drawCollisionBox(this.ctx);
         this.ctx.restore();
     }
  
