@@ -10,17 +10,18 @@ function init() {
 }
 
 window.addEventListener('keydown', (e) => {
-    keyboard.LEFT = e.key == 'ArrowLeft' ? true : false;
-    keyboard.RIGHT = e.key == 'ArrowRight' ? true : false;
-    keyboard.UP = e.key == 'ArrowUp' ? true : false;
-    keyboard.DOWN = e.key == 'ArrowDown' ? true : false;
-    keyboard.SPACE = e.key == ' ' ? true : false;
+    if (e.key == 'ArrowLeft') {keyboard.LEFT = true};
+    if (e.key == 'ArrowRight') {keyboard.RIGHT = true};
+    if (e.key == 'ArrowUp') {keyboard.UP = true};
+    if (e.key == 'ArrowDown') {keyboard.DOWN = true};
+    if (e.key == ' ') {keyboard.SPACE = true};
+
 });
 
 window.addEventListener('keyup', (e) => {
-    keyboard.LEFT = false;
-    keyboard.RIGHT = false;
-    keyboard.UP = false;
-    keyboard.DOWN = false;
-    keyboard.SPACE = false;
+    if (e.key == 'ArrowLeft') {keyboard.LEFT = false};
+    if (e.key == 'ArrowRight') {keyboard.RIGHT = false};
+    if (e.key == 'ArrowUp') {keyboard.UP = false};
+    if (e.key == 'ArrowDown') {keyboard.DOWN = false};
+    if (e.key == ' ') {keyboard.SPACE = false};
 });

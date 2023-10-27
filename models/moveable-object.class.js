@@ -6,7 +6,9 @@ class MovableObject {
     height;
     imageCache = {};
     currentImage = 0;
-    speed = 1;
+    speedX = 1;
+    speedY = 0;
+    acceleration = 1;
     flipH = false;
 
     loadImage(path) {
@@ -26,21 +28,52 @@ class MovableObject {
         });
     }
 
+    draw(ctx) {
+        ctx.drawImage(this.img, this.flipH ? -this.x : this.x, this.y, this.width, this.height);
+    }
+
+    drawCollisionRect(ctx) {
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'blue';
+        ctx.strokeRect(this.flipH ? -this.x : this.x,this.y,this.img.width,this.img.height);
+    }
+
+    flipImage(ctx) {
+        ctx.translate(this.flipH ? this.img.width : 0, 0);
+        ctx.scale(this.flipH ? -1 : 1, 1);
+    }
+
+
     moveRight() {
-        setInterval(() => {
-            this.x += this.speed;
-        }, 1000 / 60);
+        this.x += this.speedX;
     }
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60);
+        this.x -= this.speedX;
+    }
+
+    jump() {
+        this.speedY = 5;
     }
 
     playAnimation(images) {
-        let path = images[this.currentImage];
+        let i = this.currentImage % images.length;
+        let path = images[i];
         this.img = this.imageCache[path];
-        this.currentImage == images.length - 1 ? this.currentImage = 0 : this.currentImage++;
+        this.currentImage++;
+    }
+
+    applyGravity() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+                if (this.y >= 160) {this.y = 160} // 160 = GROUND TODO: VARIABLE
+            }
+        }, 1000 / 25);
+    }
+
+    isAboveGround() {
+        return this.y < 208 - 32 - 16;
     }
 }

@@ -44,12 +44,10 @@ class World {
 
     addToMap(movObj) {
         this.ctx.save();
-        this.ctx.translate(movObj.flipH ? movObj.img.width : 0, 0);
-        this.ctx.scale(movObj.flipH ? -1 : 1, 1);
-        this.ctx.drawImage(movObj.img, movObj.flipH ? -movObj.x : movObj.x, movObj.y, movObj.width, movObj.height);
+        movObj.flipImage(this.ctx);
+        movObj.draw(this.ctx);
+        movObj.drawCollisionRect(this.ctx);
         this.ctx.restore();
     }
-
-    
-
+ 
 }
