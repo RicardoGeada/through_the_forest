@@ -1,5 +1,5 @@
 * {
-    font-family: 'at01_PixelFont';
+    font-family: 'at01_PixelFont', Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -10,5 +10,20 @@ body {
 
 canvas {
     background-color: black;
+    display: block;
+    width: 100%;
 }
 
+/* Smartphones */
+@media only screen  and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+/* Smartphones */
+@media only screen  and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+}

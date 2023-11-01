@@ -1,47 +1,13 @@
-class MovableObject {
-    x;
-    y;
-    img;
-    width;
-    height;
-    imageCache = {};
-    currentImage = 0;
+class MovableObject  extends DrawableObject{
     speedX = 1;
     speedY = 0;
     acceleration = 1;
-    flipH = false;
+    hp;
+    dmg;
+    lastHit = 0;
 
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
 
-    /**
-     * 
-     * @param {Array} arr - ['img/image1.png', 'img/image2.png', ...]
-     */
-    loadImages(arr) {
-        arr.forEach((path) => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
-    }
-
-    draw(ctx) {
-        ctx.drawImage(this.img, this.flipH ? -this.x : this.x, this.y, this.width, this.height);
-    }
-
-    drawCollisionBox(ctx) {
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'blue';
-        ctx.strokeRect(this.flipH ? -this.x : this.x,this.y,this.img.width,this.img.height);
-    }
-
-    flipImage(ctx) {
-        ctx.translate(this.flipH ? this.img.width : 0, 0);
-        ctx.scale(this.flipH ? -1 : 1, 1);
-    }
+    
 
 
     moveRight() {
@@ -75,5 +41,29 @@ class MovableObject {
 
     isAboveGround() {
         return this.y < 208 - 32 - 16;
+    }
+
+    isColliding(obj) {
+        return  (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
+                (this.y + this.height) >= obj.y && (this.y) <= (obj.y + obj.height);
+    }
+
+    hitBy(obj) {
+        this.hp -= obj.dmg;
+        if (this.hp < 0) {
+            this.hp = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        };
+    }
+
+    isDead() {
+        return this.hp == 0;
+    }
+
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < 0.25;
     }
 }

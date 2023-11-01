@@ -11,8 +11,16 @@ class RoboTotem extends MovableObject{
     constructor() {
         super().loadImage('img/2.enemies/robo_totem/armored/Standing/standing.png');
         this.loadImages(this.IMAGES_WALKING)
+        this.offset = {
+            top: 9,
+            bottom: 0,
+            left: 0,
+            right: 0,
+        };
         this.x = 100 + Math.random() * 500;
         this.speedX = 0.25;
+        this.hp = 2;
+        this.dmg = 1;
         this.animate();
     }
 
