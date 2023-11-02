@@ -2,6 +2,7 @@ class Character extends MovableObject {
   world;
   width = 32;
   height = 32;
+  reload = false;
 
   IMAGES_WALKING = [
     "img/1.hero/Walk/walk_1.png",
@@ -38,6 +39,17 @@ class Character extends MovableObject {
     "img/1.hero/Die/death_3.png",
   ];
 
+  IMAGES_ATTACK = [
+    'img/1.hero/Attack/attack_1.png',
+    'img/1.hero/Attack/attack_2.png',
+    'img/1.hero/Attack/attack_3.png',
+    'img/1.hero/Attack/attack_4.png',
+    'img/1.hero/Attack/attack_5.png',
+    'img/1.hero/Attack/attack_6.png',
+    'img/1.hero/Attack/attack_7.png',
+    'img/1.hero/Attack/attack_8.png',
+  ]
+
   IMAGES_IDLE = ["img/1.hero/Idle/idle_1.png", "img/1.hero/Idle/idle_2.png"];
 
   SOUND_WALK = new Audio("../audio/hero_walk.wav");
@@ -49,11 +61,12 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DYING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_ATTACK);
     this.offset = {
       top: 3,
       bottom: 0,
       left: 5,
-      right: 7,
+      right: -7,
     };
 
     this.x = 32;
@@ -66,6 +79,8 @@ class Character extends MovableObject {
   }
 
   animate() {
+
+    
     // MOVEMENT
     setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -80,6 +95,14 @@ class Character extends MovableObject {
       }
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
+      }
+      if (this.world.keyboard.RANGED_ATTACK && !this.reload) {
+        let missile = new ThrowableObject(this.x,this.y);
+        this.world.throwableObjects.push(missile);
+        this.reload = true;
+        setTimeout(()=> {
+            this.reload = false;
+        }, 1000)
       }
       this.world.camera_x = this.x - 32; // focus camera on character
     }, 1000 / 60);

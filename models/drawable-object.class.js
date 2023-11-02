@@ -52,7 +52,7 @@ class DrawableObject {
       this instanceof Character ||
       this instanceof RoboTotem ||
       this instanceof Endboss ||
-      this instanceof HealthBar
+      this instanceof ThrowableObject
     ) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "blue";
@@ -67,8 +67,8 @@ class DrawableObject {
       ctx.strokeRect(
         this.flipH ? -(this.x - this.offset.left) : this.x + this.offset.left,
         this.y + this.offset.top,
-        this.img.width - this.offset.left - this.offset.right,
-        this.img.height - this.offset.top - this.offset.bottom,
+        this.img.width - this.offset.left + this.offset.right,
+        this.img.height - this.offset.top + this.offset.bottom,
       );
     }
   }

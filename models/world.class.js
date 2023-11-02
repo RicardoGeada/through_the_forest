@@ -2,6 +2,7 @@ class World {
     level = level1;
     character = new Character();
     healthbar = new HealthBar();
+    throwableObjects = [];
     keyboard;
     canvas;
     ctx;
@@ -20,6 +21,7 @@ class World {
     setWorld() {
         this.character.world = this;
         this.healthbar.world = this;
+        this.throwableObjects.world = this;
     }
 
     checkCollisions() {
@@ -29,8 +31,29 @@ class World {
                     this.character.hitBy(enemy);
                     console.log(this.character.hp);
                 };
-            })
+            });
         }, 1000);
+        setInterval(() => {
+            this.throwableObjects.forEach((obj) => { // Added 'index' parameter
+                if (obj instanceof ThrowableObject) {
+                    this.level.enemies.forEach((enemy) => {
+                        if (obj.isColliding(enemy) && !obj.dead) {
+                            let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+                            enemy.hitBy(obj);
+                            console.log('enemy hp:',enemy.hp);
+                            obj.dead = true;
+                            clearInterval(obj.throwInterval);
+                            clearInterval(obj.gravityInterval);
+                            obj.explode();
+                            setTimeout(() => {
+                                this.throwableObjects.splice(index,1);
+                            }, 250);
+                        }
+                    });
+                   
+                }
+            });
+        }, 1000 / 25);
     }
 
     draw() {
@@ -41,6 +64,7 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
+        this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(this.camera_x, 0);
         // static elements on the canvas e.g. UI Elements
@@ -65,5 +89,5 @@ class World {
         movObj.drawCollisionBox(this.ctx);
         this.ctx.restore();
     }
- 
+
 }
