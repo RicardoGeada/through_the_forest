@@ -2,7 +2,10 @@ class Character extends MovableObject {
   world;
   width = 32;
   height = 32;
+  jumping = false;
   reload = false;
+  movementInterval;
+  animationInterval;
 
   IMAGES_WALKING = [
     "img/1.hero/Walk/walk_1.png",
@@ -50,6 +53,17 @@ class Character extends MovableObject {
     'img/1.hero/Attack/attack_8.png',
   ]
 
+  IMAGES_RUN =  [
+    'img/1.hero/Run/run_1.png',
+    'img/1.hero/Run/run_2.png',
+    'img/1.hero/Run/run_3.png',
+    'img/1.hero/Run/run_4.png',
+    'img/1.hero/Run/run_5.png',
+    'img/1.hero/Run/run_6.png',
+    'img/1.hero/Run/run_7.png',
+    'img/1.hero/Run/run_8.png',
+  ]
+
   IMAGES_IDLE = ["img/1.hero/Idle/idle_1.png", "img/1.hero/Idle/idle_2.png"];
 
   SOUND_WALK = new Audio("../audio/hero_walk.wav");
@@ -62,69 +76,68 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_RUN);
     this.offset = {
       top: 3,
       bottom: 0,
       left: 5,
       right: -7,
     };
-
     this.x = 32;
     this.y = 208 - 32 - 16;
     this.speedX = 1;
     this.hp = 12;
-    this.dmg = 2;
+    this.dmg = 1;
     this.animate();
     this.applyGravity();
   }
 
   animate() {
-
-    
-    // MOVEMENT
-    setInterval(() => {
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.moveRight();
-        this.flipH = false;
-        !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
-      }
-      if (this.world.keyboard.LEFT && this.x > 32) {
-        this.moveLeft();
-        this.flipH = true;
-        !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
-      }
-      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-        this.jump();
-      }
-      if (this.world.keyboard.RANGED_ATTACK && !this.reload) {
-        let missile = new ThrowableObject(this.x,this.y);
-        this.world.throwableObjects.push(missile);
-        this.reload = true;
-        setTimeout(()=> {
-            this.reload = false;
-        }, 1000)
-      }
-      this.world.camera_x = this.x - 32; // focus camera on character
-    }, 1000 / 60);
-
-    // FRAME BY FRAME ANIMATION
-    setInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DYING);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isAboveGround()) {
-        this.playAnimation(this.IMAGES_JUMPING);
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playAnimation(this.IMAGES_WALKING);
-      } else {
-        this.playAnimation(this.IMAGES_IDLE);
-      }
-    }, 1000 / 12);
+    this.movementInterval = setInterval(() => this.moveCharacter(), 1000 / 60);
+    this.animationInterval = setInterval(() => this.animateCharacter(), 1000 / 60);
   }
 
-  playSound(sound, playbackRate) {
-    sound.playbackRate = playbackRate;
-    sound.play() ? null : sound.play();
+  moveCharacter() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 300) {
+      this.moveRight();
+      this.flipH = false;
+      !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
+    }
+    if (this.world.keyboard.LEFT && this.x > 32) {
+      this.moveLeft();
+      this.flipH = true;
+      !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
+    }
+    if (this.world.keyboard.SPACE && this.speedY == 0 && !this.jumping) {
+      this.jumping = true;
+      this.jump();
+    }
+    if (this.world.keyboard.RANGED_ATTACK && !this.reload) {
+      let missile = new ThrowableObject(this.x,this.y,this.flipH);
+      this.world.throwableObjects.push(missile);
+      this.reload = true;
+      setTimeout(()=> {
+          this.reload = false;
+      }, 1000)
+    }
+    this.world.camera_x = this.x - 32; // focus camera on character
   }
+
+  animateCharacter() {
+    if (this.isDead()) {
+      this.playthroughAnimationLoop(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
+      clearInterval(this.animationInterval);
+      clearInterval(this.movementInterval);
+    } else if (this.isHurt() && this.matchesFrameRate(12)) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.speedY != 0 && this.matchesFrameRate(12)) {
+      this.playAnimation(this.IMAGES_JUMPING);
+    } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.matchesFrameRate(12)) {
+      this.playAnimation(this.IMAGES_WALKING);
+    } else if (this.matchesFrameRate(2)){
+      this.playAnimation(this.IMAGES_IDLE);
+    }
+    this.framesCounter++;
+  }
+
 }

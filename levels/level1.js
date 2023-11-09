@@ -25,8 +25,10 @@ function generateBackground() {
     for (let i = 0; i < (288 / 16) * 4; i++) {
         background.push(
             new BackgroundTile('img/4.background/2 - Autumn Forest/Terrain/mid.png',i * 16,192),
-        );
-        
+        );   
     }
+    background.push(
+        new BackgroundTile('img/4.background/2 - Autumn Forest/Terrain/mid.png',7* 16,192 - 16),
+    );  
     return background;
 }

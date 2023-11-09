@@ -15,7 +15,9 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.update();
         this.checkCollisions();
+        this.checkDeadEnemies();
     }
 
     setWorld() {
@@ -24,7 +26,35 @@ class World {
         this.throwableObjects.world = this;
     }
 
+    update() {
+        setInterval(() => {
+            this.checkJumpOnEnemy();
+        }, 1000 / 60);
+    }
+
+    checkJumpOnEnemy() {
+        for (let i = 0; i < this.level.enemies.length; i++) {
+            const enemy = this.level.enemies[i];
+            if (this.character.isColliding(enemy) && this.character.speedY < 0) {
+                this.character.jump();
+                enemy.hitBy(this.character);
+            }
+        }
+    }
+
     checkCollisions() {
+        // SOLID BLOCKS
+        setInterval(() => {
+            for (let i = 0; i < this.level.backgroundObjects.length; i++) {
+                const backgroundObject = this.level.backgroundObjects[i];
+                if(this.character.speedY < 0 && this.character.isColliding(backgroundObject) && backgroundObject instanceof BackgroundTile) {
+                    this.character.y = backgroundObject.y - this.character.height;
+                    this.character.speedY = 0;
+                    this.character.jumping = false;
+                }
+            }
+        }, 1000 / 60);
+        // ENEMIES 
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if(this.character.isColliding(enemy)) {
@@ -33,6 +63,7 @@ class World {
                 };
             });
         }, 1000);
+        // THROWABLE OBJECTS
         setInterval(() => {
             this.throwableObjects.forEach((obj) => { // Added 'index' parameter
                 if (obj instanceof ThrowableObject) {
@@ -54,6 +85,18 @@ class World {
                 }
             });
         }, 1000 / 25);
+    }
+
+    checkDeadEnemies() {
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if(enemy.isDead() && enemy instanceof RoboTotem) {
+                    let index = this.level.enemies.indexOf(enemy);
+                    
+                        this.level.enemies.splice(index,1);
+                }
+            })
+        }, 1000 / 60);
     }
 
     draw() {

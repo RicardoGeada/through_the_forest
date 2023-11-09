@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
   dmg;
   lastHit = 0;
   gravityInterval;
+  framesCounter = 0;
 
   moveRight() {
     this.x += this.speedX;
@@ -17,7 +18,7 @@ class MovableObject extends DrawableObject {
   }
 
   jump() {
-    this.speedY = 5;
+    this.speedY = 10;
   }
 
   playAnimation(images) {
@@ -26,6 +27,22 @@ class MovableObject extends DrawableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+
+  loopAnimation(images,fps) {
+    setStoppableInterval(this.playAnimation(images),fps)
+  }
+
+  playthroughAnimationLoop(images,fps) {
+    this.currentImage = 0;
+    let interval = setInterval(() => {
+      if (this.currentImage < images.length) {
+        this.playAnimation(images);
+      } else {
+        clearInterval(interval);
+      }
+    },fps)
+  }
+
 
   applyGravity() {
     this.gravityInterval = setInterval(() => {
@@ -70,6 +87,15 @@ class MovableObject extends DrawableObject {
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit;
     timePassed = timePassed / 1000;
-    return timePassed < 0.25;
+    return timePassed < 0.5;
   }
+
+  matchesFrameRate(frames) {
+    return  this.framesCounter % Math.floor(60 / frames) == 0;
+   }
+ 
+   playSound(sound, playbackRate) {
+     sound.playbackRate = playbackRate;
+     sound.play() ? null : sound.play();
+   }
 }
