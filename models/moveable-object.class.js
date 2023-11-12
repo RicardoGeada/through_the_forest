@@ -8,6 +8,8 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   gravityInterval;
   framesCounter = 0;
+  movementInterval;
+  animationInterval;
 
   moveRight() {
     this.x += this.speedX;
@@ -94,8 +96,8 @@ class MovableObject extends DrawableObject {
     return  this.framesCounter % Math.floor(60 / frames) == 0;
    }
  
-   playSound(sound, playbackRate) {
-     sound.playbackRate = playbackRate;
-     sound.play() ? null : sound.play();
-   }
+  playSound(sound, playbackRate) {
+    sound.playbackRate = playbackRate;
+    sound.play() ? null : sound.play();
+  }
 }

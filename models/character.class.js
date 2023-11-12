@@ -4,8 +4,7 @@ class Character extends MovableObject {
   height = 32;
   jumping = false;
   reload = false;
-  movementInterval;
-  animationInterval;
+
 
   IMAGES_WALKING = [
     "img/1.hero/Walk/walk_1.png",
@@ -64,9 +63,12 @@ class Character extends MovableObject {
     'img/1.hero/Run/run_8.png',
   ]
 
-  IMAGES_IDLE = ["img/1.hero/Idle/idle_1.png", "img/1.hero/Idle/idle_2.png"];
+  IMAGES_IDLE = [ 
+    'img/1.hero/Idle/idle_1.png', 
+    'img/1.hero/Idle/idle_2.png'
+                ];
 
-  SOUND_WALK = new Audio("../audio/hero_walk.wav");
+  SOUND_WALK = new Audio('../audio/1.hero/hero_walk.wav');
 
   constructor() {
     super().loadImage("img/1.hero/Idle/idle_1.png");

@@ -7,6 +7,11 @@ const level1 = new Level(
         new Endboss(),    
     ],
     (3 * 288) + 32,
+    [
+        new Coin(100,176),
+        new Coin(200,120),
+        new Coin(500,176),
+    ]
 );
 
 function generateBackground() {

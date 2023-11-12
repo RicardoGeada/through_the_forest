@@ -1,8 +1,8 @@
-class HealthBar extends DrawableObject {
+class HealthBar extends UIObject {
     world;
     maxHealth;
 
-    IMAGES = [
+    IMAGES_HEART = [
         './img/5.ui/health/health_active.png',
         './img/5.ui/health/health_inactive.png',
     ];
@@ -13,7 +13,7 @@ class HealthBar extends DrawableObject {
     constructor() {
         super();
         this.loadImage('./img/5.ui/health/health_active.png');
-        this.loadImages(this.IMAGES);
+        this.loadImages(this.IMAGES_HEART);
         this.maxHealth = 5;
         this.setHealthbarImages();
         this.x = 10;
@@ -32,34 +32,6 @@ class HealthBar extends DrawableObject {
                 this.healthbarImages.push(this.imageCache['./img/5.ui/health/health_inactive.png']);
             }
         }
-    }
-
-    combineImages(images) {
-        let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        let width = 0;
-        let height = 0;
-
-        images.forEach((img) => {
-            width += img.width; // 8
-            height = Math.max(height,img.height); // 8
-        });
-
-        canvas.width = width;
-        canvas.height = height;
-        this.width = width;
-        this.height = height;
-
-        let x = 0;
-
-        images.forEach((img) => {
-            ctx.drawImage(img, x, 0);
-            x += img.width;
-        })
-
-        let img = new Image();
-        img.src = canvas.toDataURL('image/png');
-        return img;
     }
 
     updateHealthbar() {
