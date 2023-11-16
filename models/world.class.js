@@ -93,7 +93,7 @@ class World {
         // THROWABLE OBJECTS
         setInterval(() => {
             this.throwableObjects.forEach((obj) => { // Added 'index' parameter
-                if (obj instanceof ThrowableObject) {
+                if (obj instanceof ThrowableCharacter) {
                     // COllIDING WITH ENEMIES
                     this.level.enemies.forEach((enemy) => {
                         if (obj.isColliding(enemy) && !obj.dead) {

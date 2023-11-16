@@ -116,7 +116,7 @@ class Character extends MovableObject {
       this.jump();
     }
     if (this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0) {
-      let missile = new ThrowableObject(this.x,this.y,this.flipH);
+      let missile = new ThrowableCharacter(this.x,this.y,this.flipH);
       this.world.throwableObjects.push(missile);
       this.energy--;
       this.reload = true;
