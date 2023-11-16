@@ -2,6 +2,7 @@ class World {
     level = level1;
     character = new Character();
     healthbar = new HealthBar();
+    energybar = new EnergyBar();
     coins = new UICoins;
     throwableObjects = [];
     keyboard;
@@ -24,6 +25,7 @@ class World {
     setWorld() {
         this.character.world = this;
         this.healthbar.world = this;
+        this.energybar.world = this;
         this.throwableObjects.world = this;
     }
 
@@ -31,6 +33,7 @@ class World {
         setInterval(() => {
             this.checkJumpOnEnemy();
             this.checkCoinsCollision();
+            this.checkFruitsCollision();
         }, 1000 / 60);
     }
 
@@ -49,6 +52,17 @@ class World {
             const collectable = this.level.collectables[i];
             if (collectable instanceof Coin && this.character.isColliding(collectable)) {
                 this.coins.amount++;
+                collectable.playSound(collectable.SOUND_COLLECT, 1);
+                this.level.collectables.splice(i,1);
+            }
+        }
+    }
+
+    checkFruitsCollision() {
+        for (let i = 0; i < this.level.collectables.length; i++) {
+            const collectable = this.level.collectables[i];
+            if (collectable instanceof Fruit && this.character.isColliding(collectable)) {
+                this.character.energy++;
                 collectable.playSound(collectable.SOUND_COLLECT, 1);
                 this.level.collectables.splice(i,1);
             }
@@ -80,6 +94,7 @@ class World {
         setInterval(() => {
             this.throwableObjects.forEach((obj) => { // Added 'index' parameter
                 if (obj instanceof ThrowableObject) {
+                    // COllIDING WITH ENEMIES
                     this.level.enemies.forEach((enemy) => {
                         if (obj.isColliding(enemy) && !obj.dead) {
                             let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
@@ -94,6 +109,19 @@ class World {
                             }, 250);
                         }
                     });
+                    // COLLIDING WITH TERRAIN
+                    this.level.backgroundObjects.forEach((terrain) => {
+                        if(terrain instanceof BackgroundTile && obj.isColliding(terrain) && !obj.dead) {
+                            let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+                            obj.dead = true;
+                            clearInterval(obj.throwInterval);
+                            clearInterval(obj.gravityInterval);
+                            obj.explode();
+                            setTimeout(() => {
+                                this.throwableObjects.splice(index,1);
+                            }, 250);
+                        }
+                    })
                    
                 }
             });
@@ -125,6 +153,7 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         // static elements on the canvas e.g. UI Elements
         this.addToMap(this.healthbar); 
+        this.addToMap(this.energybar); 
         this.addToMap(this.coins);
 
 

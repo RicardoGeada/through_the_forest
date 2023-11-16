@@ -50,7 +50,7 @@ class HealthBar extends UIObject {
     setMaxHealth() {
         setTimeout(()=>{
             this.maxHealth = this.world.character.hp
-        }, 1000 / 100);
+        }, 1000 / 60);
     }
 }
 

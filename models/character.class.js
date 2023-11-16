@@ -4,6 +4,7 @@ class Character extends MovableObject {
   height = 32;
   jumping = false;
   reload = false;
+  energy = 3;
 
 
   IMAGES_WALKING = [
@@ -88,7 +89,7 @@ class Character extends MovableObject {
     this.x = 32;
     this.y = 208 - 32 - 16;
     this.speedX = 1;
-    this.hp = 12;
+    this.hp = 5;
     this.dmg = 1;
     this.animate();
     this.applyGravity();
@@ -114,9 +115,10 @@ class Character extends MovableObject {
       this.jumping = true;
       this.jump();
     }
-    if (this.world.keyboard.RANGED_ATTACK && !this.reload) {
+    if (this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0) {
       let missile = new ThrowableObject(this.x,this.y,this.flipH);
       this.world.throwableObjects.push(missile);
+      this.energy--;
       this.reload = true;
       setTimeout(()=> {
           this.reload = false;

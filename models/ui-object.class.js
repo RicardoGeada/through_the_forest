@@ -24,22 +24,22 @@ class UIObject extends DrawableObject {
         let width = 0;
         let height = 0;
 
+        
         images.forEach((img) => {
             width += img.width;
             height = Math.max(height,img.height); 
-        });
-
+        }); 
         canvas.width = width;
         canvas.height = height;
         this.width = width;
-        this.height = height;
-
-        let x = 0;
-
+        this.height = height;   
+        let x = 0;  
         images.forEach((img) => {
             ctx.drawImage(img, x, 0);
             x += img.width;
         })
+
+       
 
         let img = new Image();
         img.src = canvas.toDataURL('image/png');

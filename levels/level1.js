@@ -11,6 +11,7 @@ const level1 = new Level(
         new Coin(100,176),
         new Coin(200,120),
         new Coin(500,176),
+        new Fruit(250,176),
     ]
 );
 

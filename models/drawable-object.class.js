@@ -17,10 +17,6 @@ class DrawableObject {
 
   loadImage(path) {
     this.img = new Image();
-    // this.img.onload = () => {
-    //   this.width = this.img.width;
-    //   this.height = this.img.height;
-    // }
     this.img.src = path;
   }
 
@@ -31,10 +27,6 @@ class DrawableObject {
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
-      // this.img.onload = () => {
-      //   this.width = this.img.width;
-      //   this.height = this.img.height;
-      // }
       img.src = path;
       this.imageCache[path] = img;
     });
@@ -61,7 +53,8 @@ class DrawableObject {
       this instanceof RoboTotem ||
       this instanceof Endboss ||
       this instanceof ThrowableObject ||
-      this instanceof Coin
+      this instanceof Coin ||
+      this instanceof Fruit
     ) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "blue";
