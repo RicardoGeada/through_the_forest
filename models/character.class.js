@@ -105,16 +105,16 @@ class Character extends MovableObject {
       this.moveRight();
       this.flipH = false;
       !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
-    }
+    };
     if (this.world.keyboard.LEFT && this.x > 32) {
       this.moveLeft();
       this.flipH = true;
       !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
-    }
+    };
     if (this.world.keyboard.SPACE && this.speedY == 0 && !this.jumping) {
       this.jumping = true;
       this.jump();
-    }
+    };
     if (this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0) {
       let missile = new ThrowableCharacter(this.x,this.y,this.flipH);
       this.world.throwableObjects.push(missile);

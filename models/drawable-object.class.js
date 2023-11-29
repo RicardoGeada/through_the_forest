@@ -57,7 +57,7 @@ class DrawableObject {
       this instanceof Fruit
     ) {
       ctx.lineWidth = 1;
-      ctx.strokeStyle = "blue";
+      ctx.strokeStyle = "blue"; // image frame
       ctx.strokeRect(
         this.flipH ? -this.x : this.x,
         this.y,
@@ -65,12 +65,24 @@ class DrawableObject {
         this.img.height
       );
 
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = "red"; // hitbox
       ctx.strokeRect(
         this.flipH ? -(this.x - this.offset.left) : this.x + this.offset.left,
         this.y + this.offset.top,
         this.img.width - this.offset.left + this.offset.right,
         this.img.height - this.offset.top + this.offset.bottom,
+      );
+    };
+  }
+
+  drawVisionBox(ctx) {
+    if (this instanceof Endboss) {
+      ctx.strokeStyle = "green"; // hitbox
+      ctx.strokeRect(
+        this.flipH ? -(this.x - this.visionBoxOffset.left) : this.x + this.visionBoxOffset.left,
+        this.y + this.visionBoxOffset.top,
+        this.img.width - this.visionBoxOffset.left + this.visionBoxOffset.right,
+        this.img.height - this.visionBoxOffset.top + this.visionBoxOffset.bottom,
       );
     }
   }

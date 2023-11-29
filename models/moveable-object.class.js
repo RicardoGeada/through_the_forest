@@ -72,6 +72,15 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  isVisibleFor(obj) {
+    return (
+      this.x + this.width + this.offset.right >= obj.x + obj.visionBoxOffset.left &&
+      this.x + this.offset.left <= obj.x + obj.width + obj.visionBoxOffset.right &&
+      this.y + this.height + this.offset.bottom >= obj.y + obj.visionBoxOffset.top &&
+      this.y + this.offset.top <= obj.y + obj.height + obj.visionBoxOffset.bottom
+    );
+  }
+
   hitBy(obj) {
     this.hp -= obj.dmg;
     if (this.hp < 0) {

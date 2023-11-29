@@ -24,6 +24,11 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.level.enemies.forEach( enemy => {
+            if (enemy instanceof Endboss) {
+                enemy.world = this;
+            }
+        });
         this.healthbar.world = this;
         this.energybar.world = this;
         this.throwableObjects.world = this;
@@ -32,19 +37,38 @@ class World {
     update() {
         setInterval(() => {
             this.checkJumpOnEnemy();
+            this.checkFirstContactWithBoss();
+            this.checkRangedAttackFromBoss();
             this.checkCoinsCollision();
             this.checkFruitsCollision();
+            this.setEnemyDirection();
         }, 1000 / 60);
     }
 
     checkJumpOnEnemy() {
         for (let i = 0; i < this.level.enemies.length; i++) {
             const enemy = this.level.enemies[i];
-            if (this.character.isColliding(enemy) && this.character.speedY < 0) {
+            if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isDead()) {
                 this.character.jump();
                 enemy.hitBy(this.character);
             }
         }
+    }
+
+    checkFirstContactWithBoss() {
+        this.level.enemies.forEach( enemy => {
+                if (enemy instanceof Endboss && this.character.isVisibleFor(enemy)) {
+                    enemy.firstContact = true;
+                };
+            })
+    }
+
+    checkRangedAttackFromBoss() {
+        this.level.enemies.forEach( enemy => {
+            if (enemy instanceof Endboss && this.character.isVisibleFor(enemy) && enemy.awake && !enemy.attacking && !enemy.reload) {
+                enemy.attacking = true;
+            };
+        })
     }
 
     checkCoinsCollision() {
@@ -62,11 +86,26 @@ class World {
         for (let i = 0; i < this.level.collectables.length; i++) {
             const collectable = this.level.collectables[i];
             if (collectable instanceof Fruit && this.character.isColliding(collectable)) {
-                this.character.energy++;
+                if (this.character.energy < this.energybar.maxEnergy) {
+                    this.character.energy++;
+                };
                 collectable.playSound(collectable.SOUND_COLLECT, 1);
                 this.level.collectables.splice(i,1);
             }
         }
+    }
+
+    setEnemyDirection() {
+        this.level.enemies.forEach( enemy => {
+
+            if (enemy instanceof Endboss && enemy.isHurt()) {
+                enemy.moveDirection = '';
+            } else if (enemy instanceof Endboss && enemy.x > this.character.x) {
+                enemy.moveDirection = 'left';
+            } else if (enemy instanceof Endboss && enemy.x < this.character.x) {
+                enemy.moveDirection = 'right';
+            };
+        })
     }
 
     checkCollisions() {
@@ -84,7 +123,7 @@ class World {
         // ENEMIES 
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)) {
+                if(this.character.isColliding(enemy) && !enemy.isDead()) {
                     this.character.hitBy(enemy);
                     console.log(this.character.hp);
                 };
@@ -93,8 +132,8 @@ class World {
         // THROWABLE OBJECTS
         setInterval(() => {
             this.throwableObjects.forEach((obj) => { // Added 'index' parameter
+                // COllIDING WITH ENEMIES
                 if (obj instanceof ThrowableCharacter) {
-                    // COllIDING WITH ENEMIES
                     this.level.enemies.forEach((enemy) => {
                         if (obj.isColliding(enemy) && !obj.dead) {
                             let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
@@ -108,22 +147,44 @@ class World {
                                 this.throwableObjects.splice(index,1);
                             }, 250);
                         }
-                    });
-                    // COLLIDING WITH TERRAIN
+                    })
+                };
+                // COllIDING WITH CHARACTER
+                if (obj instanceof ThrowableSkeleton) {
+                    
+                        if (obj.isColliding(this.character) && !obj.dead) {
+                            let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+                            this.character.hitBy(obj);
+                            console.log('character hp:',this.character.hp);
+                            obj.dead = true;
+                            clearInterval(obj.throwInterval);
+                            clearInterval(obj.gravityInterval);
+                            setTimeout(() => {
+                                this.throwableObjects.splice(index,1);
+                            }, 250);
+                        }
+                    
+                };
+                // COLLIDING WITH TERRAIN
+                if (obj instanceof ThrowableCharacter || obj instanceof ThrowableSkeleton) {
                     this.level.backgroundObjects.forEach((terrain) => {
                         if(terrain instanceof BackgroundTile && obj.isColliding(terrain) && !obj.dead) {
                             let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                             obj.dead = true;
                             clearInterval(obj.throwInterval);
                             clearInterval(obj.gravityInterval);
-                            obj.explode();
+                            if (obj instanceof ThrowableCharacter) {
+                                obj.explode();
+                            };
                             setTimeout(() => {
                                 this.throwableObjects.splice(index,1);
                             }, 250);
                         }
                     })
+                }; 
+                    
                    
-                }
+                
             });
         }, 1000 / 25);
     }
@@ -174,6 +235,7 @@ class World {
         movObj.flipImage(this.ctx);
         movObj.draw(this.ctx);
         movObj.drawCollisionBox(this.ctx);
+        movObj.drawVisionBox(this.ctx);
         this.ctx.restore();
     }
 
