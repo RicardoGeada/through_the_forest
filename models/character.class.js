@@ -69,7 +69,7 @@ class Character extends MovableObject {
     'img/1.hero/Idle/idle_2.png'
                 ];
 
-  SOUND_WALK = new Audio('../audio/1.hero/hero_walk.wav');
+  SOUND_WALK = new Audio('./audio/1.hero/hero_walk.wav');
 
   constructor() {
     super().loadImage("img/1.hero/Idle/idle_1.png");
