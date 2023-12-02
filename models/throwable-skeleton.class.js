@@ -14,6 +14,7 @@ class ThrowableSkeleton extends ThrowableObject {
         this.dmg = 0;
         this.width = 16;
         this.height = 16;
+        this.acceleration = 1;
         this.animate();
     }
 

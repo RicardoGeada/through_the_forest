@@ -18,6 +18,7 @@ class ThrowableCharacter extends ThrowableObject {
     this.dmg = 1;
     this.width = 16;
     this.height = 16;
+    this.acceleration = 1;
   }
 
   explode() {
