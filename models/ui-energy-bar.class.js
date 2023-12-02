@@ -18,7 +18,9 @@ class EnergyBar extends UIObject {
         this.width = 16;
         this.height = 16;
         this.setImages();
-        this.updateEnergybar();
+        setTimeout(() => {
+            this.updateEnergybar();
+        }, 100);
     }
 
     setImages() {

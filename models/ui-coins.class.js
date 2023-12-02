@@ -17,7 +17,9 @@ class UICoins extends UIObject {
         this.y = 10;
         this.width = 8;
         this.height = 8;
-        this.updateCollectedCoins();
+        setTimeout(() => {
+            this.updateCollectedCoins();
+        }, 100);
     }
 
     setImages() {

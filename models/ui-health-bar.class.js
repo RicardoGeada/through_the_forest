@@ -20,7 +20,9 @@ class HealthBar extends UIObject {
         this.y = 10;
         this.width = 40;
         this.height = 8;
-        this.updateHealthbar();
+        setTimeout(() => {
+            this.updateHealthbar();
+        }, 100)
         this.setMaxHealth();
     }
 

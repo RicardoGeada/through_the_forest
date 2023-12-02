@@ -51,7 +51,7 @@ class Character extends MovableObject {
     'img/1.hero/Attack/attack_6.png',
     'img/1.hero/Attack/attack_7.png',
     'img/1.hero/Attack/attack_8.png',
-  ]
+  ];
 
   IMAGES_RUN =  [
     'img/1.hero/Run/run_1.png',
@@ -62,12 +62,12 @@ class Character extends MovableObject {
     'img/1.hero/Run/run_6.png',
     'img/1.hero/Run/run_7.png',
     'img/1.hero/Run/run_8.png',
-  ]
+  ];
 
   IMAGES_IDLE = [ 
     'img/1.hero/Idle/idle_1.png', 
     'img/1.hero/Idle/idle_2.png'
-                ];
+  ];
 
   SOUND_WALK = new Audio('./audio/1.hero/hero_walk.wav');
 
@@ -83,16 +83,16 @@ class Character extends MovableObject {
     this.offset = {
       top: 3,
       bottom: 0,
-      left: 5,
-      right: -7,
+      left: 9,
+      right: -11,
     };
-    this.x = 32;
-    this.y = 208 - 32 - 16;
+    this.x = 200;
+    this.y = 208 - 32 - 32;
     this.speedX = 1;
     this.hp = 5;
     this.dmg = 1;
     this.animate();
-    this.applyGravity();
+    // this.applyGravity();
   }
 
   animate() {
@@ -134,7 +134,7 @@ class Character extends MovableObject {
       clearInterval(this.movementInterval);
     } else if (this.isHurt() && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_HURT);
-    } else if (this.speedY != 0 && this.matchesFrameRate(12)) {
+    } else if (this.speedY != 0 && this.jumping && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_JUMPING);
     } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_WALKING);

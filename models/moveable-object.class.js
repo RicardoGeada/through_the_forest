@@ -1,7 +1,7 @@
 class MovableObject extends DrawableObject {
   speedX = 1;
   speedY = 0;
-  acceleration = 1;
+  acceleration = 0.25;
   dead = false;
   hp;
   dmg;
@@ -12,15 +12,17 @@ class MovableObject extends DrawableObject {
   animationInterval;
 
   moveRight() {
+    this.speedX = Math.abs(this.speedX);
     this.x += this.speedX;
   }
 
   moveLeft() {
-    this.x -= this.speedX;
+    this.speedX = -Math.abs(this.speedX);
+    this.x += this.speedX;
   }
 
   jump() {
-    this.speedY = 10;
+    this.speedY = 5;
   }
 
   playAnimation(images) {
@@ -48,18 +50,29 @@ class MovableObject extends DrawableObject {
 
   applyGravity() {
     this.gravityInterval = setInterval(() => {
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
+      this.y -= this.speedY;
+      if (this.isAboveGround()) {
         this.speedY -= this.acceleration;
+      } else {
+        this.speedY = 0;
       }
     }, 1000 / 25);
+  }
+
+  updateGravity() {
+    this.y -= this.speedY;
+    if (this.isAboveGround()) {
+      this.speedY -= this.acceleration;
+    } else {
+      this.speedY = 0;
+    };
   }
 
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
     } else {
-      return this.y < 208 - 32 - 16;
+      return this.y + this.height + this.speedY < 192;
     }
   }
 

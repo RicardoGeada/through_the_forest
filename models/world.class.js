@@ -3,7 +3,7 @@ class World {
     character = new Character();
     healthbar = new HealthBar();
     energybar = new EnergyBar();
-    coins = new UICoins;
+    coins = new UICoins();
     throwableObjects = [];
     keyboard;
     canvas;
@@ -48,7 +48,7 @@ class World {
     checkJumpOnEnemy() {
         for (let i = 0; i < this.level.enemies.length; i++) {
             const enemy = this.level.enemies[i];
-            if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isDead()) {
+            if (this.character.isColliding(enemy) && this.character.speedY < -1 && !enemy.isDead()) {
                 this.character.jump();
                 enemy.hitBy(this.character);
             }
@@ -109,17 +109,52 @@ class World {
     }
 
     checkCollisions() {
-        // SOLID BLOCKS
+        // SOLID BLOCKS 
+        
         setInterval(() => {
+            
             for (let i = 0; i < this.level.backgroundObjects.length; i++) {
                 const backgroundObject = this.level.backgroundObjects[i];
-                if(this.character.speedY < 0 && this.character.isColliding(backgroundObject) && backgroundObject instanceof BackgroundTile) {
-                    this.character.y = backgroundObject.y - this.character.height;
-                    this.character.speedY = 0;
-                    this.character.jumping = false;
+                 // Horizontal Collision
+                if(backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject)) {
+                    // Right
+                    if(this.character.speedX > 0) {
+                        this.character.x = backgroundObject.x - this.character.width - this.character.offset.right - 0.01;
+                        break;
+                    };
+                    // Left
+                    if(this.character.speedX < 0) {
+                        this.character.x = backgroundObject.x + backgroundObject.width - this.character.offset.left + 0.01;
+                        break;
+                    };
+                }  
+            };
+            this.character.updateGravity();
+            for (let i = 0; i < this.level.backgroundObjects.length; i++) {
+                const backgroundObject = this.level.backgroundObjects[i];
+                // Vertical Collision
+                if(backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject)) {
+                    // Down
+                    if(this.character.speedY < 0) {
+                        this.character.speedY = 0;
+                        this.character.y = backgroundObject.y - this.character.height - 0.01;
+                        this.character.jumping = false;
+                        break;
+                    };
+                    // Up
+                    if(this.character.speedY > 0) {
+                        this.character.speedY = 0;
+                        this.character.y = backgroundObject.y + backgroundObject.height + 0.01;
+                        if (this.character.y > 160) { // stop the character from glitching into the ground
+                            this.character.y = 159;
+                        };
+                        break;
+                    };
                 }
-            }
+            } 
+            
         }, 1000 / 60);
+       
         // ENEMIES 
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {

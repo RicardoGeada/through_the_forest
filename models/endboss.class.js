@@ -8,7 +8,6 @@ class Endboss extends MovableObject {
   moveDirection = '';
   attacking = false;
   reload = false;
-  InterValsList = [];
 
   IMAGES_BONE_PILE = [
     'img/3.boss/Skeleton/Bone_Pile/bone_pile.png',
@@ -93,20 +92,13 @@ class Endboss extends MovableObject {
     this.x = 288 * 4 - this.width - 32;
     this.hp = 4;
     this.dmg = 2;
-    this.speedX = 0.5;
+    this.speedX = 1 / 12;
     this.animate();
   }
 
   animate() {
-    // this.clearIntervals();
     this.movementInterval = setInterval(() => this.moveCharacter(), 1000 / 60);
     this.animationInterval = setInterval(() => this.animateCharacter(), 1000 / 60);
-    this.InterValsList.push(this.movementInterval);
-    this.InterValsList.push(this.animationInterval);
-    // console.log('Intervals: ',this.InterValsList);
-    // setInterval(() => {
-    //   console.log('Endboss X Position',this.x);
-    // },1000 / 60);
   }
 
   moveCharacter() {
@@ -121,17 +113,15 @@ class Endboss extends MovableObject {
           this.reload = false;
         }, 2500);
       }; 
-      if (this.moveDirection == 'left' && this.matchesFrameRate(6)) {
+      if (this.moveDirection == 'left') {
         this.flipH = true;
         this.moveLeft();
-        console.log('Moving Left');
       }; 
-      if (this.moveDirection == 'right' && this.matchesFrameRate(6)) {
+      if (this.moveDirection == 'right') {
         this.flipH = false;
         this.moveRight();
       };
     };
-    // console.log('movementInterval ',this.movementInterval, ' is active');
   }
 
   animateCharacter() {
@@ -142,12 +132,10 @@ class Endboss extends MovableObject {
       } else if (this.isHurt() && this.matchesFrameRate(12)) {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.attacking) { 
-        console.log('Animation Stop');
         this.playthroughAnimationLoop(this.IMAGES_BONE_TOSS, 1000 / this.IMAGES_BONE_TOSS.length);
         this.attacking = false;
         setTimeout(() => {
           this.animate();
-          console.log('Animation Restart');
         }, 1000);
         this.clearIntervals();
       } else if (this.matchesFrameRate(6)) { 
@@ -163,19 +151,12 @@ class Endboss extends MovableObject {
   } else {
     this.playAnimation(this.IMAGES_BONE_PILE);
   };
-  // console.log('animationInterval ',this.animationInterval, ' is active');
   this.framesCounter++;
   }
 
   clearIntervals() {
-    const index = this.InterValsList.indexOf(this.movementInterval);
-    this.InterValsList.splice(index,1);
-    const index2 = this.InterValsList.indexOf(this.animationInterval);
-    this.InterValsList.splice(index2,1);
     clearInterval(this.movementInterval);
     clearInterval(this.animationInterval);
-
-    // console.log('Intervals cleared');
   }
 
 }
