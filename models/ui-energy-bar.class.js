@@ -11,12 +11,12 @@ class EnergyBar extends UIObject {
 
     constructor() {
         super();
-        this.loadImage('./img/5.ui/energy/energy_active.png');
+        this.loadImage('./img/5.ui/empty/empty.png');
         this.loadImages(this.IMAGES_ENERGY);
         this.x = 10;
         this.y = 20;
-        this.width = 16;
-        this.height = 16;
+        this.width = 0;
+        this.height = 0;
         this.setImages();
         setTimeout(() => {
             this.updateEnergybar();

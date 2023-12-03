@@ -12,18 +12,18 @@ class HealthBar extends UIObject {
 
     constructor() {
         super();
-        this.loadImage('./img/5.ui/health/health_active.png');
+        this.loadImage('./img/5.ui/empty/empty.png');
         this.loadImages(this.IMAGES_HEART);
         this.maxHealth = 5;
-        this.setHealthbarImages();
         this.x = 10;
         this.y = 10;
-        this.width = 40;
-        this.height = 8;
+        this.width = 0;
+        this.height = 0;
+        this.setMaxHealth();
         setTimeout(() => {
             this.updateHealthbar();
         }, 100)
-        this.setMaxHealth();
+        
     }
 
     setHealthbarImages() {

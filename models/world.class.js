@@ -294,14 +294,17 @@ class World {
                 this.level.backgroundObjects.forEach((terrain) => {
                     if(terrain instanceof BackgroundTile && obj.isColliding(terrain) && !obj.dead) {
                         let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+                        terrain.hitBy(obj);
                         obj.dead = true;
                         clearInterval(obj.throwInterval);
                         clearInterval(obj.gravityInterval);
-                        if (obj instanceof ThrowableCharacter) {
-                            obj.explode();
-                        };
+                        if (obj instanceof ThrowableCharacter) obj.explode();
                         setTimeout(() => {
                             this.throwableObjects.splice(index,1);
+                            if (terrain.isDead()) {
+                                let index = this.level.backgroundObjects.indexOf(terrain);
+                                this.level.backgroundObjects.splice(index,1);
+                            }
                         }, 250);
                     }
                 })
