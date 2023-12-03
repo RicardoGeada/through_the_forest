@@ -1,5 +1,15 @@
 class GroundSmallBlock extends BackgroundTile {
-    constructor({x,y}) {
-        super('img/4.background/2 - Autumn Forest/Terrain/mid.png',x,y,16,16);
+
+    IMAGES = [
+        'img/4.background/2 - Autumn Forest/Terrain/ground_small_left.png',
+        'img/4.background/2 - Autumn Forest/Terrain/ground_small_mid.png',
+        'img/4.background/2 - Autumn Forest/Terrain/ground_small_right.png',
+    ]
+
+    constructor({x,y,image}) {
+        super('img/4.background/2 - Autumn Forest/Terrain/ground_small_mid.png',x,y,16,16);
+        this.loadImage(this.IMAGES[image]);
     }
+
+
 }

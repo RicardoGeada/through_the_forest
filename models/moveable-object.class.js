@@ -4,7 +4,7 @@ class MovableObject extends DrawableObject {
   acceleration = 0.25;
   dead = false;
   hp;
-  dmg;
+  dmg = 0;
   lastHit = 0;
   gravityInterval;
   framesCounter = 0;
@@ -72,7 +72,7 @@ class MovableObject extends DrawableObject {
     if (this instanceof ThrowableObject) {
       return true;
     } else {
-      return this.y + this.height + this.speedY < 192;
+      return this.y + this.height - this.speedY < 208;
     }
   }
 

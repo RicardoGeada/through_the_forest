@@ -45,10 +45,12 @@ class World {
      */
     update() {
         setInterval(() => {
+            this.checkBackgroundTileCollision();
             this.checkHorizontalCollision();
             this.character.updateGravity();
             this.checkVerticalCollision();
             if(this.matchesFrameRate(1)) this.checkEnemiesCollision();
+            
             this.checkIfThrowableCharacterHitsEnemies();
             this.checkIfThrowableSkeletonHitsCharacter();
             this.checkIfThrowableHitsTerrain();
@@ -165,7 +167,7 @@ class World {
     checkHorizontalCollision() {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
-            if(backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject)) {
+            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && this.character.isColliding(backgroundObject)) {
                 if(this.character.speedX > 0) {
                     this.character.x = backgroundObject.x - this.character.width - this.character.offset.right - 0.01;
                     break;
@@ -186,7 +188,7 @@ class World {
     checkVerticalCollision() {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
-            if(backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject)) {
+            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && this.character.isColliding(backgroundObject)) {
                 if(this.character.speedY < 0) {
                     this.character.speedY = 0;
                     this.character.y = backgroundObject.y - this.character.height - 0.01;
@@ -215,6 +217,20 @@ class World {
                 console.log(this.character.hp);
             };
         });
+    }
+
+
+
+    /**
+     * check if character is colliding background-tile that makes damage
+     */
+    checkBackgroundTileCollision() {
+        this.level.backgroundObjects.forEach( backgroundObject => {
+            if (backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject) && backgroundObject.dmg > 0) {
+                this.character.hitBy(backgroundObject);
+                console.log(this.character.hp);
+            }
+        })
     }
 
 

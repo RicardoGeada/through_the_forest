@@ -32,9 +32,10 @@ function generateBackground() {
     }
     // TILES
     for (let i = 0; i < (288 / 16) * 6; i++) {
-        background.push(
-            new GroundSmallBlock({x: i * 16, y: 192}),
-        );   
+        if (i < 70 || i > 75) background.push(new GroundSmallBlock({x: i * 16, y: 192, image: 1}),); 
+        if (i == 70) background.push(new GroundSmallBlock({x: i * 16, y: 192, image: 2}),); 
+        if (i == 75) background.push(new GroundSmallBlock({x: i * 16, y: 192, image: 0}),); 
+        ; 
     }
     background.push(
         new GroundMediumBlock({x: 25 * 16, y: 208 - 48}),
@@ -58,6 +59,15 @@ function generateBackground() {
         new TimerSmallBlock({x: 49 * 16, y: 208 - 4 * 16}),
         new TimerSmallBlock({x: 72.5 * 16, y: 208 - 5 * 16}),
         new TimerSmallBlock({x: 72.5 * 16, y: 208 - 9 * 16}),
+        new BoxMediumBlock({x: 40 * 16, y: 208 - 3 * 16}),
+        new LavaBlock({x: 71 * 16, y: 208 - 1 * 16}),
+        new LavaBlock({x: 72 * 16, y: 208 - 1 * 16}),
+        new LavaBlock({x: 73 * 16, y: 208 - 1 * 16}),
+        new LavaBlock({x: 74 * 16, y: 208 - 1 * 16}),
+        new TreeBlock({x: 14 * 16, y: 208 - 4 * 16, image: 1}),
+        new TreeBlock({x: 33 * 16, y: 208 - 4 * 16, image: 0}),
+        new TreeBlock({x: 57 * 16, y: 208 - 4 * 16, image: 1}),
+        new TreeBlock({x: 100 * 16, y: 208 - 4 * 16, image: 0}),
     );  
     return background;
 }
