@@ -8,9 +8,11 @@ const level1 = new Level({
     ],
     level_end_x: (5 * 288) - 32,
     collectables: [
-        new Coin(100,176),
-        new Coin(200,120),
-        new Coin(500,176),
+        new Coin(32 * 16, 208 - 10 * 16),
+        new Coin(50 * 16, 208 - 7 * 16),
+        new Coin(65 * 16, 208 - 2 * 16),
+        new Coin(72.5 * 16, 208 - 10 * 16),
+        
         new Fruit(250,176),
     ]
 }   
@@ -31,13 +33,31 @@ function generateBackground() {
     // TILES
     for (let i = 0; i < (288 / 16) * 6; i++) {
         background.push(
-            new BackgroundTile('img/4.background/2 - Autumn Forest/Terrain/mid.png',i * 16,192,16,16),
+            new GroundSmallBlock({x: i * 16, y: 192}),
         );   
     }
     background.push(
-        new BackgroundTile('img/4.background/2 - Autumn Forest/Terrain/mid.png',48,192 - 48,16,16),
-        new BackgroundTile('img/4.background/2 - Autumn Forest/Terrain/mid.png',80,192 - 64,16,16),
-        new BackgroundTile('img/4.background/2 - Autumn Forest/Terrain/ground_big.png',7* 16,192 - 32,48,48),
+        new GroundMediumBlock({x: 25 * 16, y: 208 - 48}),
+        new GroundBigBlock({x: 17 * 16, y: 208 - 48}),
+        new GroundBigBlock({x: 45 * 16, y: 208 - 48}),
+        new GroundBigBlock({x: 48 * 16, y: 208 - 48}),
+        new BrickSmallBlock({x: 22 * 16, y: 208 - 5 * 16}),
+        new BrickSmallBlock({x: 24 * 16, y: 208 - 7 * 16}),
+        new BrickSmallBlock({x: 70 * 16, y: 208 - 7 * 16}),
+        new BrickSmallBlock({x: 75 * 16, y: 208 - 3 * 16}),
+        new StoneSmallBlock({x: 32 * 16, y: 208 - 9 * 16}),
+        new StoneSmallBlock({x: 39 * 16, y: 208 - 2 * 16}),
+        new StoneSmallBlock({x: 50 * 16, y: 208 - 4 * 16}),
+        new StoneSmallBlock({x: 50 * 16, y: 208 - 5 * 16}),
+        new StoneSmallBlock({x: 50 * 16, y: 208 - 6 * 16}),
+        new StoneSmallBlock({x: 64 * 16, y: 208 - 2 * 16}),
+        new StoneSmallBlock({x: 65 * 16, y: 208 - 3 * 16}),
+        new StoneSmallBlock({x: 66 * 16, y: 208 - 2 * 16}),
+        new StoneSmallBlock({x: 66 * 16, y: 208 - 3 * 16}),
+        new StoneSmallBlock({x: 66 * 16, y: 208 - 4 * 16}),
+        new TimerSmallBlock({x: 49 * 16, y: 208 - 4 * 16}),
+        new TimerSmallBlock({x: 72.5 * 16, y: 208 - 5 * 16}),
+        new TimerSmallBlock({x: 72.5 * 16, y: 208 - 9 * 16}),
     );  
     return background;
 }

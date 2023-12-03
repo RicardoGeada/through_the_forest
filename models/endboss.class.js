@@ -89,7 +89,7 @@ class Endboss extends MovableObject {
       left: -100,
       right: 100,
     }
-    this.x = 288 * 4 - this.width - 32;
+    this.x = 90 * 16;
     this.hp = 4;
     this.dmg = 2;
     this.speedX = 1 / 12;

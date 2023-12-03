@@ -45,7 +45,9 @@ class World {
      */
     update() {
         setInterval(() => {
-            this.checkForSolidBlocks();
+            this.checkHorizontalCollision();
+            this.character.updateGravity();
+            this.checkVerticalCollision();
             if(this.matchesFrameRate(1)) this.checkEnemiesCollision();
             this.checkIfThrowableCharacterHitsEnemies();
             this.checkIfThrowableSkeletonHitsCharacter();
@@ -153,17 +155,6 @@ class World {
                 enemy.moveDirection = 'right';
             };
         })
-    }
-
-
-
-    /**
-     * check for solid blocks
-     */
-    checkForSolidBlocks() {
-        this.checkHorizontalCollision();
-        this.character.updateGravity();
-        this.checkVerticalCollision();
     }
 
 
@@ -316,7 +307,7 @@ class World {
             });
     }
 
-    
+
     
     matchesFrameRate(frames) {
         return  this.framesCounter % Math.floor(60 / frames) == 0;

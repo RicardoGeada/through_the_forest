@@ -86,8 +86,8 @@ class Character extends MovableObject {
       left: 9,
       right: -11,
     };
-    this.x = 200;
-    this.y = 208 - 32 - 32;
+    this.x = 48;
+    this.y = 208 - 32 - 16 - 1;
     this.speedX = 1;
     this.hp = 5;
     this.dmg = 1;
