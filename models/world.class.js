@@ -46,9 +46,10 @@ class World {
     update() {
         setInterval(() => {
             this.checkBackgroundTileCollision();
-            this.checkHorizontalCollision();
+            this.checkHorizontalCollision(this.character);
             this.character.updateGravity();
-            this.checkVerticalCollision();
+            this.checkVerticalCollision(this.character);
+            this.checkEnemySolidBlocksCollision();
             if(this.matchesFrameRate(1)) this.checkEnemiesCollision();
             
             this.checkIfThrowableCharacterHitsEnemies();
@@ -164,16 +165,16 @@ class World {
     /**
      * check horizontal collision for character
      */
-    checkHorizontalCollision() {
+    checkHorizontalCollision(char) {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
-            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && this.character.isColliding(backgroundObject)) {
-                if(this.character.speedX > 0) {
-                    this.character.x = backgroundObject.x - this.character.width - this.character.offset.right - 0.01;
+            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
+                if(char.speedX > 0) {
+                    char.x = backgroundObject.x - char.width - char.offset.right - 0.01;
                     break;
                 };
-                if(this.character.speedX < 0) {
-                    this.character.x = backgroundObject.x + backgroundObject.width - this.character.offset.left + 0.01;
+                if(char.speedX < 0) {
+                    char.x = backgroundObject.x + backgroundObject.width - char.offset.left + 0.01;
                     break;
                 };
             };  
@@ -185,20 +186,20 @@ class World {
     /**
      * check vertical collison for character
      */
-    checkVerticalCollision() {
+    checkVerticalCollision(char) {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
-            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && this.character.isColliding(backgroundObject)) {
-                if(this.character.speedY < 0) {
-                    this.character.speedY = 0;
-                    this.character.y = backgroundObject.y - this.character.height - 0.01;
-                    this.character.jumping = false;
+            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
+                if(char.speedY < 0) {
+                    char.speedY = 0;
+                    char.y = backgroundObject.y - char.height - 0.01;
+                    char.jumping = false;
                     break;
                 };
-                if(this.character.speedY > 0) {
-                    this.character.speedY = 0;
-                    this.character.y = backgroundObject.y + backgroundObject.height + 0.01;
-                    if (this.character.y > 160) this.character.y = 159;
+                if(char.speedY > 0) {
+                    char.speedY = 0;
+                    char.y = backgroundObject.y + backgroundObject.height + 0.01;
+                    if (char.y > 160) char.y = 159;
                     break;
                 };
             };
@@ -207,6 +208,19 @@ class World {
 
 
 
+    /**
+     * check if enemies are colliding with solid blocks
+     */
+    checkEnemySolidBlocksCollision() {
+        this.level.enemies.forEach( enemy => {
+            this.checkHorizontalCollision(enemy);
+            enemy.updateGravity();
+            this.checkVerticalCollision(enemy);
+        })
+    }
+
+
+    
     /**
      * check if character is colliding with enemies
      */
