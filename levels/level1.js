@@ -1,12 +1,14 @@
 const level1 = new Level({
     backgroundObjects: generateBackground(),
     enemies: [
-        new RoboTotem(),    
-        new RoboTotem(),    
-        new RoboTotem(),
+        new RoboTotem({x: 15 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 30 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 35 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 55 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 61 * 16, y: 208 - 32 - 17}),    
         new Endboss(),    
     ],
-    level_end_x: (5 * 288) - 32,
+    level_end_x: (6 * 288) - 32,
     collectables: [
         new Coin(32 * 16, 208 - 10 * 16),
         new Coin(50 * 16, 208 - 7 * 16),
@@ -20,7 +22,7 @@ const level1 = new Level({
 
 function generateBackground() {
     let background = [];
-    for (let i = 0; i <  6; i++) {
+    for (let i = 0; i <  7; i++) {
       background.push(
         new BackgroundObject('img/4.background/2 - Autumn Forest/Background parts/6 - Distant_trees.png',i * 288,0),
         new BackgroundObject('img/4.background/2 - Autumn Forest/Background parts/5 - Tree_row_BG_2.png',i * 288,0),
@@ -31,7 +33,7 @@ function generateBackground() {
       );
     }
     // TILES
-    for (let i = 0; i < (288 / 16) * 6; i++) {
+    for (let i = 0; i < (288 / 16) * 7; i++) {
         if (i < 70 || i > 75) background.push(new GroundSmallBlock({x: i * 16, y: 192, image: 1}),); 
         if (i == 70) background.push(new GroundSmallBlock({x: i * 16, y: 192, image: 2}),); 
         if (i == 75) background.push(new GroundSmallBlock({x: i * 16, y: 192, image: 0}),); 
@@ -67,7 +69,8 @@ function generateBackground() {
         new TreeBlock({x: 14 * 16, y: 208 - 4 * 16, image: 1}),
         new TreeBlock({x: 33 * 16, y: 208 - 4 * 16, image: 0}),
         new TreeBlock({x: 57 * 16, y: 208 - 4 * 16, image: 1}),
-        new TreeBlock({x: 100 * 16, y: 208 - 4 * 16, image: 0}),
+        new TreeBlock({x: 106 * 16, y: 208 - 4 * 16, image: 0}),
+        new HouseBlock({x: 110 * 16, y: 208 - 7 * 16}),
     );  
     return background;
 }

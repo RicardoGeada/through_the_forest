@@ -55,7 +55,8 @@ class DrawableObject {
       this instanceof ThrowableObject ||
       this instanceof Coin ||
       this instanceof Fruit ||
-      this instanceof LavaBlock
+      this instanceof LavaBlock ||
+      this instanceof HouseBlock
     ) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "blue"; // image frame

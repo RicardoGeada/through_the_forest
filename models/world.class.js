@@ -306,7 +306,7 @@ class World {
         this.throwableObjects.forEach( obj => {
             if (obj instanceof ThrowableCharacter || obj instanceof ThrowableSkeleton) {
                 this.level.backgroundObjects.forEach((terrain) => {
-                    if(terrain instanceof BackgroundTile && obj.isColliding(terrain) && !obj.dead) {
+                    if(terrain instanceof BackgroundTile && terrain.solid && obj.isColliding(terrain) && !obj.dead) {
                         let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                         terrain.hitBy(obj);
                         obj.dead = true;
@@ -334,6 +334,7 @@ class World {
     checkDeadEnemies() {
             this.level.enemies.forEach((enemy) => {
                 if(enemy.isDead() && enemy instanceof RoboTotem) {
+                    this.level.collectables.push(new Fruit(enemy.x,enemy.y)); // DROP FRUITS
                     let index = this.level.enemies.indexOf(enemy);
                     this.level.enemies.splice(index,1);
                 }

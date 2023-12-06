@@ -86,7 +86,7 @@ class Character extends MovableObject {
       left: 9,
       right: -11,
     };
-    this.x = 48;
+    this.x = 7 * 16;
     this.y = 208 - 32 - 16 - 1;
     this.speedX = 1;
     this.hp = 5;
@@ -101,12 +101,12 @@ class Character extends MovableObject {
   }
 
   moveCharacter() {
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 300) {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.offset.left) {
       this.moveRight();
       this.flipH = false;
       !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
     };
-    if (this.world.keyboard.LEFT && this.x > 32) {
+    if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
       this.flipH = true;
       !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
@@ -116,7 +116,7 @@ class Character extends MovableObject {
       this.jump();
     };
     if (this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0) {
-      let missile = new ThrowableCharacter(this.x,this.y,this.flipH);
+      let missile = new ThrowableCharacter(this.x + 0.5 * this.width,this.y + 0.25 * this.height,this.flipH);
       this.world.throwableObjects.push(missile);
       this.energy--;
       this.reload = true;
@@ -124,7 +124,10 @@ class Character extends MovableObject {
           this.reload = false;
       }, 1000)
     }
-    this.world.camera_x = this.x - 32; // focus camera on character
+    if(this.x > 7 * 16 && this.x < this.world.level.level_end_x) {
+      this.world.camera_x = this.x - 7 * 16; // focus camera on character
+    }
+    
   }
 
   animateCharacter() {

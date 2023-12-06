@@ -29,6 +29,7 @@
     <script src="./models/building-blocks/box-medium-block.class.js"></script>
     <script src="./models/building-blocks/lava-block.class.js"></script>
     <script src="./models/building-blocks/tree-block.class.js"></script>
+    <script src="./models/building-blocks/house-block.class.js"></script>
 
     <script src="./models/coin.class.js"></script>
     <script src="./models/fruit.class.js"></script>
@@ -41,10 +42,68 @@
     <script src="./models/enemie-robo-totem.class.js"></script>
     <script src="./models/endboss.class.js"></script>
     <script src="./levels/level1.js"></script>
-    <script src="./js/game.js"></script>
+    <script src="./js/game.js" defer></script>
 </head>
 <body onload="init()">
-    <h1>Through the Forest</h1>
-    <canvas id="canvas" width="288" height="208"></canvas>
+    <div id="fullscreen">
+        <canvas id="canvas" width="288" height="208"></canvas>
+        <div class="display">   
+        </div>
+        <div class="overlay">
+            <div id="startscreen" class="startscreen">
+            <div class="container">
+                <h1>Through the Forest</h1>
+                <div class="text">
+                    <h3>ABOUT</h3>
+                    <ul>
+                        <li>Help the hooded protagonist make it through the forest and turn back home.</li>
+                        <li>Defeat the enemies</li>
+                        <li>Collect the coins</li>
+                        <li>Refill your energy by eating some fruits</li>
+                    </ul>                    
+                </div>
+                <div class="controls">
+                    <h3>CONTROLS</h3>
+                    <div class="button-controls">
+                        <div class="button-img">&lt</div>
+                        <div>MOVE LEFT</div>
+                    </div>
+                    <div class="button-controls">
+                        <div class="button-img">&gt</div>
+                        <div>MOVE RIGHT</div>
+                    </div>
+                    <div class="button-controls">
+                        <div class="button-img">Q</div>
+                        <div>MELEE ATTACK</div>
+                    </div>
+                    <div class="button-controls">
+                        <div class="button-img">W</div>
+                        <div>RANGED ATTACK</div>
+                    </div>
+                    <div class="button-controls">
+                        <div class="button-img"> </div>
+                        <div>JUMP</div>
+                    </div>
+                </div>
+                <button onclick="startGame()">START</button>
+            </div>
+            </div>
+            <div class="controller">
+                <div class="buttons left">
+                    <div id="btn-left"  class="button">L</div>
+                    <div id="btn-right" class="button">R</div>
+                </div>
+                <div class="buttons mid">
+                    <button id="btn-fullscreen"  class="button" ontouch="fullscreen()" onclick="fullscreen()">Fullscreen</button>
+                </div>
+                <div class="buttons right">
+                    <div id="btn-jump" class="button"> </div>
+                    <div id="btn-ranged-attack" class="button">W</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
 </body>
 </html>
