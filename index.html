@@ -51,18 +51,18 @@
         </div>
         <div class="overlay">
             <div id="startscreen" class="startscreen">
-            <div class="container">
-                <h1>Through the Forest</h1>
-                <div class="text">
-                    <h3>ABOUT</h3>
-                    <ul>
-                        <li>Help the hooded protagonist make it through the forest and turn back home.</li>
-                        <li>Defeat the enemies</li>
-                        <li>Collect the coins</li>
-                        <li>Refill your energy by eating some fruits</li>
-                    </ul>                    
-                </div>
-                <div class="controls">
+                <div class="container">
+                    <h1>Through the Forest</h1>
+                    <div class="text">
+                        <h3>ABOUT</h3>
+                        <ul>
+                            <li>Help the hooded protagonist make it through the forest and turn back home.</li>
+                            <li>Defeat the enemies</li>
+                            <li>Collect the coins</li>
+                            <li>Refill your energy by eating some fruits</li>
+                        </ul>                    
+                    </div>
+                    <div class="controls">
                     <h3>CONTROLS</h3>
                     <div class="button-controls">
                         <div class="button-img">&lt</div>
@@ -84,22 +84,38 @@
                         <div class="button-img"> </div>
                         <div>JUMP</div>
                     </div>
+                    </div>
+                    <button onclick="startGame()">START</button>
                 </div>
-                <button onclick="startGame()">START</button>
             </div>
+            <div id="endscreen" class="endscreen d-none">
+                <div class="container">
+                    <h3>GAME OVER</h3>
+                </div>
             </div>
-            <div class="controller">
-                <div class="buttons left">
-                    <div id="btn-left"  class="button">L</div>
-                    <div id="btn-right" class="button">R</div>
+            <div class="ui-controls">
+                <div class="settings">
+                    <button id="btn-controls"  class="button" ontouch="toggleControls()" onclick="toggleControls()">
+                        <img src="./img/5.ui/settings/gamepad.png" alt="controls">
+                    </button>
+                    <button id="btn-fullscreen"  class="button" ontouch="fullscreen()" onclick="fullscreen()">
+                        <img src="./img/5.ui/settings/fullscreen.png" alt="fullscreen">
+                    </button>
+                    <button id="btn-audio"  class="button" ontouch="toggleAudio()" onclick="toggleAudio()">
+                        <img src="./img/5.ui/settings/speaker-0.png" alt="audio">
+                    </button>
+                </div> 
+                <div class="gamepad">
+                    <div class="buttons left">
+                        <div id="btn-left"  class="button">L</div>
+                        <div id="btn-right" class="button">R</div>
+                    </div>
+                    <div class="buttons right">
+                        <div id="btn-jump" class="button"> </div>
+                        <div id="btn-ranged-attack" class="button">W</div>
+                    </div>
                 </div>
-                <div class="buttons mid">
-                    <button id="btn-fullscreen"  class="button" ontouch="fullscreen()" onclick="fullscreen()">Fullscreen</button>
-                </div>
-                <div class="buttons right">
-                    <div id="btn-jump" class="button"> </div>
-                    <div id="btn-ranged-attack" class="button">W</div>
-                </div>
+                     
             </div>
         </div>
     </div>
