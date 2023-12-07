@@ -119,7 +119,7 @@ class World {
             const collectable = this.level.collectables[i];
             if (collectable instanceof Coin && this.character.isColliding(collectable)) {
                 this.coins.amount++;
-                collectable.playSound(collectable.SOUND_COLLECT, 1);
+                collectable.playSound({sound: collectable.SOUND_COLLECT, playbackRate: 1});
                 this.level.collectables.splice(i,1);
             };
         };
@@ -137,7 +137,7 @@ class World {
                 if (this.character.energy < this.energybar.maxEnergy) {
                     this.character.energy++;
                 };
-                collectable.playSound(collectable.SOUND_COLLECT, 1);
+                collectable.playSound({sound: collectable.SOUND_COLLECT, playbackRate: 1});
                 this.level.collectables.splice(i,1);
             }
         }

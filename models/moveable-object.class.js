@@ -117,7 +117,12 @@ class MovableObject extends DrawableObject {
     return  this.framesCounter % Math.floor(60 / frames) == 0;
    }
  
-  playSound(sound, playbackRate) {
+
+
+  
+  playSound({sound,playbackRate,volume,muted}) {
+    sound.volume = volume ? volume : 1;
+    sound.muted = muted ? muted : audio.muted;
     sound.playbackRate = playbackRate;
     sound.play() ? null : sound.play();
   }

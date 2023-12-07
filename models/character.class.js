@@ -104,12 +104,12 @@ class Character extends MovableObject {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.offset.left) {
       this.moveRight();
       this.flipH = false;
-      !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
+      !this.isAboveGround() ? this.playSound({sound: this.SOUND_WALK, playbackRate: 2}) : null;
     };
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
       this.flipH = true;
-      !this.isAboveGround() ? this.playSound(this.SOUND_WALK, 2) : null;
+      !this.isAboveGround() ? this.playSound({sound: this.SOUND_WALK, playbackRate: 2}) : null;
     };
     if (this.world.keyboard.SPACE && this.speedY == 0 && !this.jumping) {
       this.jumping = true;

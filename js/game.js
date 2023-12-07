@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let intervalIDs = [];
+let audio = {muted: false};
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -94,25 +95,46 @@ function stopIntervals() {
     })
 }
 
-
-function fullscreen() {
-    if (document.fullscreenElement) {
-        document.exitFullscreen();
-    } else {
-        let fullscreen = document.getElementById('fullscreen');
-        openFullscreen(fullscreen);
+//#region settings
+    function fullscreen() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            let fullscreen = document.getElementById('fullscreen');
+            openFullscreen(fullscreen);
+        }
     }
-}
 
 
-/* When the openFullscreen() function is executed, open the video in fullscreen.
-Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
-function openFullscreen(elem) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
+
+    /* When the openFullscreen() function is executed, open the video in fullscreen.
+    Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+    function openFullscreen(elem) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+          elem.msRequestFullscreen();
+        }
     }
-}
+
+
+    function toggleAudio() {
+        audio.muted = audio.muted ? unmute() : mute();
+    }
+
+    function mute() {
+        let img = document.getElementById('btn-audio-img');
+        img.src = './img/5.ui/settings/speaker-mute.png';
+        return true;
+    }
+
+    function unmute() {
+        let img = document.getElementById('btn-audio-img');
+        img.src = './img/5.ui/settings/speaker-unmute.png';
+        return false;
+    }
+//#endregion
+
+
