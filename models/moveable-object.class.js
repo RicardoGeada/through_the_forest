@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
   framesCounter = 0;
   movementInterval;
   animationInterval;
+  singleAnimationInterval;
 
   moveRight() {
     this.speedX = Math.abs(this.speedX);
@@ -38,11 +39,12 @@ class MovableObject extends DrawableObject {
 
   playthroughAnimationLoop(images,fps) {
     this.currentImage = 0;
-    let interval = setInterval(() => {
+    clearInterval(this.singleAnimationInterval);
+    this.singleAnimationInterval = setInterval(() => {
       if (this.currentImage < images.length) {
         this.playAnimation(images);
       } else {
-        clearInterval(interval);
+        clearInterval(this.singleAnimationInterval);
       }
     },fps)
   }
@@ -94,6 +96,15 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  isInMeleeRange(obj) {
+    return (
+      this.x + this.width + this.offset.right >= obj.x + obj.hitbox.melee.left &&
+      this.x + this.offset.left <= obj.x + obj.width + obj.hitbox.melee.right &&
+      this.y + this.height + this.offset.bottom >= obj.y + obj.hitbox.melee.top &&
+      this.y + this.offset.top <= obj.y + obj.height + obj.hitbox.melee.bottom
+    );
+  }
+
   hitBy(obj) {
     this.hp -= obj.dmg;
     if (this.hp < 0) {
@@ -117,13 +128,16 @@ class MovableObject extends DrawableObject {
     return  this.framesCounter % Math.floor(60 / frames) == 0;
    }
  
-
-
   
   playSound({sound,playbackRate,volume,muted}) {
     sound.volume = volume ? volume : 1;
     sound.muted = muted ? muted : audio.muted;
     sound.playbackRate = playbackRate;
     sound.play() ? null : sound.play();
+  }
+
+  clearIntervals() {
+    clearInterval(this.movementInterval);
+    clearInterval(this.animationInterval);
   }
 }

@@ -16,7 +16,7 @@ class StoneSmallBlock extends BackgroundTile {
     }
 
     update() {
-        let interval = setInterval(() => {
+        setInterval(() => {
             if (this.hp == 2) {
                 this.img = this.imageCache['img/4.background/5 - Misc. universal tiles/stone_block_1.png'];
             } else if (this.hp == 1) {

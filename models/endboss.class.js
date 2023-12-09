@@ -90,7 +90,7 @@ class Endboss extends MovableObject {
       right: 100,
     }
     this.x = 90 * 16;
-    this.hp = 4;
+    this.hp = 5;
     this.dmg = 2;
     this.speedX = 1 / 12;
     this.animate();
@@ -129,8 +129,12 @@ class Endboss extends MovableObject {
       if (this.isDead()) {
         this.playthroughAnimationLoop(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
         this.clearIntervals();
-      } else if (this.isHurt() && this.matchesFrameRate(12)) {
-        this.playAnimation(this.IMAGES_HURT);
+      } else if (this.isHurt()) {
+        this.playthroughAnimationLoop(this.IMAGES_HURT, 1000 / (this.IMAGES_HURT * 2));
+        setTimeout(() => {
+          this.animate();
+        }, 500);
+        this.clearIntervals();
       } else if (this.attacking) { 
         this.playthroughAnimationLoop(this.IMAGES_BONE_TOSS, 1000 / this.IMAGES_BONE_TOSS.length);
         this.attacking = false;
@@ -141,23 +145,20 @@ class Endboss extends MovableObject {
       } else if (this.matchesFrameRate(6)) { 
         this.playAnimation(this.IMAGES_WALKING);
       };
-  } else if (this.firstContact) {
-      this.clearIntervals();
-      this.playthroughAnimationLoop(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
-      setTimeout(() => {
-        this.animate();
-        this.awake = true;
-      }, 1000);
-  } else {
-    this.playAnimation(this.IMAGES_BONE_PILE);
-  };
+    } else if (this.firstContact) {
+        this.clearIntervals();
+        this.playthroughAnimationLoop(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
+        setTimeout(() => {
+          this.animate();
+          this.awake = true;
+        }, 1000);
+    } else {
+      this.playAnimation(this.IMAGES_BONE_PILE);
+    };
   this.framesCounter++;
   }
 
-  clearIntervals() {
-    clearInterval(this.movementInterval);
-    clearInterval(this.animationInterval);
-  }
+  
 
 }
 

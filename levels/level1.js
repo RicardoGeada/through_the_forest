@@ -66,11 +66,18 @@ function generateBackground() {
         new LavaBlock({x: 72 * 16, y: 208 - 1 * 16}),
         new LavaBlock({x: 73 * 16, y: 208 - 1 * 16}),
         new LavaBlock({x: 74 * 16, y: 208 - 1 * 16}),
+        new FenceBigBlock({x: 107 * 16, y: 208 - 2 * 16}),
+        new FenceBigBlock({x: 110 * 16, y: 208 - 2 * 16}),
+        new HouseBlock({x: 110 * 16, y: 208 - 7 * 16}),
+        new LeafPileBlock({x: 107 * 16, y: 208 - 2 * 16}),
+        new LeafPileBlock({x: 5 * 16, y: 208 - 2 * 16}),
+        new FlowerBlock({x: 113 * 16, y: 208 - 2 * 16}),
         new TreeBlock({x: 14 * 16, y: 208 - 4 * 16, image: 1}),
         new TreeBlock({x: 33 * 16, y: 208 - 4 * 16, image: 0}),
         new TreeBlock({x: 57 * 16, y: 208 - 4 * 16, image: 1}),
-        new TreeBlock({x: 106 * 16, y: 208 - 4 * 16, image: 0}),
-        new HouseBlock({x: 110 * 16, y: 208 - 7 * 16}),
+        new TreeBlock({x: 108 * 16, y: 208 - 4 * 16, image: 0}),
+        
+        
     );  
     return background;
 }

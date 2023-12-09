@@ -4,7 +4,16 @@ class Character extends MovableObject {
   height = 32;
   jumping = false;
   reload = false;
+  attacking = false;
   energy = 3;
+  hitbox = {
+    melee: {
+        top: 0,
+        bottom: 0,
+        left: 16,
+        right: 0,
+    },
+  }
 
 
   IMAGES_WALKING = [
@@ -86,6 +95,7 @@ class Character extends MovableObject {
       left: 9,
       right: -11,
     };
+   
     this.x = 7 * 16;
     this.y = 208 - 32 - 16 - 1;
     this.speedX = 1;
@@ -103,11 +113,13 @@ class Character extends MovableObject {
   moveCharacter() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.offset.left) {
       this.moveRight();
+      if (this.flipH) this.flipHitbox();
       this.flipH = false;
       !this.isAboveGround() ? this.playSound({sound: this.SOUND_WALK, playbackRate: 2}) : null;
     };
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
+      if (!this.flipH) this.flipHitbox();
       this.flipH = true;
       !this.isAboveGround() ? this.playSound({sound: this.SOUND_WALK, playbackRate: 2}) : null;
     };
@@ -115,6 +127,13 @@ class Character extends MovableObject {
       this.jumping = true;
       this.jump();
     };
+    if (this.world.keyboard.MELEE_ATTACK && !this.reload) {
+      this.attacking = true;
+      this.reload = true;
+      setTimeout(()=> {
+          this.reload = false;
+      }, 500)
+    }
     if (this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0) {
       let missile = new ThrowableCharacter(this.x + 0.5 * this.width,this.y + 0.25 * this.height,this.flipH);
       this.world.throwableObjects.push(missile);
@@ -131,12 +150,18 @@ class Character extends MovableObject {
   }
 
   animateCharacter() {
-    if (this.isDead()) {
+    if (this.isDead() && !this.attacking) {
       this.playthroughAnimationLoop(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
-      clearInterval(this.animationInterval);
-      clearInterval(this.movementInterval);
+      this.clearIntervals();
     } else if (this.isHurt() && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_HURT);
+    } else if (this.attacking) {
+      this.playthroughAnimationLoop(this.IMAGES_ATTACK,1000 / (this.IMAGES_ATTACK.length * 2));
+      this.clearIntervals();
+      setTimeout(() => {
+        this.attacking = false;
+        this.animate();
+      }, 500);
     } else if (this.speedY != 0 && this.jumping && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_JUMPING);
     } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.matchesFrameRate(12)) {
@@ -145,6 +170,15 @@ class Character extends MovableObject {
       this.playAnimation(this.IMAGES_IDLE);
     }
     this.framesCounter++;
+    // console.log('animation is playing')
+  }
+
+
+  flipHitbox() {
+    const left = this.hitbox.melee.left;
+    const right = this.hitbox.melee.right;
+    this.hitbox.melee.left = - right;
+    this.hitbox.melee.right = - left;
   }
 
 }

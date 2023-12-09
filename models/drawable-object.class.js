@@ -88,4 +88,16 @@ class DrawableObject {
       );
     }
   }
+
+  drawHitboxMelee(ctx) {
+    if (this instanceof Character) {
+      ctx.strokeStyle = "purple"; // hitbox
+      ctx.strokeRect(
+        this.x + this.hitbox.melee.left,
+        this.y + this.hitbox.melee.top,
+        this.img.width - this.hitbox.melee.left + this.hitbox.melee.right,
+        this.img.height - this.hitbox.melee.top + this.hitbox.melee.bottom,
+      );
+    }
+  }
 }

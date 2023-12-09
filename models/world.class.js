@@ -55,7 +55,10 @@ class World {
             this.checkIfThrowableCharacterHitsEnemies();
             this.checkIfThrowableSkeletonHitsCharacter();
             this.checkIfThrowableHitsTerrain();
+
             this.checkJumpOnEnemy();
+            this.checkCharacterMeleeAttack();
+
             this.checkFirstContactWithBoss();
             this.checkRangedAttackFromBoss();
             this.checkCoinsCollision();
@@ -64,6 +67,26 @@ class World {
             this.checkDeadEnemies();
             this.framesCounter++;
         }, 1000 / 60);
+    }
+
+
+    checkCharacterMeleeAttack() {
+        this.level.enemies.forEach( enemy => {
+            if (this.character.attacking && enemy.isInMeleeRange(this.character) && !enemy.isHurt()) {
+                this.character.attacking = false;
+                setTimeout(() => {
+                    enemy.hitBy(this.character); 
+                }, 250);
+            }
+        });
+        this.level.backgroundObjects.forEach( backgroundObject => {
+            if (this.character.attacking && backgroundObject.isInMeleeRange(this.character) && backgroundObject instanceof BackgroundTile && backgroundObject.hp > 0 && !backgroundObject.dead && !backgroundObject.isHurt()) {
+                this.character.attacking = false;
+                setTimeout(() => {
+                    backgroundObject.hitBy(this.character); 
+                }, 250);
+            }
+        })
     }
 
 
@@ -385,6 +408,7 @@ class World {
         movObj.drawCollisionBox(this.ctx);
         movObj.drawVisionBox(this.ctx);
         this.ctx.restore();
+        movObj.drawHitboxMelee(this.ctx);
     }
 
 }
