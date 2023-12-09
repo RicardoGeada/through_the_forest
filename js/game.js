@@ -8,12 +8,39 @@ function init() {
     canvas = document.getElementById('canvas');
 }
 
-
-
 function startGame() {
     let startScreen = document.getElementById('startscreen');
     startScreen.classList.add('d-none');
     world = new World(canvas,keyboard);
+}
+
+function restart() {
+    location.reload();
+}
+
+function generateEndscreen({win}) {
+    let endscreen = document.getElementById('endscreen');
+    endscreen.classList.remove('d-none');
+    endscreen.innerHTML = '';
+    endscreen.innerHTML = win ? endscreenVictoryHTML() : endscreenGameOverHTML();
+}
+
+function endscreenVictoryHTML() {
+    return /*html*/`
+        <div class="container">
+            <h1 class="headline">VICTORY</h1>
+            <button onclick="restart()">Play again</button>  
+        </div>
+    `;
+}
+
+function endscreenGameOverHTML() {
+    return /*html*/`
+        <div class="container">
+            <h1 class="headline">GAME OVER</h1>
+            <button onclick="restart()">Play again</button>  
+        </div>
+    `;
 }
 
 
@@ -87,6 +114,7 @@ function startGame() {
 function setStoppableInterval(fn,time) {
     let id = setInterval(fn,time);
     intervalIDs.push(id);
+    console.log('stoppable interval setted')
 }
 
 function stopIntervals() {

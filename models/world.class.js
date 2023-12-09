@@ -18,7 +18,8 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.update();
+        let self = this;
+        setStoppableInterval(() => this.update(self), 1000 / 60);
     }
 
 
@@ -43,30 +44,30 @@ class World {
     /**
      * update the world in an interval
      */
-    update() {
-        setInterval(() => {
-            this.checkBackgroundTileCollision();
-            this.checkHorizontalCollision(this.character);
-            this.character.updateGravity();
-            this.checkVerticalCollision(this.character);
-            this.checkEnemySolidBlocksCollision();
-            if(this.matchesFrameRate(1)) this.checkEnemiesCollision();
+    update(self) {
+            self.checkBackgroundTileCollision();
+            self.checkHorizontalCollision(self.character);
+            self.character.updateGravity();
+            self.checkVerticalCollision(self.character);
+            self.checkEnemySolidBlocksCollision();
+            if(self.matchesFrameRate(1)) self.checkEnemiesCollision();
             
-            this.checkIfThrowableCharacterHitsEnemies();
-            this.checkIfThrowableSkeletonHitsCharacter();
-            this.checkIfThrowableHitsTerrain();
+            self.checkIfThrowableCharacterHitsEnemies();
+            self.checkIfThrowableSkeletonHitsCharacter();
+            self.checkIfThrowableHitsTerrain();
 
-            this.checkJumpOnEnemy();
-            this.checkCharacterMeleeAttack();
+            self.checkJumpOnEnemy();
+            self.checkCharacterMeleeAttack();
 
-            this.checkFirstContactWithBoss();
-            this.checkRangedAttackFromBoss();
-            this.checkCoinsCollision();
-            this.checkFruitsCollision();
-            this.setEnemyDirection();
-            this.checkDeadEnemies();
-            this.framesCounter++;
-        }, 1000 / 60);
+            self.checkFirstContactWithBoss();
+            self.checkRangedAttackFromBoss();
+            self.checkCoinsCollision();
+            self.checkFruitsCollision();
+            self.setEnemyDirection();
+            self.checkDeadEnemies();
+
+            self.checkGameState();
+            self.framesCounter++;
     }
 
 
@@ -364,6 +365,24 @@ class World {
             });
     }
 
+
+
+    checkGameState() {
+        if (this.character.isDead()) {
+            stopIntervals();
+            setTimeout(() => {
+                generateEndscreen({win: false});
+            }, 2000)
+        }
+        this.level.backgroundObjects.forEach( (obj) => {
+            if(obj instanceof HouseBlock && this.character.isColliding(obj) && !this.character.isDead()) {
+                stopIntervals();
+                setTimeout(() => {
+                    generateEndscreen({win: true});
+                }, 2000);
+            }
+        })
+    }
 
     
     matchesFrameRate(frames) {

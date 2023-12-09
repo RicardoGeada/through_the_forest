@@ -63,7 +63,7 @@ canvas {
 }
 
 .startscreen {
-    position: relative;
+    position: absolute;
     z-index: 3;
     width: 100%;
     height: 100%;
@@ -85,7 +85,7 @@ canvas {
     display: grid;
     grid-template-areas:    "headline headline headline"
                             "text text controls"
-                            "startbutton startbutton startbutton";
+                            "button button button";
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 0.5fr 3fr 1fr;
     gap: 16px;
@@ -119,7 +119,7 @@ canvas {
 }
 
 .container button {
-    grid-area: startbutton;
+    grid-area: button;
     background-color: rgb(243, 143, 67);
     border-radius: 12px;
     font-size: 32px;
@@ -161,12 +161,21 @@ canvas {
 }
 
 .endscreen {
-    position: relative;
+    position: absolute;
     top: 0;
     z-index: 4;
     width: 100%;
     height: 100%;
     padding: 16px;
+}
+
+.endscreen .container {
+    grid-template-areas:    "text text text"
+                            "headline headline headline"
+                            "button button button";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    text-align: center;
 }
 
 
