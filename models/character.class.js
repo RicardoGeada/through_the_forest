@@ -78,7 +78,9 @@ class Character extends MovableObject {
     'img/1.hero/Idle/idle_2.png'
   ];
 
+  SOUND_ATTACK = new Audio('./audio/1.hero/hero_attack.wav');
   SOUND_WALK = new Audio('./audio/1.hero/hero_walk.wav');
+  SOUND_JUMP = new Audio('./audio/1.hero/hero_jump.wav');
 
   constructor() {
     super().loadImage("img/1.hero/Idle/idle_1.png");
@@ -115,19 +117,21 @@ class Character extends MovableObject {
       this.moveRight();
       if (this.flipH) this.flipHitbox();
       this.flipH = false;
-      !this.isAboveGround() ? this.playSound({sound: this.SOUND_WALK, playbackRate: 2}) : null;
+      this.isWalkingOnGround();
     };
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
       if (!this.flipH) this.flipHitbox();
       this.flipH = true;
-      !this.isAboveGround() ? this.playSound({sound: this.SOUND_WALK, playbackRate: 2}) : null;
+      this.isWalkingOnGround();
     };
     if (this.world.keyboard.SPACE && this.speedY == 0 && !this.jumping) {
       this.jumping = true;
       this.jump();
+      playSound({sound: this.SOUND_JUMP, playbackRate: 1, volume: 0.5});
     };
     if (this.world.keyboard.MELEE_ATTACK && !this.reload) {
+      playSound({sound: this.SOUND_ATTACK, playbackRate: 2, volume: 1});
       this.attacking = true;
       this.reload = true;
       setTimeout(()=> {
@@ -179,6 +183,14 @@ class Character extends MovableObject {
     const right = this.hitbox.melee.right;
     this.hitbox.melee.left = - right;
     this.hitbox.melee.right = - left;
+  }
+
+  isWalkingOnGround() {
+    this.world.level.backgroundObjects.forEach((obj) => {
+      if (this.isVisibleFor(obj) && (obj instanceof GroundBigBlock || obj instanceof GroundMediumBlock || obj instanceof GroundSmallBlock)) {
+        playSound({sound: this.SOUND_WALK, playbackRate: 2});
+      }
+    })
   }
 
 }

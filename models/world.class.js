@@ -12,6 +12,8 @@ class World {
 
     camera_x = 0;
 
+    SOUND_HURT = new Audio('./audio/1.hero/hero_hurt.wav');
+
     constructor(canvas,keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -79,7 +81,8 @@ class World {
             if (this.character.attacking && enemy.isInMeleeRange(this.character) && !enemy.isHurt()) {
                 this.character.attacking = false;
                 setTimeout(() => {
-                    enemy.hitBy(this.character); 
+                    enemy.hitBy(this.character);
+                     
                 }, 250);
             }
         });
@@ -103,7 +106,9 @@ class World {
         for (let i = 0; i < this.level.enemies.length; i++) {
             const enemy = this.level.enemies[i];
             if (this.character.isColliding(enemy) && this.character.speedY < -1 && !enemy.isDead()) {
+                playSound({sound: this.character.SOUND_JUMP, playbackRate: 1, volume: 0.5});
                 this.character.jump();
+                
                 enemy.hitBy(this.character);
             };
         };
@@ -255,6 +260,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy) && !enemy.isDead()) {
                 this.character.hitBy(enemy);
+                
                 console.log(this.character.hp);
             };
         });
@@ -269,6 +275,7 @@ class World {
         this.level.backgroundObjects.forEach( backgroundObject => {
             if (backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject) && backgroundObject.dmg > 0) {
                 this.character.hitBy(backgroundObject);
+                
                 console.log(this.character.hp);
             }
         })
@@ -286,6 +293,7 @@ class World {
                     if (obj.isColliding(enemy) && !obj.dead) {
                         let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                         enemy.hitBy(obj);
+                        
                         console.log('enemy hp:',enemy.hp);
                         obj.dead = true;
                         clearInterval(obj.throwInterval);
@@ -311,6 +319,7 @@ class World {
                 if (obj.isColliding(this.character) && !obj.dead) {
                     let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                     this.character.hitBy(obj);
+                    
                     console.log('character hp:',this.character.hp);
                     obj.dead = true;
                     clearInterval(obj.throwInterval);

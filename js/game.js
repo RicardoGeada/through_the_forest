@@ -3,6 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let intervalIDs = [];
 let audio = {muted: false};
+let music = new Audio('./audio/0.music/Wild Wind, Take Me Home.mp3');
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -12,6 +13,7 @@ function startGame() {
     let startScreen = document.getElementById('startscreen');
     startScreen.classList.add('d-none');
     world = new World(canvas,keyboard);
+    playSound({sound: music, playbackRate: 1, muted: true, loop: true});
 }
 
 function restart() {
@@ -133,6 +135,16 @@ function stopIntervals() {
     })
 }
 
+function playSound({sound,playbackRate,volume,muted,loop}) {
+    sound.volume = volume ? volume : 1;
+    sound.muted = muted ? muted : audio.muted;
+    sound.playbackRate = playbackRate;
+    sound.loop = loop ? loop : false;
+    sound.play() ? null : sound.play();
+}
+
+
+
 //#region settings
     function fullscreen() {
         if (document.fullscreenElement) {
@@ -165,12 +177,14 @@ function stopIntervals() {
     function mute() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-mute.png';
+        if (!music.paused) music.pause();
         return true;
     }
 
     function unmute() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-unmute.png';
+        if (music.paused) music.play();
         return false;
     }
 
