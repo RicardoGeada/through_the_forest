@@ -67,6 +67,8 @@ class World {
             self.checkDeadEnemies();
             self.checkDeadTerrain();
 
+            self.checkEnemyHealthbars();
+
             self.checkGameState();
             self.framesCounter++;
     }
@@ -369,6 +371,16 @@ class World {
                 let index = this.level.backgroundObjects.indexOf(terrain);
                 this.level.backgroundObjects.splice(index,1);
             };  
+        })
+    }
+
+
+    checkEnemyHealthbars() {
+        this.healthbars.enemies.forEach( (healthbar) => {
+            if (healthbar.unit.isDead()) {
+                let index = this.healthbars.enemies.indexOf(healthbar);
+                this.healthbars.enemies.splice(index,1);
+            }
         })
     }
 
