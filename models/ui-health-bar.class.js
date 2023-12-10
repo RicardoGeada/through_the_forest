@@ -63,8 +63,6 @@ class HealthBar extends UIObject {
         setInterval(() => {
             if (this.unit instanceof Endboss) {
                 this.x = this.unit.x + (this.unit.width) * 0.5 - (this.width * 0.5);
-                console.log ('Endboss X ', this.unit.x);
-                console.log ('Healthbar X ', this.x);
                 this.y = this.unit.y - this.height;
             }
         }, 1000 / 60);

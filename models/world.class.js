@@ -65,6 +65,7 @@ class World {
             self.checkFruitsCollision();
             self.setEnemyDirection();
             self.checkDeadEnemies();
+            self.checkDeadTerrain();
 
             self.checkGameState();
             self.framesCounter++;
@@ -339,10 +340,6 @@ class World {
                         if (obj instanceof ThrowableCharacter) obj.explode();
                         setTimeout(() => {
                             this.throwableObjects.splice(index,1);
-                            if (terrain.isDead()) {
-                                let index = this.level.backgroundObjects.indexOf(terrain);
-                                this.level.backgroundObjects.splice(index,1);
-                            }
                         }, 250);
                     }
                 })
@@ -363,6 +360,16 @@ class World {
                     this.level.enemies.splice(index,1);
                 }
             });
+    }
+
+
+    checkDeadTerrain() {
+        this.level.backgroundObjects.forEach((terrain) => {
+            if (terrain.isDead() && terrain instanceof StoneSmallBlock) {
+                let index = this.level.backgroundObjects.indexOf(terrain);
+                this.level.backgroundObjects.splice(index,1);
+            };  
+        })
     }
 
 
