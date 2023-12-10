@@ -395,10 +395,11 @@ class World {
         }
         this.level.backgroundObjects.forEach( (obj) => {
             if(obj instanceof HouseBlock && this.character.isColliding(obj) && !this.character.isDead()) {
+                obj.hp = 0;
                 stopIntervals();
                 setTimeout(() => {
                     generateEndscreen({win: true});
-                }, 2000);
+                }, 1000);
             }
         })
     }

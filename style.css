@@ -178,7 +178,19 @@ canvas {
     text-align: center;
 }
 
+#game-controls {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    pointer-events: none;
+}
 
+#game-controls .container {
+    background-color: transparent;
+}
 
 
 
@@ -226,7 +238,8 @@ canvas {
 }
 
 .d-none {
-    display: none;
+    /* display: none; */
+    visibility: hidden;
 }
 
 /* Smartphones */

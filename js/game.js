@@ -83,6 +83,11 @@ function endscreenGameOverHTML() {
         keyboard.SPACE = true;
     })
 
+    document.getElementById('btn-melee-attack').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        keyboard.MELEE_ATTACK = true;
+    })
+
     document.getElementById('btn-ranged-attack').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.RANGED_ATTACK = true;
@@ -101,6 +106,11 @@ function endscreenGameOverHTML() {
     document.getElementById('btn-jump').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.SPACE = false;
+    })
+
+    document.getElementById('btn-melee-attack').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.MELEE_ATTACK = false;
     })
 
     document.getElementById('btn-ranged-attack').addEventListener('touchend', (e) => {
@@ -162,6 +172,12 @@ function stopIntervals() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-unmute.png';
         return false;
+    }
+
+
+    function toggleControls() {
+        let gameControls = document.getElementById('game-controls');
+        gameControls.classList.toggle('d-none');
     }
 //#endregion
 
