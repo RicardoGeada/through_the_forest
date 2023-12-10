@@ -1,6 +1,7 @@
 class HealthBar extends UIObject {
     world;
     maxHealth;
+    unit;
 
     IMAGES_HEART = [
         './img/5.ui/health/health_active.png',
@@ -10,19 +11,22 @@ class HealthBar extends UIObject {
     healthbarImages = [];
 
 
-    constructor() {
+    constructor({unit,x,y,world}) {
         super();
         this.loadImage('./img/5.ui/empty/empty.png');
         this.loadImages(this.IMAGES_HEART);
         this.maxHealth = 5;
-        this.x = 10;
-        this.y = 10;
+        this.unit = unit;
+        this.world = world;
+        this.x = x;
+        this.y = y;
         this.width = 0;
         this.height = 0;
         this.setMaxHealth();
         setTimeout(() => {
             this.updateHealthbar();
-        }, 100)
+        }, 100);
+        this.updatePosition();
         
     }
 
@@ -45,14 +49,26 @@ class HealthBar extends UIObject {
     }
 
     lostLives() {
-        let lostLives = this.world?.character.hp == undefined ? 0 : this.maxHealth - this.world.character.hp;
+        let lostLives = this.unit.hp == undefined ? 0 : this.maxHealth - this.unit.hp;
         return lostLives;
     }
 
     setMaxHealth() {
         setTimeout(()=>{
-            this.maxHealth = this.world.character.hp
+            this.maxHealth = this.unit.hp
         }, 1000 / 60);
+    }
+
+    updatePosition() {
+        setInterval(() => {
+            if (this.unit instanceof Endboss) {
+                this.x = this.unit.x + (this.unit.width) * 0.5 - (this.width * 0.5);
+                console.log ('Endboss X ', this.unit.x);
+                console.log ('Healthbar X ', this.x);
+                this.y = this.unit.y - this.height;
+            }
+        }, 1000 / 60);
+   
     }
 }
 

@@ -1,7 +1,7 @@
 class World {
     level = level1;
     character = new Character();
-    healthbar = new HealthBar();
+    healthbars = {character: [new HealthBar({unit: this.character, x: 10, y: 10, world : this})], enemies: []}
     energybar = new EnergyBar();
     coins = new UICoins();
     throwableObjects = [];
@@ -34,7 +34,7 @@ class World {
                 enemy.world = this;
             }
         });
-        this.healthbar.world = this;
+        // this.healthbar.world = this;
         this.energybar.world = this;
         this.throwableObjects.world = this;
     }
@@ -401,9 +401,11 @@ class World {
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
 
+        this.addObjectsToMap(this.healthbars.enemies)
+
         this.ctx.translate(this.camera_x, 0);
         // static elements on the canvas e.g. UI Elements
-        this.addToMap(this.healthbar); 
+        this.addObjectsToMap(this.healthbars.character); 
         this.addToMap(this.energybar); 
         this.addToMap(this.coins);
 

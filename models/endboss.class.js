@@ -150,6 +150,8 @@ class Endboss extends MovableObject {
         this.playthroughAnimationLoop(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
         setTimeout(() => {
           this.animate();
+          console.log('REST: ',this.x % 208);
+          this.world.healthbars.enemies.push(new HealthBar({unit: this, x: this.x, y: this.y - this.height, world: this.world}));
           this.awake = true;
         }, 1000);
     } else {
