@@ -9,7 +9,7 @@ class Coin extends MovableObject {
 
     SOUND_COLLECT = new Audio('./audio/6.collectables/coin/coin_collect.mp3')
 
-    constructor(x,y) {
+    constructor({x,y}) {
         super();
         this.loadImage('img/6.collectables/coin/coin_1.png');
         this.loadImages(this.IMAGES);

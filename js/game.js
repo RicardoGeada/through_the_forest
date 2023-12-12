@@ -4,55 +4,87 @@ let keyboard = new Keyboard();
 let intervalIDs = [];
 let audio = {muted: false};
 let music = {
+    selected: '',
     background: new Audio('./audio/0.music/Wild Wind, Take Me Home.mp3'),
     boss: new Audio('./audio/0.music/boss_music.mp3'),
     gameover: new Audio('./audio/0.music/game_over.mp3'),
     victory: new Audio('./audio/0.music/victory.mp3'),
 };
 
+
+/**
+ * initialize the page
+ */
 function init() {
     canvas = document.getElementById('canvas');
 }
 
-function startGame() {
-    let startScreen = document.getElementById('startscreen');
-    startScreen.classList.add('d-none');
-    world = new World(canvas,keyboard);
-    playSound({sound: music.background, playbackRate: 1, muted: false, loop: true, volume: 0.5});
-}
 
-function restart() {
-    location.reload();
-}
+//#region start / end game
 
-function generateEndscreen({win}) {
-    let endscreen = document.getElementById('endscreen');
-    endscreen.classList.remove('d-none');
-    endscreen.innerHTML = '';
-    endscreen.innerHTML = win ? endscreenVictoryHTML() : endscreenGameOverHTML();
-}
-
-function endscreenVictoryHTML() {
-    return /*html*/`
-        <div class="container">
-            <h1 class="headline">VICTORY</h1>
-            <button onclick="restart()">Play again</button>  
-        </div>
-    `;
-}
-
-function endscreenGameOverHTML() {
-    return /*html*/`
-        <div class="container">
-            <h1 class="headline">GAME OVER</h1>
-            <button onclick="restart()">Play again</button>  
-        </div>
-    `;
-}
+    /**
+     * start the game
+     */
+    function startGame() {
+        let startScreen = document.getElementById('startscreen');
+        startScreen.classList.add('d-none');
+        world = new World(canvas,keyboard);
+        playMusic({sound: music.background, playbackRate: 1, muted: false, loop: true, volume: 0.5});
+    }
 
 
+    /**
+     * play again / restart / reload the page
+     */
+    function restart() {
+        location.reload();
+    }
 
-//#region Eventlistener for Control Keys / Buttons
+
+    /**
+     * generate the endscreen
+     * @param {boolean} win - is the player victorious or not
+     */
+    function generateEndscreen(win) {
+        let endscreen = document.getElementById('endscreen');
+        endscreen.classList.remove('d-none');
+        endscreen.innerHTML = '';
+        endscreen.innerHTML = win ? endscreenVictoryHTML() : endscreenGameOverHTML();
+    }
+
+
+    /**
+     * endscreen Victory Screen
+     * @returns HTML
+     */
+    function endscreenVictoryHTML() {
+        return /*html*/`
+            <div class="container">
+                <h1 class="headline">VICTORY</h1>
+                <button onclick="restart()">Play again</button>  
+            </div>
+        `;
+    }
+
+
+    /**
+     * endscreen Game Over Screen
+     * @returns HTML
+     */
+    function endscreenGameOverHTML() {
+        return /*html*/`
+            <div class="container">
+                <h1 class="headline">GAME OVER</h1>
+                <button onclick="restart()">Play again</button>  
+            </div>
+        `;
+    }
+
+//#endregion
+
+//#region eventlistener for player controls (keys & buttons)
+
+    // keys
     window.addEventListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') {keyboard.LEFT = true};
         if (e.key == 'ArrowRight') {keyboard.RIGHT = true};
@@ -74,7 +106,7 @@ function endscreenGameOverHTML() {
         if (e.key == 'w') {keyboard.RANGED_ATTACK = false};
     });
 
-
+    // touch buttons
     document.getElementById('btn-left').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.LEFT = true;
@@ -124,34 +156,73 @@ function endscreenGameOverHTML() {
         e.preventDefault();
         keyboard.RANGED_ATTACK = false;
     })
+
 //#endregion
 
-
- 
+/**
+ * set interval and save id in intervalIDs-Array
+ * @param {Function} fn  
+ * @param {number} time - time for the interval
+ * @returns number (id)
+ */
 function setStoppableInterval(fn,time) {
     let id = setInterval(fn,time);
     intervalIDs.push(id);
-    console.log('stoppable interval setted')
+    console.log('stoppable interval setted');
+    return id;
 }
 
+
+/**
+ * clear all intervals inside intervalIDs-Array
+ */
 function stopIntervals() {
     intervalIDs.forEach((interval) => {
         clearInterval(interval);
     })
 }
 
-function playSound({sound,playbackRate,volume,muted,loop}) {
-    sound.volume = volume ? volume : 1;
-    sound.muted = muted ? muted : audio.muted;
-    sound.playbackRate = playbackRate;
-    sound.loop = loop ? loop : false;
-    sound.play() ? null : sound.play();
-}
+//#region sound
+
+    /**
+ * play sound
+ * @param {HTMLAudioElement} sound - the sound
+ * @param {number} playbackRate - slower < 1 < faster playback rate
+ * @param {number} volume - 0 - 1
+ * @param {boolean} muted - mute / unmute
+ * @param {boolean} loop - repeat the sound after playtrough
+ */
+    function playSound({sound,playbackRate,volume,muted,loop}) {
+        sound.volume = volume ? volume : 1;
+        sound.muted = muted ? muted : audio.muted;
+        sound.playbackRate = playbackRate ? playbackRate : 1;
+        sound.loop = loop ? loop : false;
+        sound.play() ? null : sound.play();
+    }
 
 
+    /**
+ * play music and pause previous music
+ * @param {HTMLAudioElement} sound - the music e.g. music.background
+ * @param {number} playbackRate - slower < 1 < faster playback rate
+ * @param {number} volume - 0 - 1
+ * @param {boolean} muted - mute / unmute
+ * @param {boolean} loop - repeat the music after playtrough
+ */
+    function playMusic({sound,playbackRate,volume,muted,loop}) {
+        if (music.selected instanceof HTMLAudioElement) music.selected.pause();
+        playSound({sound,playbackRate,volume,muted,loop});
+        music.selected = sound;
+    }
+
+//#endregion 
 
 //#region settings
-    function fullscreen() {
+
+    /**
+     * toggle fullscreen
+     */
+    function toggleFullscreen() {
         if (document.fullscreenElement) {
             document.exitFullscreen();
         } else {
@@ -162,8 +233,10 @@ function playSound({sound,playbackRate,volume,muted,loop}) {
 
 
 
-    /* When the openFullscreen() function is executed, open the video in fullscreen.
-    Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+    /**
+     * open element in fullscreen
+     * @param {HTMLElement} elem - the element that should be in fullscreen
+     */
     function openFullscreen(elem) {
         if (elem.requestFullscreen) {
           elem.requestFullscreen();
@@ -175,29 +248,46 @@ function playSound({sound,playbackRate,volume,muted,loop}) {
     }
 
 
+    /**
+     * toggle between mute and unmute
+     */
     function toggleAudio() {
         audio.muted = audio.muted ? unmute() : mute();
     }
 
+
+    /**
+     * mute the music
+     * @returns true
+     */
     function mute() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-mute.png';
-        if (!music.background.paused) music.background.pause();
+        music.selected.pause();
         return true;
     }
 
+
+    /**
+     * unmute the music
+     * @returns false
+     */
     function unmute() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-unmute.png';
-        if (music.background.paused) music.background.play();
+        music.selected.play();
         return false;
     }
 
 
+    /**
+     * show / hide controls
+     */
     function toggleControls() {
         let gameControls = document.getElementById('game-controls');
         gameControls.classList.toggle('d-none');
     }
+    
 //#endregion
 
 

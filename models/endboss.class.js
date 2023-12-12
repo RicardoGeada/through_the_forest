@@ -114,10 +114,12 @@ class Endboss extends MovableObject {
         }, 2500);
       }; 
       if (this.moveDirection == 'left') {
+        if (!this.flipH) this.flipAllBoxesHorizontally();
         this.flipH = true;
         this.moveLeft();
       }; 
       if (this.moveDirection == 'right') {
+        if (this.flipH) this.flipAllBoxesHorizontally();
         this.flipH = false;
         this.moveRight();
       };

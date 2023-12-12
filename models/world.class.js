@@ -120,8 +120,7 @@ class World {
         this.level.enemies.forEach( enemy => {
                 if (enemy instanceof Endboss && this.character.isVisibleFor(enemy) && !enemy.firstContact) {
                     enemy.firstContact = true;
-                    music.background.pause();
-                    playSound({sound: music.boss, playbackRate: 1, volume: 0.5});
+                    playMusic({sound: music.boss, playbackRate: 1, volume: 0.5});
                 };
         });
     }
@@ -363,13 +362,13 @@ class World {
     checkDeadEnemies() {
             this.level.enemies.forEach((enemy) => {
                 if(enemy.isDead() && enemy instanceof RoboTotem) {
-                    this.level.collectables.push(new Fruit(enemy.x,enemy.y)); // DROP FRUITS
+                    this.level.collectables.push(new Fruit({x: enemy.x, y: enemy.y})); // DROP FRUITS
                     let index = this.level.enemies.indexOf(enemy);
                     this.level.enemies.splice(index,1);
                 }
-                if(enemy.isDead() && enemy instanceof Endboss) {
-                    music.boss.pause();
-                    music.background.play();
+                if(enemy.isDead() && !enemy.dead && enemy instanceof Endboss) {
+                    enemy.dead = true;
+                    playMusic({sound: music.background, playbackRate: 1, volume: 0.5});
                 }
             });
     }
@@ -398,11 +397,9 @@ class World {
 
     checkGameState() {
         if (this.character.isDead()) {  
-            music.background.pause();
-            music.boss.pause();
-            playSound({sound: music.gameover, playbackRate: 1});
+            playMusic({sound: music.gameover, playbackRate: 1});
             setTimeout(() => {
-                generateEndscreen({win: false});
+                generateEndscreen(false);
                 stopIntervals();
             }, 2000)
         }
@@ -410,11 +407,9 @@ class World {
             if(obj instanceof HouseBlock && this.character.isColliding(obj) && !this.character.isDead()) {
                 obj.hp = 0;
                 stopIntervals();
-                music.background.pause();
-                music.boss.pause();
-                playSound({sound: music.victory, playbackRate: 1, volume: 0.5});
+                playMusic({sound: music.victory, playbackRate: 1, volume: 0.5});
                 setTimeout(() => {
-                    generateEndscreen({win: true});
+                    generateEndscreen(true);
                 }, 1000);
             }
         })
@@ -462,9 +457,11 @@ class World {
         this.ctx.save();
         movObj.flipImage(this.ctx);
         movObj.draw(this.ctx);
+        
+        
+        this.ctx.restore();
         movObj.drawCollisionBox(this.ctx);
         movObj.drawVisionBox(this.ctx);
-        this.ctx.restore();
         movObj.drawHitboxMelee(this.ctx);
     }
 

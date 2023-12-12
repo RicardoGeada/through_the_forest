@@ -6,7 +6,7 @@ class Fruit extends MovableObject {
 
    SOUND_COLLECT = new Audio('./audio/6.collectables/fruit/eat_fruit.mp3');
 
-   constructor(x,y) {
+   constructor({x,y}) {
     super();
     this.loadImage('img/6.collectables/fruits/apple.png');
     this.x = x;

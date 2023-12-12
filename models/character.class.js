@@ -116,13 +116,13 @@ class Character extends MovableObject {
   moveCharacter() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.offset.left) {
       this.moveRight();
-      if (this.flipH) this.flipHitbox();
+      if (this.flipH) this.flipAllBoxesHorizontally();
       this.flipH = false;
       this.isWalkingOnGround();
     };
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
-      if (!this.flipH) this.flipHitbox();
+      if (!this.flipH) this.flipAllBoxesHorizontally();
       this.flipH = true;
       this.isWalkingOnGround();
     };
@@ -178,13 +178,6 @@ class Character extends MovableObject {
     // console.log('animation is playing')
   }
 
-
-  flipHitbox() {
-    const left = this.hitbox.melee.left;
-    const right = this.hitbox.melee.right;
-    this.hitbox.melee.left = - right;
-    this.hitbox.melee.right = - left;
-  }
 
   isWalkingOnGround() {
     this.world.level.backgroundObjects.forEach((obj) => {
