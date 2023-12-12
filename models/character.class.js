@@ -81,6 +81,7 @@ class Character extends MovableObject {
   SOUND_ATTACK = new Audio('./audio/1.hero/hero_attack.wav');
   SOUND_WALK = new Audio('./audio/1.hero/hero_walk.wav');
   SOUND_JUMP = new Audio('./audio/1.hero/hero_jump.wav');
+  SOUND_HURT = new Audio('./audio/1.hero/hero_hurt.mp3');
 
   constructor() {
     super().loadImage("img/1.hero/Idle/idle_1.png");

@@ -3,7 +3,12 @@ let world;
 let keyboard = new Keyboard();
 let intervalIDs = [];
 let audio = {muted: false};
-let music = new Audio('./audio/0.music/Wild Wind, Take Me Home.mp3');
+let music = {
+    background: new Audio('./audio/0.music/Wild Wind, Take Me Home.mp3'),
+    boss: new Audio('./audio/0.music/boss_music.mp3'),
+    gameover: new Audio('./audio/0.music/game_over.mp3'),
+    victory: new Audio('./audio/0.music/victory.mp3'),
+};
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -13,7 +18,7 @@ function startGame() {
     let startScreen = document.getElementById('startscreen');
     startScreen.classList.add('d-none');
     world = new World(canvas,keyboard);
-    playSound({sound: music, playbackRate: 1, muted: true, loop: true});
+    playSound({sound: music.background, playbackRate: 1, muted: false, loop: true, volume: 0.5});
 }
 
 function restart() {
@@ -177,14 +182,14 @@ function playSound({sound,playbackRate,volume,muted,loop}) {
     function mute() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-mute.png';
-        if (!music.paused) music.pause();
+        if (!music.background.paused) music.background.pause();
         return true;
     }
 
     function unmute() {
         let img = document.getElementById('btn-audio-img');
         img.src = './img/5.ui/settings/speaker-unmute.png';
-        if (music.paused) music.play();
+        if (music.background.paused) music.background.play();
         return false;
     }
 

@@ -12,8 +12,6 @@ class World {
 
     camera_x = 0;
 
-    SOUND_HURT = new Audio('./audio/1.hero/hero_hurt.wav');
-
     constructor(canvas,keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -78,11 +76,10 @@ class World {
 
     checkCharacterMeleeAttack() {
         this.level.enemies.forEach( enemy => {
-            if (this.character.attacking && enemy.isInMeleeRange(this.character) && !enemy.isHurt()) {
+            if (this.character.attacking && enemy.isInMeleeRange(this.character) && !enemy.isHurt() && enemy.awake) {
                 this.character.attacking = false;
                 setTimeout(() => {
-                    enemy.hitBy(this.character);
-                     
+                    enemy.hitBy(this.character);                   
                 }, 250);
             }
         });
@@ -105,10 +102,9 @@ class World {
     checkJumpOnEnemy() {
         for (let i = 0; i < this.level.enemies.length; i++) {
             const enemy = this.level.enemies[i];
-            if (this.character.isColliding(enemy) && this.character.speedY < -1 && !enemy.isDead()) {
+            if (this.character.isColliding(enemy) && this.character.speedY < -1 && !enemy.isDead() && enemy.awake) {
                 playSound({sound: this.character.SOUND_JUMP, playbackRate: 1, volume: 0.5});
                 this.character.jump();
-                
                 enemy.hitBy(this.character);
             };
         };
@@ -122,8 +118,10 @@ class World {
      */
     checkFirstContactWithBoss() {
         this.level.enemies.forEach( enemy => {
-                if (enemy instanceof Endboss && this.character.isVisibleFor(enemy)) {
+                if (enemy instanceof Endboss && this.character.isVisibleFor(enemy) && !enemy.firstContact) {
                     enemy.firstContact = true;
+                    music.background.pause();
+                    playSound({sound: music.boss, playbackRate: 1, volume: 0.5});
                 };
         });
     }
@@ -260,7 +258,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy) && !enemy.isDead()) {
                 this.character.hitBy(enemy);
-                
+                playSound({sound: this.character.SOUND_HURT, playbackRate: 1});
                 console.log(this.character.hp);
             };
         });
@@ -275,7 +273,7 @@ class World {
         this.level.backgroundObjects.forEach( backgroundObject => {
             if (backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject) && backgroundObject.dmg > 0) {
                 this.character.hitBy(backgroundObject);
-                
+                playSound({sound: this.character.SOUND_HURT, playbackRate: 1});
                 console.log(this.character.hp);
             }
         })
@@ -290,10 +288,9 @@ class World {
         this.throwableObjects.forEach( obj => {
             if (obj instanceof ThrowableCharacter) {
                 this.level.enemies.forEach((enemy) => {
-                    if (obj.isColliding(enemy) && !obj.dead) {
+                    if (obj.isColliding(enemy) && !obj.dead && enemy.awake) {
                         let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
-                        enemy.hitBy(obj);
-                        
+                        enemy.hitBy(obj);                       
                         console.log('enemy hp:',enemy.hp);
                         obj.dead = true;
                         clearInterval(obj.throwInterval);
@@ -319,7 +316,7 @@ class World {
                 if (obj.isColliding(this.character) && !obj.dead) {
                     let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                     this.character.hitBy(obj);
-                    
+                    playSound({sound: this.character.SOUND_HURT, playbackRate: 1});
                     console.log('character hp:',this.character.hp);
                     obj.dead = true;
                     clearInterval(obj.throwInterval);
@@ -370,6 +367,10 @@ class World {
                     let index = this.level.enemies.indexOf(enemy);
                     this.level.enemies.splice(index,1);
                 }
+                if(enemy.isDead() && enemy instanceof Endboss) {
+                    music.boss.pause();
+                    music.background.play();
+                }
             });
     }
 
@@ -396,16 +397,22 @@ class World {
 
 
     checkGameState() {
-        if (this.character.isDead()) {
-            stopIntervals();
+        if (this.character.isDead()) {  
+            music.background.pause();
+            music.boss.pause();
+            playSound({sound: music.gameover, playbackRate: 1});
             setTimeout(() => {
                 generateEndscreen({win: false});
+                stopIntervals();
             }, 2000)
         }
         this.level.backgroundObjects.forEach( (obj) => {
             if(obj instanceof HouseBlock && this.character.isColliding(obj) && !this.character.isDead()) {
                 obj.hp = 0;
                 stopIntervals();
+                music.background.pause();
+                music.boss.pause();
+                playSound({sound: music.victory, playbackRate: 1, volume: 0.5});
                 setTimeout(() => {
                     generateEndscreen({win: true});
                 }, 1000);

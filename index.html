@@ -47,14 +47,16 @@
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js" defer></script>
 </head>
+
 <body onload="init()">
-    <div id="fullscreen">
-        <canvas id="canvas" width="288" height="208"></canvas>
-        <div class="display">   
-        </div>
-        <div class="overlay">
-            <div id="startscreen" class="startscreen">
-                <div class="container">
+    <div class="content">
+        <img class="background-image" src="./img/arcade.svg" alt="arcade">
+        <div id="fullscreen">
+            <canvas id="canvas" width="288" height="208"></canvas>
+            <div class="display-frame"></div>
+            <div class="overlay">
+                <div id="startscreen" class="startscreen">
+                    <div class="container">
                     <h1>Through the Forest</h1>
                     <div class="text">
                         <h3>ABOUT</h3>
@@ -89,11 +91,11 @@
                         </div>
                     </div>
                     <button onclick="startGame()">START</button>
+                    </div>
                 </div>
-            </div>
-            <div id="endscreen" class="endscreen d-none">
-            </div>
-            <div id="game-controls" class="d-none">
+                <div id="endscreen" class="endscreen d-none">
+                </div>
+                <div id="game-controls" class="d-none">
                 <div class="container">
                     <div class="controls">
                         <h3>CONTROLS</h3>
@@ -119,34 +121,35 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="ui-controls">
-                <div class="settings">
-                    <button id="btn-controls"  class="button" ontouch="toggleControls()" onclick="toggleControls()">
-                        <img src="./img/5.ui/settings/gamepad.png" alt="controls">
-                    </button>
-                    <button id="btn-fullscreen"  class="button" ontouch="fullscreen()" onclick="fullscreen()">
-                        <img src="./img/5.ui/settings/fullscreen.png" alt="fullscreen">
-                    </button>
-                    <button id="btn-audio"  class="button" ontouch="toggleAudio()" onclick="toggleAudio()">
-                        <img id="btn-audio-img" src="./img/5.ui/settings/speaker-unmute.png" alt="audio">
-                    </button>
-                </div> 
-                <div class="gamepad">
-                    <div class="buttons left">
-                        <div id="btn-left"  class="button">L</div>
-                        <div id="btn-right" class="button">R</div>
-                    </div>
-                    <div class="buttons right">
-                        <div id="btn-jump" class="button"> </div>
-                        <div id="btn-melee-attack" class="button">Q</div>
-                        <div id="btn-ranged-attack" class="button">W</div>
-                    </div>
                 </div>
-                     
+                <div class="ui-controls">
+                    <div class="settings">
+                        <button id="btn-controls"  class="button" ontouch="toggleControls()" onclick="toggleControls()">
+                            <img src="./img/5.ui/settings/gamepad.png" alt="controls">
+                        </button>
+                        <button id="btn-fullscreen"  class="button" ontouch="fullscreen()" onclick="fullscreen()">
+                            <img src="./img/5.ui/settings/fullscreen.png" alt="fullscreen">
+                        </button>
+                        <button id="btn-audio"  class="button" ontouch="toggleAudio()" onclick="toggleAudio()">
+                            <img id="btn-audio-img" src="./img/5.ui/settings/speaker-unmute.png" alt="audio">
+                        </button>
+                    </div> 
+                    <div class="gamepad">
+                        <div class="buttons left">
+                            <div id="btn-left"  class="button">L</div>
+                            <div id="btn-right" class="button">R</div>
+                        </div>
+                        <div class="buttons right">
+                            <div id="btn-jump" class="button"> </div>
+                            <div id="btn-melee-attack" class="button">Q</div>
+                            <div id="btn-ranged-attack" class="button">W</div>
+                        </div>
+                    </div>  
+                </div>
             </div>
         </div>
     </div>
+    
     
     
 </body>

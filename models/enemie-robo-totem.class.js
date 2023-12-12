@@ -1,6 +1,8 @@
 class RoboTotem extends MovableObject{
     width = 16;
     height = 32;
+    awake = true;
+
 
     IMAGES_ARMORED_WALKING = [
         'img/2.enemies/robo_totem/armored/Walk/walk_1.png',
