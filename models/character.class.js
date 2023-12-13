@@ -86,8 +86,8 @@ class Character extends MovableObject {
     this.hitbox.collision = {
       top: 3,
       bottom: 0,
-      left: 10,
-      right: -10,
+      left: 9,
+      right: -11,
     };
     this.hitbox.melee = {
       top: 0,
@@ -95,7 +95,6 @@ class Character extends MovableObject {
       left: 16,
       right: 0,
     }
-   
     this.x = 7 * 16;
     this.y = 208 - 32 - 16 - 1;
     this.speedX = 1;

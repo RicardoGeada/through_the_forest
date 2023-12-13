@@ -198,11 +198,11 @@ class World {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
             if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
-                if(char.speedX > 0) {
+                if(char.speedX > 0 && char.x < backgroundObject.x) {
                     char.x = backgroundObject.x - char.width - char.hitbox.collision.right - 0.01;
                     break;
                 };
-                if(char.speedX < 0) {
+                if(char.speedX < 0 && char.x > backgroundObject.x) {
                     char.x = backgroundObject.x + backgroundObject.width - char.hitbox.collision.left + 0.01;
                     break;
                 };
@@ -219,13 +219,13 @@ class World {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
             if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
-                if(char.speedY < 0) {
+                if(char.speedY < -Math.abs(char.acceleration) && char.y < backgroundObject.y) {
                     char.speedY = 0;
                     char.y = backgroundObject.y - char.height - 0.01;
                     char.jumping = false;
                     break;
                 };
-                if(char.speedY > 0) {
+                if(char.speedY > -Math.abs(char.acceleration) && char.y + char.height > backgroundObject.y + backgroundObject.height) {
                     char.speedY = 0;
                     char.y = backgroundObject.y + backgroundObject.height + 0.01;
                     if (char.y > 160) char.y = 159;
