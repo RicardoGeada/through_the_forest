@@ -148,7 +148,7 @@ class World {
             const collectable = this.level.collectables[i];
             if (collectable instanceof Coin && this.character.isColliding(collectable)) {
                 this.coins.amount++;
-                collectable.playSound({sound: collectable.SOUND_COLLECT, playbackRate: 1});
+                playSound({sound: collectable.SOUND_COLLECT, playbackRate: 1});
                 this.level.collectables.splice(i,1);
             };
         };
@@ -166,7 +166,7 @@ class World {
                 if (this.character.energy < this.energybar.maxEnergy) {
                     this.character.energy++;
                 };
-                collectable.playSound({sound: collectable.SOUND_COLLECT, playbackRate: 1});
+                playSound({sound: collectable.SOUND_COLLECT, playbackRate: 1});
                 this.level.collectables.splice(i,1);
             }
         }
@@ -292,8 +292,7 @@ class World {
                         enemy.hitBy(obj);                       
                         console.log('enemy hp:',enemy.hp);
                         obj.dead = true;
-                        clearInterval(obj.throwInterval);
-                        clearInterval(obj.gravityInterval);
+                        clearInterval(obj.movementInterval);
                         obj.explode();
                         setTimeout(() => {
                             this.throwableObjects.splice(index,1);
@@ -318,8 +317,7 @@ class World {
                     playSound({sound: this.character.SOUND_HURT, playbackRate: 1});
                     console.log('character hp:',this.character.hp);
                     obj.dead = true;
-                    clearInterval(obj.throwInterval);
-                    clearInterval(obj.gravityInterval);
+                    clearInterval(obj.movementInterval);
                     setTimeout(() => {
                         this.throwableObjects.splice(index,1);
                     }, 250);
@@ -342,8 +340,7 @@ class World {
                         let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                         terrain.hitBy(obj);
                         obj.dead = true;
-                        clearInterval(obj.throwInterval);
-                        clearInterval(obj.gravityInterval);
+                        clearInterval(obj.movementInterval);
                         if (obj instanceof ThrowableCharacter) obj.explode();
                         setTimeout(() => {
                             this.throwableObjects.splice(index,1);

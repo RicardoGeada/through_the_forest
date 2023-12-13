@@ -86,8 +86,8 @@ class Character extends MovableObject {
     this.hitbox.collision = {
       top: 3,
       bottom: 0,
-      left: 9,
-      right: -11,
+      left: 10,
+      right: -10,
     };
     this.hitbox.melee = {
       top: 0,
@@ -102,7 +102,6 @@ class Character extends MovableObject {
     this.hp = 5;
     this.dmg = 1;
     this.animate();
-    // this.applyGravity();
   }
 
   animate() {
@@ -153,12 +152,12 @@ class Character extends MovableObject {
 
   animateCharacter() {
     if (this.isDead() && !this.attacking) {
-      this.playthroughAnimationLoop(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
+      this.playthroughAnimationCycle(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
       this.clearIntervals();
     } else if (this.isHurt() && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.attacking) {
-      this.playthroughAnimationLoop(this.IMAGES_ATTACK,1000 / (this.IMAGES_ATTACK.length * 2));
+      this.playthroughAnimationCycle(this.IMAGES_ATTACK,1000 / (this.IMAGES_ATTACK.length * 2));
       this.clearIntervals();
       setTimeout(() => {
         this.attacking = false;

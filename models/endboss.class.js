@@ -129,16 +129,16 @@ class Endboss extends MovableObject {
   animateCharacter() {
     if (this.awake) {
       if (this.isDead()) {
-        this.playthroughAnimationLoop(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
+        this.playthroughAnimationCycle(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
         this.clearIntervals();
       } else if (this.isHurt()) {
-        this.playthroughAnimationLoop(this.IMAGES_HURT, 1000 / (this.IMAGES_HURT * 2));
+        this.playthroughAnimationCycle(this.IMAGES_HURT, 1000 / (this.IMAGES_HURT * 2));
         setTimeout(() => {
           this.animate();
         }, 500);
         this.clearIntervals();
       } else if (this.attacking) { 
-        this.playthroughAnimationLoop(this.IMAGES_BONE_TOSS, 1000 / this.IMAGES_BONE_TOSS.length);
+        this.playthroughAnimationCycle(this.IMAGES_BONE_TOSS, 1000 / this.IMAGES_BONE_TOSS.length);
         this.attacking = false;
         setTimeout(() => {
           this.animate();
@@ -149,7 +149,7 @@ class Endboss extends MovableObject {
       };
     } else if (this.firstContact) {
         this.clearIntervals();
-        this.playthroughAnimationLoop(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
+        this.playthroughAnimationCycle(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
         setTimeout(() => {
           this.animate();
           console.log('REST: ',this.x % 208);

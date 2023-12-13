@@ -24,7 +24,7 @@ class ThrowableCharacter extends ThrowableObject {
   }
 
   explode() {
-    this.playthroughAnimationLoop(this.IMAGES_EXPLODE,1000 / 35);
+    this.playthroughAnimationCycle(this.IMAGES_EXPLODE,1000 / 35);
     playSound({sound: this.SOUND_EXPLOSION, playbackRate: 1, volume: 0.5})
   }
 

@@ -6,27 +6,41 @@ class MovableObject extends DrawableObject {
   hp;
   dmg = 0;
   lastHit = 0;
-  gravityInterval;
   framesCounter = 0;
   movementInterval;
   animationInterval;
   singleAnimationInterval;
   
-
+  /**
+   * move right
+   */
   moveRight() {
     this.speedX = Math.abs(this.speedX);
     this.x += this.speedX;
   }
 
+
+  /**
+   * move left
+   */
   moveLeft() {
     this.speedX = -Math.abs(this.speedX);
     this.x += this.speedX;
   }
 
+
+  /**
+   * jump
+   */
   jump() {
     this.speedY = 5;
   }
 
+
+  /**
+   * play through loaded images
+   * @param {Array} images - array of image paths e.g. './img/walking_0.png'
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -34,11 +48,13 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
-  loopAnimation(images,fps) {
-    setStoppableInterval(this.playAnimation(images),fps)
-  }
 
-  playthroughAnimationLoop(images,fps) {
+  /**
+   * play through one animation cycle
+   * @param {Array} images - array of image paths e.g. './img/walking_0.png' 
+   * @param {number} fps - fps / time for the interval
+   */
+  playthroughAnimationCycle(images,fps) {
     this.currentImage = 0;
     clearInterval(this.singleAnimationInterval);
     this.singleAnimationInterval = setInterval(() => {
@@ -51,17 +67,9 @@ class MovableObject extends DrawableObject {
   }
 
 
-  applyGravity() {
-    this.gravityInterval = setInterval(() => {
-      this.y -= this.speedY;
-      if (this.isAboveGround()) {
-        this.speedY -= this.acceleration;
-      } else {
-        this.speedY = 0;
-      }
-    }, 1000 / 25);
-  }
-
+  /**
+   * update gravity
+   */
   updateGravity() {
     this.y -= this.speedY;
     if (this.isAboveGround()) {
@@ -71,14 +79,22 @@ class MovableObject extends DrawableObject {
     };
   }
 
+
+  /**
+   * is this above the ground ?
+   * @returns boolean
+   */
   isAboveGround() {
-    if (this instanceof ThrowableObject) {
-      return true;
-    } else {
       return this.y + this.height - this.speedY < 208;
-    }
   }
 
+
+
+  /**
+   * is this colliding with the object ?
+   * @param {object} obj - object to check collision with
+   * @returns boolean
+   */
   isColliding(obj) {
     return (
       this.x + this.width + this.hitbox.collision.right >= obj.x + obj.hitbox.collision.left &&
@@ -88,6 +104,12 @@ class MovableObject extends DrawableObject {
     );
   }
 
+
+  /**
+   * is this in the vision hitbox of the object ? 
+   * @param {object} obj - object with vision hitbox
+   * @returns boolean
+   */
   isVisibleFor(obj) {
     return (
       this.x + this.width + this.hitbox.collision.right >= obj.x + obj.hitbox.vision.left &&
@@ -97,6 +119,12 @@ class MovableObject extends DrawableObject {
     );
   }
 
+
+  /**
+   * is this in the melee hitbox of the object ?
+   * @param {object} obj - object with melee hitbox
+   * @returns boolean
+   */
   isInMeleeRange(obj) {
     return (
       this.x + this.width + this.hitbox.collision.right >= obj.x + obj.hitbox.melee.left &&
@@ -106,6 +134,11 @@ class MovableObject extends DrawableObject {
     );
   }
 
+
+  /**
+   * this getting hit by object
+   * @param {object} obj - object that hits this
+   */
   hitBy(obj) {
     this.hp -= obj.dmg;
     if (this.hp < 0) {
@@ -115,28 +148,39 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * is this dead ?
+   * @returns boolean
+   */
   isDead() {
     return this.hp == 0;
   }
 
+
+  /**
+   * check if enough time has past since the last hit
+   * @returns boolean
+   */
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit;
     timePassed = timePassed / 1000;
     return timePassed < 0.5;
   }
 
+
+  /**
+   * buffer to set different frame rates in one interval
+   * @param {number} frames 
+   * @returns boolean
+   */
   matchesFrameRate(frames) {
     return  this.framesCounter % Math.floor(60 / frames) == 0;
    }
  
-  
-  playSound({sound,playbackRate,volume,muted}) {
-    sound.volume = volume ? volume : 1;
-    sound.muted = muted ? muted : audio.muted;
-    sound.playbackRate = playbackRate;
-    sound.play() ? null : sound.play();
-  }
 
+  /**
+   * clear movement and animation intervals
+   */
   clearIntervals() {
     clearInterval(this.movementInterval);
     clearInterval(this.animationInterval);
