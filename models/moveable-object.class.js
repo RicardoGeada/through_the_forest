@@ -81,28 +81,28 @@ class MovableObject extends DrawableObject {
 
   isColliding(obj) {
     return (
-      this.x + this.width + this.offset.right >= obj.x + obj.offset.left &&
-      this.x + this.offset.left <= obj.x + obj.width + obj.offset.right &&
-      this.y + this.height + this.offset.bottom >= obj.y + obj.offset.top &&
-      this.y + this.offset.top <= obj.y + obj.height + obj.offset.bottom
+      this.x + this.width + this.hitbox.collision.right >= obj.x + obj.hitbox.collision.left &&
+      this.x + this.hitbox.collision.left <= obj.x + obj.width + obj.hitbox.collision.right &&
+      this.y + this.height + this.hitbox.collision.bottom >= obj.y + obj.hitbox.collision.top &&
+      this.y + this.hitbox.collision.top <= obj.y + obj.height + obj.hitbox.collision.bottom
     );
   }
 
   isVisibleFor(obj) {
     return (
-      this.x + this.width + this.offset.right >= obj.x + obj.visionBoxOffset.left &&
-      this.x + this.offset.left <= obj.x + obj.width + obj.visionBoxOffset.right &&
-      this.y + this.height + this.offset.bottom >= obj.y + obj.visionBoxOffset.top &&
-      this.y + this.offset.top <= obj.y + obj.height + obj.visionBoxOffset.bottom
+      this.x + this.width + this.hitbox.collision.right >= obj.x + obj.hitbox.vision.left &&
+      this.x + this.hitbox.collision.left <= obj.x + obj.width + obj.hitbox.vision.right &&
+      this.y + this.height + this.hitbox.collision.bottom >= obj.y + obj.hitbox.vision.top &&
+      this.y + this.hitbox.collision.top <= obj.y + obj.height + obj.hitbox.vision.bottom
     );
   }
 
   isInMeleeRange(obj) {
     return (
-      this.x + this.width + this.offset.right >= obj.x + obj.hitbox.melee.left &&
-      this.x + this.offset.left <= obj.x + obj.width + obj.hitbox.melee.right &&
-      this.y + this.height + this.offset.bottom >= obj.y + obj.hitbox.melee.top &&
-      this.y + this.offset.top <= obj.y + obj.height + obj.hitbox.melee.bottom
+      this.x + this.width + this.hitbox.collision.right >= obj.x + obj.hitbox.melee.left &&
+      this.x + this.hitbox.collision.left <= obj.x + obj.width + obj.hitbox.melee.right &&
+      this.y + this.height + this.hitbox.collision.bottom >= obj.y + obj.hitbox.melee.top &&
+      this.y + this.hitbox.collision.top <= obj.y + obj.height + obj.hitbox.melee.bottom
     );
   }
 

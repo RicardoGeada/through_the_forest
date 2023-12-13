@@ -13,7 +13,7 @@ class Fruit extends MovableObject {
     this.y = y;
     this.width = 16;
     this.height = 16;
-    this.offset = {
+    this.hitbox.collision = {
         top: 8,
         bottom: 0,
         left: 4,

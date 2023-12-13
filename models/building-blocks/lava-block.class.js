@@ -11,7 +11,7 @@ class LavaBlock extends BackgroundTile {
         super('img/4.background/5 - Misc. universal tiles/lava_1.png',x,y,16,32);
         this.loadImages(this.IMAGES);
         this.dmg = 0;
-        this.offset = {
+        this.hitbox.collision = {
             top: 6,
             bottom: 0,
             left: 0,

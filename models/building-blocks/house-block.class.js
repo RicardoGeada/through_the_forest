@@ -10,7 +10,7 @@ class HouseBlock extends BackgroundTile {
         this.loadImages(this.IMAGES);
         this.solid = false;
         this.hp = 1;
-        this.offset = {
+        this.hitbox.collision = {
             top: 64,
             bottom: 0,
             left: 20,

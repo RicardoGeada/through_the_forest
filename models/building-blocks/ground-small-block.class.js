@@ -9,7 +9,7 @@ class GroundSmallBlock extends BackgroundTile {
     constructor({x,y,image}) {
         super('img/4.background/2 - Autumn Forest/Terrain/ground_small_mid.png',x,y,16,16);
         this.loadImage(this.IMAGES[image]);
-        this.visionBoxOffset = {
+        this.hitbox.vision = {
             left: 0,
             right: 0,
             top: -1,

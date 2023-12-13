@@ -6,15 +6,6 @@ class Character extends MovableObject {
   reload = false;
   attacking = false;
   energy = 3;
-  hitbox = {
-    melee: {
-        top: 0,
-        bottom: 0,
-        left: 16,
-        right: 0,
-    },
-  }
-
 
   IMAGES_WALKING = [
     "img/1.hero/Walk/walk_1.png",
@@ -92,12 +83,18 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_RUN);
-    this.offset = {
+    this.hitbox.collision = {
       top: 3,
       bottom: 0,
       left: 9,
       right: -11,
     };
+    this.hitbox.melee = {
+      top: 0,
+      bottom: 0,
+      left: 16,
+      right: 0,
+    }
    
     this.x = 7 * 16;
     this.y = 208 - 32 - 16 - 1;
@@ -114,7 +111,7 @@ class Character extends MovableObject {
   }
 
   moveCharacter() {
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.offset.left) {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.hitbox.collision.left) {
       this.moveRight();
       if (this.flipH) this.flipAllBoxesHorizontally();
       this.flipH = false;

@@ -77,13 +77,13 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_STANDING_IDLE);
     this.loadImages(this.IMAGES_WAKE_UP);
     this.loadImages(this.IMAGES_WALKING);
-    this.offset = {
+    this.hitbox.collision = {
       top: 3,
       bottom: 0,
       left: 11,
       right: -7,
     };
-    this.visionBoxOffset = {
+    this.hitbox.vision = {
       top: -100,
       bottom: 0,
       left: -100,

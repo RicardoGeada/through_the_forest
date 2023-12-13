@@ -199,11 +199,11 @@ class World {
             const backgroundObject = this.level.backgroundObjects[i];
             if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
                 if(char.speedX > 0) {
-                    char.x = backgroundObject.x - char.width - char.offset.right - 0.01;
+                    char.x = backgroundObject.x - char.width - char.hitbox.collision.right - 0.01;
                     break;
                 };
                 if(char.speedX < 0) {
-                    char.x = backgroundObject.x + backgroundObject.width - char.offset.left + 0.01;
+                    char.x = backgroundObject.x + backgroundObject.width - char.hitbox.collision.left + 0.01;
                     break;
                 };
             };  

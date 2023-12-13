@@ -8,21 +8,21 @@ class DrawableObject {
   currentImage = 0;
   flipH = false;
 
-  offset = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  };
-
-  visionBoxOffset = {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-  };
-
   hitbox = {
+    collision: {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+
+    vision: {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+
     melee: {
       top: 0,
       bottom: 0,
@@ -79,25 +79,27 @@ class DrawableObject {
   }
 
 
-  // flipHitbox() {
-  //   const left = this.hitbox.melee.left;
-  //   const right = this.hitbox.melee.right;
-  //   this.hitbox.melee.left = - right;
-  //   this.hitbox.melee.right = - left;
-  // }
-
-  flipBoxHorizontal(box) {
-    const left = box.left;
-    const right = box.right;
-    box.left = - right;
-    box.right = - left;
+  /**
+   * flip the hitbox horizontally
+   * @param {JSON} hitbox - offsets for different hitboxes
+   */
+  flipBoxHorizontal(hitbox) {
+    const left = hitbox.left;
+    const right = hitbox.right;
+    hitbox.left = - right;
+    hitbox.right = - left;
   }
 
+
+  /**
+   * flip all hitboxes horizontally 
+   */
   flipAllBoxesHorizontally() {
+    this.flipBoxHorizontal(this.hitbox.collision);
+    this.flipBoxHorizontal(this.hitbox.vision);
     this.flipBoxHorizontal(this.hitbox.melee);
-    this.flipBoxHorizontal(this.offset);
-    this.flipBoxHorizontal(this.visionBoxOffset);
   }
+
 
   /**
    * draw image frame 
@@ -130,14 +132,15 @@ class DrawableObject {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "red";
       ctx.strokeRect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.img.width - this.offset.left + this.offset.right,
-        this.img.height - this.offset.top + this.offset.bottom,
+        this.x + this.hitbox.collision.left,
+        this.y + this.hitbox.collision.top,
+        this.img.width - this.hitbox.collision.left + this.hitbox.collision.right,
+        this.img.height - this.hitbox.collision.top + this.hitbox.collision.bottom,
       );
     };
   }
 
+  
   /**
    * draw vision box
    * - for interaction area
@@ -149,10 +152,10 @@ class DrawableObject {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "green";
       ctx.strokeRect(
-        this.x + this.visionBoxOffset.left,
-        this.y + this.visionBoxOffset.top,
-        this.img.width - this.visionBoxOffset.left + this.visionBoxOffset.right,
-        this.img.height - this.visionBoxOffset.top + this.visionBoxOffset.bottom,
+        this.x + this.hitbox.vision.left,
+        this.y + this.hitbox.vision.top,
+        this.img.width - this.hitbox.vision.left + this.hitbox.vision.right,
+        this.img.height - this.hitbox.vision.top + this.hitbox.vision.bottom,
       );
     }
   }

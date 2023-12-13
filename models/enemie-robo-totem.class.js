@@ -23,7 +23,7 @@ class RoboTotem extends MovableObject{
         this.loadImages(this.IMAGES_ARMORED_WALKING);
         this.loadImages(this.IMAGES_HURT_HURT);
         this.loadImages(this.IMAGES_HURT_WALKING);
-        this.offset = {
+        this.hitbox.collision = {
             top: 9,
             bottom: 0,
             left: 0,
@@ -57,7 +57,7 @@ class RoboTotem extends MovableObject{
                 
                 this.y += 16;
                 this.height = 16;
-                this.offset.top = 0;
+                this.hitbox.collision.top = 0;
                 
                 setTimeout (() => {
                     this.animate();
