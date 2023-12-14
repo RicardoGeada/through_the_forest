@@ -1,4 +1,4 @@
-class LeafPileBlock extends BackgroundTile {
+class LeafPileBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/2 - Autumn Forest/autumn_entities/pile_of_leaves_1.png',

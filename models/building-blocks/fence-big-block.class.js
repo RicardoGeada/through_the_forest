@@ -1,4 +1,4 @@
-class FenceBigBlock extends BackgroundTile {
+class FenceBigBlock extends BuildingBlock {
 
     constructor({x,y}) {
         super('img/4.background/2 - Autumn Forest/autumn_entities/fence_big.png',x,y,48,16);

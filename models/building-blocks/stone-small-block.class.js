@@ -1,4 +1,4 @@
-class StoneSmallBlock extends BackgroundTile {
+class StoneSmallBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/5 - Misc. universal tiles/stone_block_1.png',

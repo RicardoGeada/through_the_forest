@@ -1,4 +1,4 @@
-class LavaBlock extends BackgroundTile {
+class LavaBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/5 - Misc. universal tiles/lava_1.png',

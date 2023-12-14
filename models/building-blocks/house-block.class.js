@@ -1,4 +1,4 @@
-class HouseBlock extends BackgroundTile {
+class HouseBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/5 - Misc. universal tiles/house_1.png',

@@ -1,4 +1,4 @@
-class TreeBlock extends BackgroundTile {
+class TreeBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/2 - Autumn Forest/autumn_entities/tree_1.png',

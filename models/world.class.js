@@ -45,7 +45,7 @@ class World {
      * update the world in an interval
      */
     update(self) {
-            self.checkBackgroundTileCollision();
+            self.checkBuildingBlockCollision();
             self.checkHorizontalCollision(self.character);
             self.character.updateGravity();
             self.checkVerticalCollision(self.character);
@@ -84,7 +84,7 @@ class World {
             }
         });
         this.level.backgroundObjects.forEach( backgroundObject => {
-            if (this.character.isAttacking && backgroundObject.isInMeleeRange(this.character) && backgroundObject instanceof BackgroundTile && backgroundObject.hp > 0 && !backgroundObject.dead && !backgroundObject.isHurt()) {
+            if (this.character.isAttacking && backgroundObject.isInMeleeRange(this.character) && backgroundObject instanceof BuildingBlock && backgroundObject.hp > 0 && !backgroundObject.dead && !backgroundObject.isHurt()) {
                 this.character.isAttacking = false;
                 setTimeout(() => {
                     backgroundObject.hitBy(this.character); 
@@ -197,7 +197,7 @@ class World {
     checkHorizontalCollision(char) {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
-            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
+            if(backgroundObject instanceof BuildingBlock && backgroundObject.solid && char.isColliding(backgroundObject)) {
                 if(char.speedX > 0 && char.x < backgroundObject.x) {
                     char.x = backgroundObject.x - char.width - char.hitbox.collision.right - 0.01;
                     break;
@@ -218,7 +218,7 @@ class World {
     checkVerticalCollision(char) {
         for (let i = 0; i < this.level.backgroundObjects.length; i++) {
             const backgroundObject = this.level.backgroundObjects[i];
-            if(backgroundObject instanceof BackgroundTile && backgroundObject.solid && char.isColliding(backgroundObject)) {
+            if(backgroundObject instanceof BuildingBlock && backgroundObject.solid && char.isColliding(backgroundObject)) {
                 if(char.speedY < -Math.abs(char.acceleration) && char.y < backgroundObject.y) {
                     char.speedY = 0;
                     char.y = backgroundObject.y - char.height - 0.01;
@@ -268,9 +268,9 @@ class World {
     /**
      * check if character is colliding background-tile that makes damage
      */
-    checkBackgroundTileCollision() {
+    checkBuildingBlockCollision() {
         this.level.backgroundObjects.forEach( backgroundObject => {
-            if (backgroundObject instanceof BackgroundTile && this.character.isColliding(backgroundObject) && backgroundObject.dmg > 0) {
+            if (backgroundObject instanceof BuildingBlock && this.character.isColliding(backgroundObject) && backgroundObject.dmg > 0) {
                 this.character.hitBy(backgroundObject);
                 playSound({sound: this.character.SOUND_HURT, playbackRate: 1});
                 console.log(this.character.hp);
@@ -336,7 +336,7 @@ class World {
         this.throwableObjects.forEach( obj => {
             if (obj instanceof ThrowableCharacter || obj instanceof ThrowableSkeleton) {
                 this.level.backgroundObjects.forEach((terrain) => {
-                    if(terrain instanceof BackgroundTile && terrain.solid && obj.isColliding(terrain) && !obj.dead) {
+                    if(terrain instanceof BuildingBlock && terrain.solid && obj.isColliding(terrain) && !obj.dead) {
                         let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
                         terrain.hitBy(obj);
                         obj.dead = true;

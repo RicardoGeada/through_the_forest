@@ -1,4 +1,4 @@
-class TimerSmallBlock extends BackgroundTile {
+class TimerSmallBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/5 - Misc. universal tiles/timer_block.png',

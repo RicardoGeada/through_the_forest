@@ -1,4 +1,4 @@
-class GroundSmallBlock extends BackgroundTile {
+class GroundSmallBlock extends BuildingBlock {
 
     IMAGES = [
         'img/4.background/2 - Autumn Forest/Terrain/ground_small_left.png',

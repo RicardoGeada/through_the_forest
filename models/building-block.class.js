@@ -1,4 +1,4 @@
-class BackgroundTile extends BackgroundObject {
+class BuildingBlock extends BackgroundObject {
     solid = true;
 
     constructor(imagePath,x,y,width,height) {
