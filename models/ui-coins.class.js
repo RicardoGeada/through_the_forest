@@ -15,16 +15,18 @@ class UICoins extends UIObject {
         this.loadImages(this.IMAGES_EMPTY);
         this.x = 288 - 16 - 50;
         this.y = 10;
-        this.width = 8;
-        this.height = 8;
         setTimeout(() => {
             this.updateCollectedCoins();
         }, 100);
     }
 
+    /**
+     * set the images
+     */
     setImages() {
         let amountAsString = this.amount.toString();
         let paddedString = amountAsString.padStart(4,'0');
+        this.coinsImages = [];
         this.coinsImages.push(this.imageCache['./img/5.ui/coins/coin.png']); 
         this.coinsImages.push(this.imageCache['./img/5.ui/empty/empty.png']); 
         Array.from(paddedString).forEach(char => {
@@ -41,9 +43,12 @@ class UICoins extends UIObject {
         });
     }
 
+
+    /**
+     * update the coins
+     */
     updateCollectedCoins() {
         setInterval(() => {
-           this.coinsImages = [];
            this.setImages();
            this.img = this.combineImages(this.coinsImages); 
         }, 1000 / 12);

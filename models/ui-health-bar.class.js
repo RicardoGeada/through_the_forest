@@ -15,22 +15,23 @@ class HealthBar extends UIObject {
         super();
         this.loadImage('./img/5.ui/empty/empty.png');
         this.loadImages(this.IMAGES_HEART);
-        this.maxHealth = 5;
         this.unit = unit;
         this.world = world;
         this.x = x;
         this.y = y;
-        this.width = 0;
-        this.height = 0;
         this.setMaxHealth();
         setTimeout(() => {
             this.updateHealthbar();
         }, 100);
-        this.updatePosition();
-        
+        this.updatePosition();   
     }
 
+
+    /**
+     * set up healthbar images
+     */
     setHealthbarImages() {
+        this.healthbarImages = [];
         for (let i = 0; i < this.maxHealth; i++) {
             if (this.maxHealth - i > this.lostLives()) { 
                 this.healthbarImages.push(this.imageCache['./img/5.ui/health/health_active.png']);
@@ -40,25 +41,41 @@ class HealthBar extends UIObject {
         }
     }
 
+
+    /**
+     * update the healthbar
+     */
     updateHealthbar() {
         setInterval(() => {
-            this.healthbarImages = [];
             this.setHealthbarImages();
             this.img = this.combineImages(this.healthbarImages);
         }, 1000 / 12);
     }
 
+
+    /**
+     * return the number of the lost lives of the unit
+     * @returns number
+     */
     lostLives() {
         let lostLives = this.unit.hp == undefined ? 0 : this.maxHealth - this.unit.hp;
         return lostLives;
     }
 
+
+    /**
+     * set the max health of the unit
+     */
     setMaxHealth() {
         setTimeout(()=>{
             this.maxHealth = this.unit.hp
         }, 1000 / 60);
     }
 
+    
+    /**
+     * update the healthbar position to follow the unit
+     */
     updatePosition() {
         setInterval(() => {
             if (this.unit instanceof Endboss) {

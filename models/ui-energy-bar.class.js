@@ -15,15 +15,18 @@ class EnergyBar extends UIObject {
         this.loadImages(this.IMAGES_ENERGY);
         this.x = 10;
         this.y = 20;
-        this.width = 0;
-        this.height = 0;
         this.setImages();
         setTimeout(() => {
             this.updateEnergybar();
         }, 100);
     }
 
+
+    /**
+     * set up images
+     */
     setImages() {
+        this.energybarImages = [];
         for (let i = 0; i < this.maxEnergy; i++) {
             if (this.maxEnergy - i > this.usedEnergy()) {
                 this.energybarImages.push(this.imageCache['./img/5.ui/energy/energy_active.png']);
@@ -33,17 +36,25 @@ class EnergyBar extends UIObject {
         }
     }
 
+
+    /**
+     * return the number of the used energy of the unit
+     * @returns number
+     */
     usedEnergy() {
         let usedEnergy = this.world?.character.energy == undefined ? 0 : this.maxEnergy - this.world.character.energy;
         return usedEnergy;
     }
 
+
+    /**
+     * update the energybar
+     */
     updateEnergybar() {
         setInterval(() => {
-            this.energybarImages = [];
             this.setImages();
             this.img = this.combineImages(this.energybarImages);
-        }, 1000 / 13);
+        }, 1000 / 12);
     }
 
 }

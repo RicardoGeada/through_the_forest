@@ -4,7 +4,7 @@ class Character extends MovableObject {
   height = 32;
   jumping = false;
   reload = false;
-  attacking = false;
+  isAttacking = false;
   energy = 3;
 
   IMAGES_WALKING = [
@@ -86,8 +86,8 @@ class Character extends MovableObject {
     this.hitbox.collision = {
       top: 3,
       bottom: 0,
-      left: 9,
-      right: -11,
+      left: 10,
+      right: -10,
     };
     this.hitbox.melee = {
       top: 0,
@@ -103,39 +103,135 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * animate
+   */
   animate() {
     this.movementInterval = setInterval(() => this.moveCharacter(), 1000 / 60);
     this.animationInterval = setInterval(() => this.animateCharacter(), 1000 / 60);
   }
 
+
+  /**
+   * physical animation
+   */
   moveCharacter() {
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.hitbox.collision.left) {
-      this.moveRight();
+    if (this.canMoveRight()) this.moveRight();
+    if (this.canMoveLeft()) this.moveLeft();
+    if (this.canJump()) this.jump();
+    if (this.canMeleeAttack()) this.meleeAttack();
+    if (this.canRangedAttack()) this.rangedAttack();
+    if (this.inFocusArea()) this.setFocusOnCharacter();  
+  }
+
+  //#region moveCharacter
+
+    /**
+     * condition to move right
+     * @returns boolean
+     */
+    canMoveRight() {
+      return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x + 10 * 16 - this.hitbox.collision.left;
+    }
+
+
+    /**
+     * move right
+     */
+    moveRight() {
+      super.moveRight();
       if (this.flipH) this.flipAllBoxesHorizontally();
       this.flipH = false;
       this.isWalkingOnGround();
-    };
-    if (this.world.keyboard.LEFT && this.x > 0) {
-      this.moveLeft();
-      if (!this.flipH) this.flipAllBoxesHorizontally();
-      this.flipH = true;
-      this.isWalkingOnGround();
-    };
-    if (this.world.keyboard.SPACE && this.speedY == 0 && !this.jumping) {
-      this.jumping = true;
-      this.jump();
-      playSound({sound: this.SOUND_JUMP, playbackRate: 1, volume: 0.5});
-    };
-    if (this.world.keyboard.MELEE_ATTACK && !this.reload) {
-      playSound({sound: this.SOUND_ATTACK, playbackRate: 2, volume: 1});
-      this.attacking = true;
-      this.reload = true;
-      setTimeout(()=> {
-          this.reload = false;
-      }, 500)
     }
-    if (this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0) {
-      let missile = new ThrowableCharacter(this.x + 0.5 * this.width,this.y + 0.25 * this.height,this.flipH);
+
+
+    /**
+     * condition to move left
+     * @returns boolean
+     */
+    canMoveLeft() {
+      return this.world.keyboard.LEFT && this.x > 0;
+    }
+
+
+    /**
+     * move left
+     */
+    moveLeft() {
+      super.moveLeft();
+      if (!this.flipH) this.flipAllBoxesHorizontally();
+        this.flipH = true;
+        this.isWalkingOnGround();
+    }
+
+
+    /**
+     * check if the player is walking on ground
+     * - play ground walking sound
+     */
+    isWalkingOnGround() {
+      this.world.level.backgroundObjects.forEach((obj) => {
+        if (this.isVisibleFor(obj) && (obj instanceof GroundBigBlock || obj instanceof GroundMediumBlock || obj instanceof GroundSmallBlock)) {
+          playSound({sound: this.SOUND_WALK, playbackRate: 2});
+        }
+      })
+    }
+
+
+    /**
+     * condition to jump
+     * @returns boolean
+     */
+    canJump() {
+      return this.world.keyboard.SPACE && this.speedY == 0 && !this.jumping;
+    }
+
+
+    /**
+     * jump
+     */
+    jump() {
+      this.jumping = true;
+      super.jump();
+      playSound({sound: this.SOUND_JUMP, playbackRate: 1, volume: 0.5});
+    }
+
+
+    /**
+     * condition to attack melee
+     * @returns boolean
+     */
+    canMeleeAttack() {
+      return this.world.keyboard.MELEE_ATTACK && !this.reload;
+    }
+
+
+    /**
+     * melee attack
+     */
+    meleeAttack() {
+      playSound({sound: this.SOUND_ATTACK, playbackRate: 2, volume: 1});
+      this.isAttacking = true;
+      this.reload = true;
+      setTimeout(()=>  this.reload = false, 500);
+    }
+
+
+    /**
+     * condition to range attack
+     * @returns boolean
+     */
+    canRangedAttack() {
+      return this.world.keyboard.RANGED_ATTACK && !this.reload && this.energy > 0;
+    }
+
+
+    /**
+     * ranged attack
+     */
+    rangedAttack() {
+      let missile = new ThrowableCharacter({x: this.x + 0.5 * this.width, y: this.y + 0.25 * this.height, directionRightToLeft: this.flipH});
       this.world.throwableObjects.push(missile);
       this.energy--;
       this.reload = true;
@@ -143,43 +239,80 @@ class Character extends MovableObject {
           this.reload = false;
       }, 1000)
     }
-    if(this.x > 7 * 16 && this.x < this.world.level.level_end_x) {
+
+
+    /**
+     * condition to check if the camera needs to follow the character
+     * @returns boolean
+     */
+    inFocusArea() {
+      return this.x > 7 * 16 && this.x < this.world.level.level_end_x;
+    }
+
+
+    /**
+     * set the camera focus on the character
+     */
+    setFocusOnCharacter() {
       this.world.camera_x = this.x - 7 * 16; // focus camera on character
     }
-    
-  }
+
+  //#endregion
 
   animateCharacter() {
-    if (this.isDead() && !this.attacking) {
-      this.playthroughAnimationCycle(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
-      this.clearIntervals();
+    if (this.isDead() && !this.isAttacking) {
+      this.animateDeath();
     } else if (this.isHurt() && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_HURT);
-    } else if (this.attacking) {
-      this.playthroughAnimationCycle(this.IMAGES_ATTACK,1000 / (this.IMAGES_ATTACK.length * 2));
-      this.clearIntervals();
-      setTimeout(() => {
-        this.attacking = false;
-        this.animate();
-      }, 500);
-    } else if (this.speedY != 0 && this.jumping && this.matchesFrameRate(12)) {
+    } else if (this.isAttacking) {
+      this.animateMeleeAttack();
+    } else if (this.jumping && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_JUMPING);
-    } else if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.matchesFrameRate(12)) {
+    } else if (this.isWalking()  && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_WALKING);
     } else if (this.matchesFrameRate(2)){
       this.playAnimation(this.IMAGES_IDLE);
     }
     this.framesCounter++;
-    // console.log('animation is playing')
   }
 
+  //#region  animateCharacter
 
-  isWalkingOnGround() {
-    this.world.level.backgroundObjects.forEach((obj) => {
-      if (this.isVisibleFor(obj) && (obj instanceof GroundBigBlock || obj instanceof GroundMediumBlock || obj instanceof GroundSmallBlock)) {
-        playSound({sound: this.SOUND_WALK, playbackRate: 2});
-      }
-    })
-  }
+    /**
+     * play death animation
+     */
+    animateDeath() {
+      this.playthroughAnimationCycle(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
+      this.clearIntervals();
+    }
+
+
+    /**
+     * play melee attack animation
+     */
+    animateMeleeAttack() {
+      this.playthroughAnimationCycle(this.IMAGES_ATTACK,1000 / (this.IMAGES_ATTACK.length * 2));
+      this.clearIntervals();
+      setTimeout(() => {
+        this.isAttacking = false;
+        this.animate();
+      }, 500);
+    }
+
+
+    /**
+     * condition to check if the character is walking
+     * @returns boolean
+     */
+    isWalking() {
+      return (this.world.keyboard.RIGHT || this.world.keyboard.LEFT);
+    }
+
+  //#endregion
+
+
+
+
+  
 
 }

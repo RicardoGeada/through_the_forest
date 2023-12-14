@@ -20,6 +20,9 @@ class Coin extends MovableObject {
         this.animate();
     }
 
+    /**
+     * animate
+     */
     animate() {
         this.animationInterval = setInterval(() => {
             if (this.matchesFrameRate(12)) {

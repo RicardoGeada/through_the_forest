@@ -13,8 +13,8 @@ class ThrowableCharacter extends ThrowableObject {
 
   SOUND_EXPLOSION = new Audio('./audio/1.hero/hero_explosion.wav')
 
-  constructor(x,y,directionRightToLeft) {
-    super(x,y,directionRightToLeft);
+  constructor({x,y,directionRightToLeft}) {
+    super({x,y,directionRightToLeft});
     this.loadImage('img/1.hero/Ranged_Attack_Missile/missile_1.png');
     this.loadImages(this.IMAGES_EXPLODE);
     this.dmg = 1;
@@ -23,6 +23,9 @@ class ThrowableCharacter extends ThrowableObject {
     this.acceleration = 1;
   }
 
+  /**
+   * play explode animation
+   */
   explode() {
     this.playthroughAnimationCycle(this.IMAGES_EXPLODE,1000 / 35);
     playSound({sound: this.SOUND_EXPLOSION, playbackRate: 1, volume: 0.5})

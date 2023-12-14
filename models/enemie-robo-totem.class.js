@@ -37,38 +37,63 @@ class RoboTotem extends MovableObject{
         this.animate();
     }
 
+    /**
+     * animate
+     */
     animate() { 
-        // MOVEMENT
-        let movementInterval = setInterval(() => {
-            this.moveLeft();
-        }, 1000 / 60);
+        this.movementInterval = setInterval(() => this.moveCharacter(), 1000 / 60);
+        this.animationInterval = setInterval(() => this.animateCharacter() , 1000 / 4);
+    }
 
-        // ANIMATION
-        let animationInterval = setInterval(() => {
-            if(this.isDead()) {
-                this.speedX = 0;
-                this.playAnimation(this.IMAGES_HURT_HURT);
-            }
-            if(this.isHurt() && this.hp >= 1 && this.matchesFrameRate(4)) {
-                this.speedX = -0.25;
-                clearInterval(movementInterval);
-                clearInterval(animationInterval);
-                this.playAnimation(this.IMAGES_HURT_HURT);
-                
-                this.y += 16;
-                this.height = 16;
-                this.hitbox.collision.top = 0;
-                
-                setTimeout (() => {
-                    this.animate();
-                    this.speedX = 0.25;
-                }, 250);
-            } else if(this.hp == 2 && this.matchesFrameRate(4)) {
-                this.playAnimation(this.IMAGES_ARMORED_WALKING);
-            } else if(this.hp == 1 && this.matchesFrameRate(4)) {
-                this.playAnimation(this.IMAGES_HURT_WALKING);
-            };
-            this.framesCounter++;
-        }, 1000 / 60);
+
+    /**
+     * physical animation
+     */
+    moveCharacter() {
+        this.moveLeft();
+    }
+
+
+    /**
+     * visual animation
+     */
+    animateCharacter() {
+        if(this.isDead()) {
+            this.speedX = 0;
+            this.playAnimation(this.IMAGES_HURT_HURT);
+        }
+        if(this.isHurt()) {
+            this.animationHurt();
+        } else if(this.hp == 2) {
+            this.playAnimation(this.IMAGES_ARMORED_WALKING);
+        } else if(this.hp == 1) {
+            this.playAnimation(this.IMAGES_HURT_WALKING);
+        };
+        this.framesCounter++;
+    }
+
+    
+    /**
+     * hurt animation
+     */
+    animationHurt() {
+        this.speedX = -0.25;
+        this.clearIntervals();
+        this.playAnimation(this.IMAGES_HURT_HURT);
+        this.setUpHurtForm();
+        setTimeout (() => {
+            this.animate();
+            this.speedX = 0.25;
+        }, 250);
+    }
+
+
+    /**
+     * set up the hurt form for the robototem
+     */
+    setUpHurtForm() {
+        this.y += 16;
+        this.height = 16;
+        this.hitbox.collision.top = 0; 
     }
 }

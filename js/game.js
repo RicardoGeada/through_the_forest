@@ -17,6 +17,7 @@ let music = {
  */
 function init() {
     canvas = document.getElementById('canvas');
+    document.getElementById('btn-start').disabled = false;
 }
 
 

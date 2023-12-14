@@ -76,16 +76,16 @@ class World {
 
     checkCharacterMeleeAttack() {
         this.level.enemies.forEach( enemy => {
-            if (this.character.attacking && enemy.isInMeleeRange(this.character) && !enemy.isHurt() && enemy.awake) {
-                this.character.attacking = false;
+            if (this.character.isAttacking && enemy.isInMeleeRange(this.character) && !enemy.isHurt() && enemy.awake) {
+                this.character.isAttacking = false;
                 setTimeout(() => {
                     enemy.hitBy(this.character);                   
                 }, 250);
             }
         });
         this.level.backgroundObjects.forEach( backgroundObject => {
-            if (this.character.attacking && backgroundObject.isInMeleeRange(this.character) && backgroundObject instanceof BackgroundTile && backgroundObject.hp > 0 && !backgroundObject.dead && !backgroundObject.isHurt()) {
-                this.character.attacking = false;
+            if (this.character.isAttacking && backgroundObject.isInMeleeRange(this.character) && backgroundObject instanceof BackgroundTile && backgroundObject.hp > 0 && !backgroundObject.dead && !backgroundObject.isHurt()) {
+                this.character.isAttacking = false;
                 setTimeout(() => {
                     backgroundObject.hitBy(this.character); 
                 }, 250);
@@ -132,8 +132,8 @@ class World {
      */
     checkRangedAttackFromBoss() {
         this.level.enemies.forEach( enemy => {
-            if (enemy instanceof Endboss && this.character.isVisibleFor(enemy) && enemy.awake && !enemy.attacking && !enemy.reload) {
-                enemy.attacking = true;
+            if (enemy instanceof Endboss && this.character.isVisibleFor(enemy) && enemy.awake && !enemy.isAttacking && !enemy.reload) {
+                enemy.isAttacking = true;
             };
         })
     }

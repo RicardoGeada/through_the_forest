@@ -3,10 +3,10 @@ class Endboss extends MovableObject {
   width = 32;
   height = 32;
   y = 208 - this.height - 16;
-  firstContact = false; // character sees the boss
-  awake =  false; // has the character awaken the boss?
+  firstContact = false; 
+  awake =  false; 
   moveDirection = '';
-  attacking = false;
+  isAttacking = false;
   reload = false;
 
   IMAGES_BONE_PILE = [
@@ -96,73 +96,137 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+
+  /**
+   * animate
+   */
   animate() {
     this.movementInterval = setInterval(() => this.moveCharacter(), 1000 / 60);
     this.animationInterval = setInterval(() => this.animateCharacter(), 1000 / 60);
   }
 
+
+  /**
+   * physical animation
+   */
   moveCharacter() {
     if (this.awake && !this.isDead()) {
-      if (this.attacking && !this.reload) {
-        this.reload = true;
-        setTimeout(()=> {
-          let missile = new ThrowableSkeleton(this.x,this.y,this.flipH);
-          this.world.throwableObjects.push(missile);
-        }, 800);
-        setTimeout(() => {
-          this.reload = false;
-        }, 2500);
+      if (this.isAttacking && !this.reload) {
+        this.tossBone();
       }; 
       if (this.moveDirection == 'left') {
-        if (!this.flipH) this.flipAllBoxesHorizontally();
-        this.flipH = true;
         this.moveLeft();
       }; 
       if (this.moveDirection == 'right') {
-        if (this.flipH) this.flipAllBoxesHorizontally();
-        this.flipH = false;
         this.moveRight();
       };
     };
   }
 
+  //#region moveCharacter
+
+    /**
+     * throw a bone
+     */
+    tossBone() {
+      this.reload = true;
+      setTimeout(()=> {
+        let missile = new ThrowableSkeleton({x: this.x, y: this.y, directionRightToLeft: this.flipH});
+        this.world.throwableObjects.push(missile);
+      }, 800);
+      setTimeout(() => this.reload = false, 2500);
+    }
+
+
+    /**
+     * move left
+     */
+    moveLeft() {
+      if (!this.flipH) this.flipAllBoxesHorizontally();
+      this.flipH = true;
+      super.moveLeft();
+    }
+
+
+    /**
+     * move right
+     */
+    moveRight() {
+      if (this.flipH) this.flipAllBoxesHorizontally();
+      this.flipH = false;
+      super.moveRight();
+    }
+
+  //#endregion
+
+  /**
+   * visual animation
+   */
   animateCharacter() {
     if (this.awake) {
-      if (this.isDead()) {
-        this.playthroughAnimationCycle(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
-        this.clearIntervals();
-      } else if (this.isHurt()) {
-        this.playthroughAnimationCycle(this.IMAGES_HURT, 1000 / (this.IMAGES_HURT * 2));
-        setTimeout(() => {
-          this.animate();
-        }, 500);
-        this.clearIntervals();
-      } else if (this.attacking) { 
-        this.playthroughAnimationCycle(this.IMAGES_BONE_TOSS, 1000 / this.IMAGES_BONE_TOSS.length);
-        this.attacking = false;
-        setTimeout(() => {
-          this.animate();
-        }, 1000);
-        this.clearIntervals();
-      } else if (this.matchesFrameRate(6)) { 
-        this.playAnimation(this.IMAGES_WALKING);
-      };
+        if (this.isDead()) 
+          this.animateDeath();
+        else if (this.isHurt()) 
+          this.animateHurt();
+        else if (this.isAttacking) 
+          this.animateBoneToss();
+        else if (this.matchesFrameRate(6)) 
+          this.playAnimation(this.IMAGES_WALKING);
     } else if (this.firstContact) {
-        this.clearIntervals();
-        this.playthroughAnimationCycle(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
-        setTimeout(() => {
-          this.animate();
-          console.log('REST: ',this.x % 208);
-          this.world.healthbars.enemies.push(new HealthBar({unit: this, x: this.x, y: this.y - this.height, world: this.world}));
-          this.awake = true;
-        }, 1000);
+        this.animateAwakening();
     } else {
       this.playAnimation(this.IMAGES_BONE_PILE);
     };
   this.framesCounter++;
   }
 
-  
+
+  //#region  animateCharacter
+
+  /**
+   * animate death
+   */
+  animateDeath() {
+    this.playthroughAnimationCycle(this.IMAGES_DYING,1000 / this.IMAGES_DYING.length);
+    this.clearIntervals();
+  }
+
+
+  /**
+   * animate hurt
+   */
+  animateHurt() {
+    this.playthroughAnimationCycle(this.IMAGES_HURT, 1000 / (this.IMAGES_HURT * 2));
+    setTimeout(() => this.animate(), 500);
+    this.clearIntervals();
+  }
+
+
+  /**
+   * animate bone toss
+   */
+  animateBoneToss() {
+    this.playthroughAnimationCycle(this.IMAGES_BONE_TOSS, 1000 / this.IMAGES_BONE_TOSS.length);
+    this.isAttacking = false;
+    setTimeout(() => this.animate(), 1000);
+    this.clearIntervals();
+  }
+
+
+  /**
+   * animate awakening
+   */
+  animateAwakening() {
+    this.clearIntervals();
+    this.playthroughAnimationCycle(this.IMAGES_WAKE_UP, 1000 / this.IMAGES_WAKE_UP.length);
+    setTimeout(() => {
+      this.animate();
+      this.world.healthbars.enemies.push(new HealthBar({unit: this, x: this.x, y: this.y - this.height, world: this.world}));
+      this.awake = true;
+    }, 1000);
+  }
+
+  //#endregion
 
 }
 
