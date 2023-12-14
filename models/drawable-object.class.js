@@ -128,7 +128,8 @@ class DrawableObject {
     if (
       this instanceof Character ||
       this instanceof Endboss ||
-      this instanceof ThrowableSkeleton
+      this instanceof ThrowableSkeleton ||
+      this instanceof LavaBlock
     ) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "red";
@@ -149,7 +150,7 @@ class DrawableObject {
    * @param {CanvasRenderingContext2D} ctx 
    */
   drawVisionBox(ctx) {
-    if (this instanceof Endboss) {
+    if (this instanceof Endboss || this instanceof LavaBlock) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "green";
       ctx.strokeRect(

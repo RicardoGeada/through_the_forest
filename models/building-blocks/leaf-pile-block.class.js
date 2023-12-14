@@ -10,18 +10,20 @@ class LeafPileBlock extends BuildingBlock {
         this.loadImages(this.IMAGES);
         this.hp = 1;
         this.solid = false;
-        setTimeout(() => {
+        setInterval(() => {
             this.update(); 
-        }, 1000);
+        }, 1000 / 60);
     }
 
+    /**
+     * update
+     * - switch between different states depending on hp
+     */
     update() {
-        setInterval(() => {
-           if (this.hp == 1) {
-                this.img = this.imageCache[this.IMAGES[0]];
-            } else if (this.hp == 0) {
-                this.img = this.imageCache[this.IMAGES[1]];
-            }
-        }, 1000 / 60);
+        if (this.hp == 1) {
+            this.img = this.imageCache[this.IMAGES[0]];
+        } else if (this.hp == 0) {
+            this.img = this.imageCache[this.IMAGES[1]];
+        }  
     }
 }

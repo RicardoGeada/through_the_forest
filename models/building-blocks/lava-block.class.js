@@ -10,23 +10,24 @@ class LavaBlock extends BuildingBlock {
     constructor({x,y}) {
         super('img/4.background/5 - Misc. universal tiles/lava_1.png',x,y,16,32);
         this.loadImages(this.IMAGES);
-        this.dmg = 0;
+        this.dmg = 100;
         this.hitbox.collision = {
             top: 6,
             bottom: 0,
             left: 0,
             right: 0,
         }
-        // this.solid = false;
+        this.hitbox.vision = {
+            top: 5,
+            bottom: 0,
+            left: 0,
+            right: 0,
+        }
         this.animate();
     }
 
+
     animate() {
-        this.animationInterval = setInterval(() => {
-            if(this.matchesFrameRate(4)) {
-                this.playAnimation(this.IMAGES); 
-            }
-            this.framesCounter++;
-        }, 1000 / 60);
+        this.animationInterval = setInterval(() => this.playAnimation(this.IMAGES), 1000 / 4);
     }
 }

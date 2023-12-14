@@ -50,8 +50,8 @@ class World {
             self.character.updateGravity();
             self.checkVerticalCollision(self.character);
             self.checkEnemySolidBlocksCollision();
-            if(self.matchesFrameRate(1)) self.checkEnemiesCollision();
-            
+            if(self.matchesFrameRate(1)) self.checkEnemiesCollision(); 
+
             self.checkIfThrowableCharacterHitsEnemies();
             self.checkIfThrowableSkeletonHitsCharacter();
             self.checkIfThrowableHitsTerrain();
@@ -221,13 +221,13 @@ class World {
             if(backgroundObject instanceof BuildingBlock && backgroundObject.solid && char.isColliding(backgroundObject)) {
                 if(char.speedY < -Math.abs(char.acceleration) && char.y < backgroundObject.y) {
                     char.speedY = 0;
-                    char.y = backgroundObject.y - char.height - 0.01;
+                    char.y = (backgroundObject.y + backgroundObject.hitbox.collision.top) - char.height - 0.01;
                     char.jumping = false;
                     break;
                 };
                 if(char.speedY > -Math.abs(char.acceleration) && char.y + char.height > backgroundObject.y + backgroundObject.height) {
                     char.speedY = 0;
-                    char.y = backgroundObject.y + backgroundObject.height + 0.01;
+                    char.y = (backgroundObject.y + backgroundObject.height + backgroundObject.hitbox.collision.bottom) + 0.01;
                     if (char.y > 160) char.y = 159;
                     break;
                 };
@@ -270,13 +270,14 @@ class World {
      */
     checkBuildingBlockCollision() {
         this.level.backgroundObjects.forEach( backgroundObject => {
-            if (backgroundObject instanceof BuildingBlock && this.character.isColliding(backgroundObject) && backgroundObject.dmg > 0) {
+            if (backgroundObject instanceof BuildingBlock && this.character.isVisibleFor(backgroundObject) && !this.character.isDead() && backgroundObject.dmg > 0) {
                 this.character.hitBy(backgroundObject);
                 playSound({sound: this.character.SOUND_HURT, playbackRate: 1});
                 console.log(this.character.hp);
             }
         })
     }
+
 
 
 
@@ -394,15 +395,15 @@ class World {
 
     checkGameState() {
         if (this.character.isDead()) {  
-            playMusic({sound: music.gameover, playbackRate: 1});
             setTimeout(() => {
+                playMusic({sound: music.gameover, playbackRate: 1});
                 generateEndscreen(false);
                 stopIntervals();
-            }, 2000)
+            }, 1000)
         }
         this.level.backgroundObjects.forEach( (obj) => {
             if(obj instanceof HouseBlock && this.character.isColliding(obj) && !this.character.isDead()) {
-                obj.hp = 0;
+                obj.doorOpen = true;
                 stopIntervals();
                 playMusic({sound: music.victory, playbackRate: 1, volume: 0.5});
                 setTimeout(() => {

@@ -1,5 +1,7 @@
 class HouseBlock extends BuildingBlock {
 
+    doorOpen = false;
+
     IMAGES = [
         'img/4.background/5 - Misc. universal tiles/house_1.png',
         'img/4.background/5 - Misc. universal tiles/house_2.png'
@@ -15,19 +17,18 @@ class HouseBlock extends BuildingBlock {
             bottom: 0,
             left: 20,
             right: -68,
-        }
-        setTimeout(() => {
-            this.update(); 
-        }, 1000);
+        };
+        setInterval(() => this.update(), 1000 / 60);
     }
 
-    update() {
-        setInterval(() => {
-           if (this.hp == 1) {
-                this.img = this.imageCache[this.IMAGES[0]];
-            } else if (this.hp == 0) {
-                this.img = this.imageCache[this.IMAGES[1]];
-            }
-        }, 1000 / 60);
+    /**
+     * update images
+     */
+    update() {     
+        if (!this.doorOpen) {
+            this.img = this.imageCache[this.IMAGES[0]];
+        } else if (this.doorOpen) {
+            this.img = this.imageCache[this.IMAGES[1]];
+        };
     }
 }
