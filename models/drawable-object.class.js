@@ -129,6 +129,7 @@ class DrawableObject {
       this instanceof Character ||
       this instanceof Endboss ||
       this instanceof ThrowableSkeleton ||
+      this instanceof ThrowableCharacter ||
       this instanceof LavaBlock
     ) {
       ctx.lineWidth = 1;

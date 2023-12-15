@@ -18,6 +18,7 @@ class ThrowableCharacter extends ThrowableObject {
     this.loadImage('img/1.hero/Ranged_Attack_Missile/missile_1.png');
     this.loadImages(this.IMAGES_EXPLODE);
     this.dmg = 1;
+    this.hp = 1;
     this.width = 16;
     this.height = 16;
     this.acceleration = 1;

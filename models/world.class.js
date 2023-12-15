@@ -67,6 +67,7 @@ class World {
 
     self.checkDeadEnemies();
     self.checkDeadBuildingBlock();
+    self.checkDeadThrowable();
 
     self.checkEnemyHealthbars();
 
@@ -285,13 +286,12 @@ class World {
     this.throwableObjects.forEach((obj) => {
       if (obj instanceof ThrowableCharacter) {
         this.level.enemies.forEach((enemy) => {
-          if (obj.isColliding(enemy) && !obj.dead && enemy.awake) {
-            let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+          if (obj.isColliding(enemy) && !obj.isDead() && enemy.awake) {
             enemy.hitBy(obj);
-            obj.dead = true;
+            obj.hp = 0;
             clearInterval(obj.movementInterval);
             obj.explode();
-            setTimeout(() => this.throwableObjects.splice(index, 1), 250);
+            setTimeout(() => obj.dead = true, 250);
           }
         });
       }
@@ -305,13 +305,12 @@ class World {
   checkIfThrowableSkeletonHitsCharacter() {
     this.throwableObjects.forEach((obj) => {
       if (obj instanceof ThrowableSkeleton) {
-        if (obj.isColliding(this.character) && !obj.dead) {
-          let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+        if (obj.isColliding(this.character) && !obj.isDead()) {
           this.character.hitBy(obj);
+          obj.hp = 0;
           playSound({ sound: this.character.SOUND_HURT, playbackRate: 1 });
-          obj.dead = true;
           clearInterval(obj.movementInterval);
-          setTimeout(() => this.throwableObjects.splice(index, 1), 250);
+          setTimeout(() => obj.dead = true, 250);
         }
       }
     });
@@ -325,15 +324,12 @@ class World {
     this.throwableObjects.forEach((obj) => {
       if (obj instanceof ThrowableCharacter || obj instanceof ThrowableSkeleton) {
         this.level.backgroundObjects.forEach((buildingblock) => {
-          if (buildingblock instanceof BuildingBlock && buildingblock.solid && obj.isColliding(buildingblock) && !obj.dead) {
-            let index = this.throwableObjects.indexOf(obj); // Get the index of 'obj'
+          if (buildingblock instanceof BuildingBlock && buildingblock.solid && obj.isColliding(buildingblock) && !obj.isDead()) {
             buildingblock.hitBy(obj);
-            obj.dead = true;
+            obj.hp = 0;
             clearInterval(obj.movementInterval);
             if (obj instanceof ThrowableCharacter) obj.explode();
-            setTimeout(() => {
-              this.throwableObjects.splice(index, 1);
-            }, 250);
+            setTimeout(() => obj.dead = true, 250);
           }
         });
       }
@@ -358,6 +354,7 @@ class World {
     });
   }
 
+
   /**
    * check if building block is dead
    */
@@ -369,6 +366,18 @@ class World {
       }
     });
   }
+
+
+  /**
+   * check if throwable is dead
+   */
+  checkDeadThrowable() {
+    this.throwableObjects.forEach((obj) => {
+      let index = this.throwableObjects.indexOf(obj);
+      if (obj.dead) this.throwableObjects.splice(index,1);
+    })
+  }
+
 
   /**
    * check if healthbars need to be deleted
@@ -414,6 +423,7 @@ class World {
     }
   }
 
+
   /**
    * check for the game state
    */
@@ -421,6 +431,7 @@ class World {
     this.checkGameover();
     this.checkVictory();
   }
+
 
   /**
    * check if the player is dead
@@ -434,6 +445,7 @@ class World {
       }, 1000);
     }
   }
+
 
   /**
    * check if the player is victorious

@@ -12,6 +12,7 @@ class ThrowableSkeleton extends ThrowableObject {
         this.loadImage('img/3.boss/Skeleton/Spinning_Bone/spinning_bone_1.png');
         this.loadImages(this.IMAGES);
         this.dmg = 2;
+        this.hp = 1;
         this.width = 16;
         this.height = 16;
         this.acceleration = 1;
