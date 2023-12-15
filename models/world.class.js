@@ -64,7 +64,7 @@ class World {
     self.checkCoinsCollision();
     self.checkFruitsCollision();
 
-    self.setEnemyDirection();
+    self.letEnemyFollowCharacter();
 
     self.checkDeadEnemies();
     self.checkDeadBuildingBlock();
@@ -118,10 +118,12 @@ class World {
       if (backgroundObject instanceof BuildingBlock && backgroundObject.solid && char.isColliding(backgroundObject)) {
         if (char.speedX > 0 && char.x < backgroundObject.x) {
           char.x = backgroundObject.x - char.width - char.hitbox.collision.right - 0.01;
+          this.changeEnemyDirection(char);
           break;
         }
         if (char.speedX < 0 && char.x > backgroundObject.x) {
           char.x = backgroundObject.x + backgroundObject.width - char.hitbox.collision.left + 0.01;
+          this.changeEnemyDirection(char);
           break;
         }
       }
@@ -251,7 +253,7 @@ class World {
   /**
    * set the enemy direction to follow the character
    */
-  setEnemyDirection() {
+  letEnemyFollowCharacter() {
     this.level.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss && enemy.isHurt()) {
         enemy.moveDirection = "";
@@ -261,6 +263,17 @@ class World {
         enemy.moveDirection = "right";
       }
     });
+  }
+
+
+  /**
+   * change the moveDirection of an enemy
+   * @param {object} enemy 
+   */
+  changeEnemyDirection(enemy) {
+    if (enemy instanceof RoboTotem) {
+      enemy.moveDirection = enemy.moveDirection == 'right' ? 'left' : 'right';
+    }
   }
 
 

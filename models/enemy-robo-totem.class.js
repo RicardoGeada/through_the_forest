@@ -2,6 +2,7 @@ class RoboTotem extends MovableObject{
     width = 16;
     height = 32;
     awake = true;
+    moveDirection = 'left';
 
 
     IMAGES_ARMORED_WALKING = [
@@ -50,9 +51,32 @@ class RoboTotem extends MovableObject{
      * physical animation
      */
     moveCharacter() {
-        this.moveLeft();
+        if (this.moveDirection == 'left') {
+            this.moveLeft();
+        } else if (this.moveDirection == 'right') {
+            this.moveRight();
+        }
+        
     }
-
+    
+    /**
+     * move left
+     */
+    moveLeft() {
+      if (this.flipH) this.flipAllBoxesHorizontally();
+      this.flipH = false;
+      super.moveLeft();
+    }
+  
+  
+    /**
+     * move right
+     */
+    moveRight() {
+      if (!this.flipH) this.flipAllBoxesHorizontally();
+      this.flipH = true;
+      super.moveRight();
+    }
 
     /**
      * visual animation
@@ -79,13 +103,11 @@ class RoboTotem extends MovableObject{
      * hurt animation
      */
     animationHurt() {
-        // this.speedX = -0.25;
         this.clearIntervals();
         this.setUpHurtForm();
         this.playthroughAnimationCycle(this.IMAGES_HURT_HURT, 1000 / this.IMAGES_HURT_HURT); 
         setTimeout (() => {
             this.animate();
-            // this.speedX = 0.25;
         }, 250);
     }
 
@@ -98,4 +120,5 @@ class RoboTotem extends MovableObject{
         this.height = 16;
         this.hitbox.collision.top = 0; 
     }
+
 }

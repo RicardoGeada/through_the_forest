@@ -1,8 +1,7 @@
 const level1 = new Level({
     backgroundObjects: generateBackground(),
     enemies: [
-        new RoboTotem({x: 15 * 16, y: 208 - 32 - 17}), 
-        new WhispyFire({x: 12 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 15 * 16, y: 208 - 32 - 17}),   
         new RoboTotem({x: 30 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 35 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 55 * 16, y: 208 - 32 - 17}),    
@@ -15,7 +14,7 @@ const level1 = new Level({
         new Coin ({x: (32 * 16)   , y: (208 - 10 * 16)}),
         new Coin ({x: (50 * 16)   , y: (208 -  7 * 16)}),
         new Coin ({x: (65 * 16)   , y: (208 -  2 * 16)}),
-        new Coin ({x: (72.5 * 16) , y: (208 - 10 * 16)}),
+        new Coin ({x: (75 * 16)   , y: (208 - 12 * 16)}),
         new Fruit({x: (14 * 16)   , y: (208 -  2 * 16)}),
     ]
 }   
@@ -51,6 +50,7 @@ function generateBackground() {
         new BrickSmallBlock({x: 24 * 16, y: 208 - 7 * 16}),
         new BrickSmallBlock({x: 70 * 16, y: 208 - 7 * 16}),
         new BrickSmallBlock({x: 75 * 16, y: 208 - 3 * 16}),
+        new BrickSmallBlock({x: 75 * 16, y: 208 - 11 * 16}),
         new StoneSmallBlock({x: 32 * 16, y: 208 - 9 * 16}),
         new StoneSmallBlock({x: 39 * 16, y: 208 - 2 * 16}),
         new StoneSmallBlock({x: 50 * 16, y: 208 - 4 * 16}),

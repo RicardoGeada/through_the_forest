@@ -129,10 +129,7 @@ class DrawableObject {
   drawCollisionBox(ctx) {
     if (
       this instanceof Character ||
-      this instanceof Endboss ||
-      this instanceof ThrowableSkeleton ||
-      this instanceof ThrowableCharacter ||
-      this instanceof WhispyFire
+      this instanceof Endboss
     ) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "red";

@@ -17,6 +17,12 @@ class Coin extends MovableObject {
         this.height = 16;
         this.x = x;
         this.y = y;
+        this.hitbox.collision = {
+            top: 1,
+            bottom: 0,
+            left: 1,
+            right: -1,
+        }
         this.animate();
     }
 
