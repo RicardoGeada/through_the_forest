@@ -6,6 +6,7 @@ const level1 = new Level({
         new RoboTotem({x: 35 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 55 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 61 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 74 * 16, y: 208 - 32 - 17}),    
         new Endboss(),    
     ],
     level_end_x: (6 * 288) - 32,

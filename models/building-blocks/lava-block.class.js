@@ -11,13 +11,14 @@ class LavaBlock extends BuildingBlock {
         super('img/4.background/5 - Misc. universal tiles/lava_1.png',x,y,16,32);
         this.loadImages(this.IMAGES);
         this.dmg = 100;
+        this.isAttacking = true;
         this.hitbox.collision = {
             top: 6,
             bottom: 0,
             left: 0,
             right: 0,
         }
-        this.hitbox.vision = {
+        this.hitbox.melee = {
             top: 5,
             bottom: 0,
             left: 0,

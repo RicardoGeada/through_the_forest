@@ -23,6 +23,7 @@ class ThrowableCharacter extends ThrowableObject {
     this.acceleration = 1;
   }
 
+
   /**
    * play explode animation
    */

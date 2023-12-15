@@ -170,7 +170,7 @@ class DrawableObject {
    * @param {CanvasRenderingContext2D} ctx 
    */
   drawHitboxMelee(ctx) {
-    if (this instanceof Character) {
+    if (this instanceof Character || this instanceof LavaBlock) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "yellow";
       ctx.strokeRect(
