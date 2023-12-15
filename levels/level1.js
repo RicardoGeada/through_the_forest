@@ -1,12 +1,13 @@
 const level1 = new Level({
     backgroundObjects: generateBackground(),
     enemies: [
-        new RoboTotem({x: 15 * 16, y: 208 - 32 - 17}),    
+        new RoboTotem({x: 15 * 16, y: 208 - 32 - 17}), 
+        new WhispyFire({x: 12 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 30 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 35 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 55 * 16, y: 208 - 32 - 17}),    
         new RoboTotem({x: 61 * 16, y: 208 - 32 - 17}),    
-        new RoboTotem({x: 74 * 16, y: 208 - 32 - 17}),    
+        new WhispyFire({x: 72 * 16, y: 208 - 32 - 17}),    
         new Endboss(),    
     ],
     level_end_x: (6 * 288) - 32,

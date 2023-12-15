@@ -46,6 +46,7 @@ class World {
   update(self) {
     self.applyPhysics(self.character);
     self.applyPhysicsEnemies();
+    self.applyPhysicsCoins();
 
     self.checkDamageFromBuildingBlock();
     if (self.matchesFrameRate(1)) self.checkCharacterEnemyCollision();
@@ -98,6 +99,15 @@ class World {
     });
   }
 
+
+  /**
+   * apply physics to coins
+   */
+  applyPhysicsCoins() {
+    this.level.collectables.forEach((collectable) => {
+      if (collectable instanceof Coin) this.applyPhysics(collectable);
+    })
+  }
 
   /**
    * check horizontal collision for character
@@ -342,7 +352,7 @@ class World {
    */
   checkDeadEnemies() {
     this.level.enemies.forEach((enemy) => {
-      if (enemy.isDead() && enemy instanceof RoboTotem) {
+      if (enemy.dead && !(enemy instanceof Endboss)) {
         this.level.collectables.push(new Fruit({ x: enemy.x, y: enemy.y })); // DROP FRUITS
         let index = this.level.enemies.indexOf(enemy);
         this.level.enemies.splice(index, 1);
@@ -522,6 +532,7 @@ class World {
     movObj.flipImage(this.ctx);
     movObj.draw(this.ctx);
     this.ctx.restore();
+    movObj.drawImageFrame(this.ctx);
     movObj.drawCollisionBox(this.ctx);
     movObj.drawVisionBox(this.ctx);
     movObj.drawHitboxMelee(this.ctx);

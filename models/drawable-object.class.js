@@ -107,6 +107,7 @@ class DrawableObject {
    * @param {CanvasRenderingContext2D} ctx 
    */
   drawImageFrame(ctx) {
+    if (this instanceof WhispyFire) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "blue";
       ctx.strokeRect(
@@ -115,6 +116,7 @@ class DrawableObject {
         this.img.width,
         this.img.height
       );
+    }
   }
 
 
@@ -130,7 +132,7 @@ class DrawableObject {
       this instanceof Endboss ||
       this instanceof ThrowableSkeleton ||
       this instanceof ThrowableCharacter ||
-      this instanceof LavaBlock
+      this instanceof WhispyFire
     ) {
       ctx.lineWidth = 1;
       ctx.strokeStyle = "red";

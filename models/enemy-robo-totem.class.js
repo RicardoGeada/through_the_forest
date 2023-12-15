@@ -60,9 +60,11 @@ class RoboTotem extends MovableObject{
     animateCharacter() {
         if(this.isDead()) {
             this.speedX = 0;
-            this.playAnimation(this.IMAGES_HURT_HURT);
+            this.playthroughAnimationCycle(this.IMAGES_HURT_HURT, 1000 / this.IMAGES_HURT_HURT);
+            this.clearIntervals();
+            setTimeout(() => this.dead = true, 250);
         }
-        if(this.isHurt()) {
+        if(this.isHurt() && this.hp == 1) {
             this.animationHurt();
         } else if(this.hp == 2) {
             this.playAnimation(this.IMAGES_ARMORED_WALKING);
@@ -77,13 +79,13 @@ class RoboTotem extends MovableObject{
      * hurt animation
      */
     animationHurt() {
-        this.speedX = -0.25;
+        // this.speedX = -0.25;
         this.clearIntervals();
-        this.playAnimation(this.IMAGES_HURT_HURT);
         this.setUpHurtForm();
+        this.playthroughAnimationCycle(this.IMAGES_HURT_HURT, 1000 / this.IMAGES_HURT_HURT); 
         setTimeout (() => {
             this.animate();
-            this.speedX = 0.25;
+            // this.speedX = 0.25;
         }, 250);
     }
 
