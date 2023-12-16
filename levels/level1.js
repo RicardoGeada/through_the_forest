@@ -43,9 +43,15 @@ function generateBackground() {
     }
     background.push(
         new GroundMediumBlock({x: 25 * 16, y: 208 - 48}),
-        new GroundBigBlock({x: 17 * 16, y: 208 - 48}),
-        new GroundBigBlock({x: 45 * 16, y: 208 - 48}),
-        new GroundBigBlock({x: 48 * 16, y: 208 - 48}),
+        new GroundBigBlock({x: 17 * 16, y: 208 - 48, image: 0}),
+        new GroundBigBlock({x: 18 * 16, y: 208 - 48, image: 1}),
+        new GroundBigBlock({x: 19 * 16, y: 208 - 48, image: 2}),
+        new GroundBigBlock({x: 45 * 16, y: 208 - 48, image: 0}),
+        new GroundBigBlock({x: 46 * 16, y: 208 - 48, image: 1}),
+        new GroundBigBlock({x: 47 * 16, y: 208 - 48, image: 1}),
+        new GroundBigBlock({x: 48 * 16, y: 208 - 48, image: 1}),
+        new GroundBigBlock({x: 49 * 16, y: 208 - 48, image: 1}),
+        new GroundBigBlock({x: 50 * 16, y: 208 - 48, image: 2}),
         new BrickSmallBlock({x: 22 * 16, y: 208 - 5 * 16}),
         new BrickSmallBlock({x: 24 * 16, y: 208 - 7 * 16}),
         new BrickSmallBlock({x: 70 * 16, y: 208 - 7 * 16}),

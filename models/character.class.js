@@ -5,6 +5,7 @@ class Character extends MovableObject {
   jumping = false;
   reload = false;
   isAttacking = false;
+  isRangedAttack = false;
   energy = 3;
 
   IMAGES_WALKING = [
@@ -53,6 +54,17 @@ class Character extends MovableObject {
     'img/1.hero/Attack/attack_8.png',
   ];
 
+  IMAGES_ATTACK_RANGED = [
+    'img/1.hero/Ranged_Attack/ranged_attack_0.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_1.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_2.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_3.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_4.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_5.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_6.png',
+    'img/1.hero/Ranged_Attack/ranged_attack_7.png',
+  ]
+
   IMAGES_RUN =  [
     'img/1.hero/Run/run_1.png',
     'img/1.hero/Run/run_2.png',
@@ -82,6 +94,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_ATTACK_RANGED);
     this.loadImages(this.IMAGES_RUN);
     this.hitbox.collision = {
       top: 3,
@@ -230,13 +243,17 @@ class Character extends MovableObject {
     /**
      * ranged attack
      */
-    rangedAttack() {
-      let missile = new ThrowableCharacter({x: this.x + 0.5 * this.width, y: this.y + 0.25 * this.height, directionRightToLeft: this.flipH});
-      this.world.throwableObjects.push(missile);
+    rangedAttack() { 
+      this.isRangedAttack = true;
       this.energy--;
       this.reload = true;
+      setTimeout(() => {
+        let missile = new ThrowableCharacter({x: this.x + (this.flipH ? -13 : 13), y: this.y + (this.flipH ? 4 : -4), directionRightToLeft: this.flipH});
+        this.world.throwableObjects.push(missile);
+      }, 375);
       setTimeout(()=> {
           this.reload = false;
+          
       }, 1000)
     }
 
@@ -266,6 +283,8 @@ class Character extends MovableObject {
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.isAttacking) {
       this.animateMeleeAttack();
+    } else if (this.isRangedAttack) {
+      this.animateRangedAttack();
     } else if (this.jumping && this.matchesFrameRate(12)) {
       this.playAnimation(this.IMAGES_JUMPING);
     } else if (this.isWalking()  && this.matchesFrameRate(12)) {
@@ -292,9 +311,24 @@ class Character extends MovableObject {
      */
     animateMeleeAttack() {
       this.playthroughAnimationCycle(this.IMAGES_ATTACK,1000 / (this.IMAGES_ATTACK.length * 2));
-      this.clearIntervals();
+      clearInterval(this.animationInterval);
       setTimeout(() => {
         this.isAttacking = false;
+        this.clearIntervals();
+        this.animate();
+      }, 500);
+    }
+
+
+    /**
+     * play melee attack animation
+     */
+    animateRangedAttack() {
+      this.playthroughAnimationCycle(this.IMAGES_ATTACK_RANGED,1000 / (this.IMAGES_ATTACK_RANGED.length * 2));
+      clearInterval(this.animationInterval);
+      setTimeout(() => {
+        this.isRangedAttack = false;
+        this.clearIntervals();
         this.animate();
       }, 500);
     }
