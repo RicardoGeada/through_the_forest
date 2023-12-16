@@ -116,14 +116,14 @@ class World {
     for (let i = 0; i < this.level.backgroundObjects.length; i++) {
       const backgroundObject = this.level.backgroundObjects[i];
       if (backgroundObject instanceof BuildingBlock && backgroundObject.solid && char.isColliding(backgroundObject)) {
-        if (char.speedX > 0 && char.x < backgroundObject.x) {
+        if (char.speedX > 0 && char.x + char.hitbox.collision.left < backgroundObject.x) {
           char.x = backgroundObject.x - char.width - char.hitbox.collision.right - 0.01;
-          this.changeEnemyDirection(char);
+          if (char instanceof RoboTotem) this.changeMoveDirection(char);
           break;
         }
-        if (char.speedX < 0 && char.x > backgroundObject.x) {
+        if (char.speedX < 0 && char.x + char.hitbox.collision.left > backgroundObject.x) {
           char.x = backgroundObject.x + backgroundObject.width - char.hitbox.collision.left + 0.01;
-          this.changeEnemyDirection(char);
+          if (char instanceof RoboTotem) this.changeMoveDirection(char);
           break;
         }
       }
@@ -138,13 +138,13 @@ class World {
     for (let i = 0; i < this.level.backgroundObjects.length; i++) {
       const backgroundObject = this.level.backgroundObjects[i];
       if (backgroundObject instanceof BuildingBlock && backgroundObject.solid && char.isColliding(backgroundObject)) {
-        if (char.speedY < -Math.abs(char.acceleration) && char.y < backgroundObject.y) {
+        if (char.speedY < 0) {
           char.speedY = 0;
           char.y = backgroundObject.y + backgroundObject.hitbox.collision.top - char.height - 0.01;
           char.jumping = false;
           break;
         }
-        if (char.speedY > -Math.abs(char.acceleration) && char.y + char.height > backgroundObject.y + backgroundObject.height) {
+        if (char.speedY > 0) {
           char.speedY = 0;
           char.y = backgroundObject.y + backgroundObject.height + backgroundObject.hitbox.collision.bottom + 0.01;
           if (char.y > 160) char.y = 159;
@@ -270,10 +270,8 @@ class World {
    * change the moveDirection of an enemy
    * @param {object} enemy 
    */
-  changeEnemyDirection(enemy) {
-    if (enemy instanceof RoboTotem) {
+  changeMoveDirection(enemy) {
       enemy.moveDirection = enemy.moveDirection == 'right' ? 'left' : 'right';
-    }
   }
 
 

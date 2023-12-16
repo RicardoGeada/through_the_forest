@@ -22,6 +22,7 @@ class ThrowableSkeleton extends ThrowableObject {
             left: 2,
             right: -2,
         }
+        this.speedY = 3;
         this.animate();
     }
 
