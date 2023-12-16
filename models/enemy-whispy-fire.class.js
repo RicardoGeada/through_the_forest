@@ -68,7 +68,7 @@ class WhispyFire extends MovableObject{
     }
 
     animate() {
-        this.animationInterval = setInterval(() => {
+        this.animationInterval = setStoppableInterval(() => {
             if (this.isDead()) {
                 this.playthroughAnimationCycle(this.IMAGES_DEATH,1000 / this.IMAGES_DEATH.length);
                 setTimeout(() =>  this.dead = true, 1000);

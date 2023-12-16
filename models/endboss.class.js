@@ -101,8 +101,8 @@ class Endboss extends MovableObject {
    * animate
    */
   animate() {
-    this.movementInterval = setInterval(() => this.moveCharacter(), 1000 / 60);
-    this.animationInterval = setInterval(() => this.animateCharacter(), 1000 / 60);
+    this.movementInterval = setStoppableInterval(() => this.moveCharacter(), 1000 / 60);
+    this.animationInterval = setStoppableInterval(() => this.animateCharacter(), 1000 / 60);
   }
 
 

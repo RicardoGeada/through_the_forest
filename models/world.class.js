@@ -366,7 +366,7 @@ class World {
   checkDeadEnemies() {
     this.level.enemies.forEach((enemy) => {
       if (enemy.dead && !(enemy instanceof Endboss)) {
-        this.level.collectables.push(new Fruit({ x: enemy.x, y: enemy.y })); // DROP FRUITS
+        if (enemy instanceof RoboTotem) this.dropFruit(enemy);
         let index = this.level.enemies.indexOf(enemy);
         this.level.enemies.splice(index, 1);
       }
@@ -446,6 +446,15 @@ class World {
     }
   }
 
+  /**
+   * let enemy drop fruit
+   * @param {object} enemy 
+   */
+  dropFruit(enemy) {
+    if (Math.random() <  0.7) {
+      this.level.collectables.push(new Fruit({ x: enemy.x, y: enemy.y })); // DROP FRUITS
+    }
+  }
 
   /**
    * check for the game state
@@ -545,9 +554,9 @@ class World {
     movObj.flipImage(this.ctx);
     movObj.draw(this.ctx);
     this.ctx.restore();
-    movObj.drawImageFrame(this.ctx);
-    movObj.drawCollisionBox(this.ctx);
-    movObj.drawVisionBox(this.ctx);
-    movObj.drawHitboxMelee(this.ctx);
+    // movObj.drawImageFrame(this.ctx);
+    // movObj.drawCollisionBox(this.ctx);
+    // movObj.drawVisionBox(this.ctx);
+    // movObj.drawHitboxMelee(this.ctx);
   }
 }

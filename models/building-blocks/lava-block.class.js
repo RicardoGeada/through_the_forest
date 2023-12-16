@@ -29,6 +29,6 @@ class LavaBlock extends BuildingBlock {
 
 
     animate() {
-        this.animationInterval = setInterval(() => this.playAnimation(this.IMAGES), 1000 / 4);
+        this.animationInterval = setStoppableInterval(() => this.playAnimation(this.IMAGES), 1000 / 4);
     }
 }

@@ -29,7 +29,7 @@ class ThrowableSkeleton extends ThrowableObject {
      * animate 
      */
     animate() {
-        this.animationInterval = setInterval(() => {
+        this.animationInterval = setStoppableInterval(() => {
             this.playAnimation(this.IMAGES);
             this.framesCounter++;
         }, 1000 / 16);
