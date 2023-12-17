@@ -437,9 +437,9 @@ class World {
       if (collectable instanceof Fruit && this.character.isColliding(collectable)) {
         if (this.character.energy < this.energybar.maxEnergy) {
           this.character.energy++;
+          playSound({ sound: collectable.SOUND_COLLECT, playbackRate: 1 });
+          this.level.collectables.splice(i, 1);
         };
-        playSound({ sound: collectable.SOUND_COLLECT, playbackRate: 1 });
-        this.level.collectables.splice(i, 1);
       }
     }
   }
