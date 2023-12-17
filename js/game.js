@@ -124,11 +124,14 @@ function init() {
         if (button.id == 'btn-left') {
             keyboard.RIGHT = false;
             keyboard.LEFT = true;
-        } 
-        if (button.id == 'btn-right') {
+        } else if (button.id == 'btn-right') {
             keyboard.LEFT = false;
             keyboard.RIGHT = true;
+        } else {
+            keyboard.LEFT = false;
+            keyboard.RIGHT = false;
         }
+        
     })
 
     document.getElementById('btn-jump').addEventListener('touchstart', (e) => {
