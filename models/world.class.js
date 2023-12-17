@@ -370,6 +370,8 @@ class World {
       }
       if (enemy.isDead() && !enemy.dead && enemy instanceof Endboss) {
         enemy.dead = true;
+        let house = this.level.backgroundObjects.find( obj => obj instanceof HouseBlock);
+        house.doorOpen = true;
         playMusic({ sound: music.background, playbackRate: 1, volume: 0.5 });
       }
     });
@@ -482,9 +484,7 @@ class World {
    */
   checkVictory() {
     this.level.backgroundObjects.forEach((obj) => {
-      if (obj instanceof HouseBlock && this.character.isColliding(obj) && !this.character.isDead()
-      ) {
-        obj.doorOpen = true;
+      if (obj instanceof HouseBlock && obj.doorOpen && this.character.isColliding(obj) && !this.character.isDead()) {
         stopIntervals();
         playMusic({ sound: music.victory, playbackRate: 1, volume: 0.5 });
         setTimeout(() => {

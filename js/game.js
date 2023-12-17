@@ -97,6 +97,7 @@ function init() {
 
     });
 
+
     window.addEventListener('keyup', (e) => {
         if (e.key == 'ArrowLeft') {keyboard.LEFT = false};
         if (e.key == 'ArrowRight') {keyboard.RIGHT = false};
@@ -107,16 +108,19 @@ function init() {
         if (e.key == 'w') {keyboard.RANGED_ATTACK = false};
     });
 
+
     // touch buttons
     document.getElementById('btn-left').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.LEFT = true;
     })
 
+
     document.getElementById('btn-right').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.RIGHT = true;
     })
+
 
     document.getElementById('gamepad').addEventListener('touchmove', (e) => {
         e.preventDefault();
@@ -134,47 +138,56 @@ function init() {
         }
     })
 
+
     document.getElementById('gamepad').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.LEFT = false;
         keyboard.RIGHT = false;
     })
 
+
     document.getElementById('btn-jump').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.SPACE = true;
     })
+
 
     document.getElementById('btn-melee-attack').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.MELEE_ATTACK = true;
     })
 
+
     document.getElementById('btn-ranged-attack').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.RANGED_ATTACK = true;
     })
+
 
     document.getElementById('btn-left').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.LEFT = false;
     })
 
+
     document.getElementById('btn-right').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.RIGHT = false;
     })
+
 
     document.getElementById('btn-jump').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.SPACE = false;
     })
 
+
     document.getElementById('btn-melee-attack').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.MELEE_ATTACK = false;
     })
 
+    
     document.getElementById('btn-ranged-attack').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.RANGED_ATTACK = false;
