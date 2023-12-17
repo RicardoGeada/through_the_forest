@@ -11,7 +11,7 @@
   <ul>
     <li>Hooded Protagonist by <a href="https://penzilla.itch.io/hooded-protagonist">Penzilla</a></li>
     <li>Enemies & Background & UI & Font by <a href="https://grafxkid.itch.io/">Grafxkid</a></li>
-    <li>Lucid Icons by <a href="https://leo-red.itch.io/lucid-icon-pack">Leo Red</a></li>
+    <li>Lucid Icons by <a href="https://leo-red.itch.io/lucid-icon-pack">Midhil M</a></li>
   </ul>
   
   <h3>Sound & Music</h3>
