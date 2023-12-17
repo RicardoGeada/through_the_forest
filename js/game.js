@@ -118,7 +118,8 @@ function init() {
         keyboard.RIGHT = true;
     })
 
-    document.addEventListener('touchmove', (e) => {
+    document.getElementById('gamepad').addEventListener('touchmove', (e) => {
+        e.preventDefault();
         const touch = e.touches[0];
         const button = document.elementFromPoint(touch.clientX, touch.clientY);
         if (button.id == 'btn-left') {
@@ -131,7 +132,12 @@ function init() {
             keyboard.LEFT = false;
             keyboard.RIGHT = false;
         }
-        
+    })
+
+    document.getElementById('gamepad').addEventListener('touchend', (e) => {
+        e.preventDefault();
+        keyboard.LEFT = false;
+        keyboard.RIGHT = false;
     })
 
     document.getElementById('btn-jump').addEventListener('touchstart', (e) => {
