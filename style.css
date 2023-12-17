@@ -370,7 +370,7 @@ h3 {
     }
 }
 
-@media only screen and (max-height: 400px) {
+@media only screen and (max-height: 450px) {
     :root {
         --font-size-h1: 32px;
         --font-size-h3: 20px;

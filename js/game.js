@@ -118,6 +118,19 @@ function init() {
         keyboard.RIGHT = true;
     })
 
+    document.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        const button = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (button.id == 'btn-left') {
+            keyboard.RIGHT = false;
+            keyboard.LEFT = true;
+        } 
+        if (button.id == 'btn-right') {
+            keyboard.LEFT = false;
+            keyboard.RIGHT = true;
+        }
+    })
+
     document.getElementById('btn-jump').addEventListener('touchstart', (e) => {
         e.preventDefault();
         keyboard.SPACE = true;
