@@ -139,7 +139,7 @@ function init() {
     })
 
 
-    document.getElementById('gamepad').addEventListener('touchend', (e) => {
+    document.getElementById('left-and-right-controls').addEventListener('touchend', (e) => {
         e.preventDefault();
         keyboard.LEFT = false;
         keyboard.RIGHT = false;
