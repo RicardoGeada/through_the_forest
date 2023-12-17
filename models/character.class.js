@@ -82,6 +82,7 @@ class Character extends MovableObject {
   ];
 
   SOUND_ATTACK = new Audio('./audio/1.hero/hero_attack.wav');
+  SOUND_THROW = new Audio('./audio/1.hero/hero_throw.wav');
   SOUND_WALK = new Audio('./audio/1.hero/hero_walk.wav');
   SOUND_JUMP = new Audio('./audio/1.hero/hero_jump.wav');
   SOUND_HURT = new Audio('./audio/1.hero/hero_hurt.mp3');
@@ -247,6 +248,7 @@ class Character extends MovableObject {
       this.isRangedAttack = true;
       this.energy--;
       this.reload = true;
+      playSound({sound: this.SOUND_THROW, playbackRate: 2, volume: 1});
       setTimeout(() => {
         let missile = new ThrowableCharacter({x: this.x + (this.flipH ? -13 : 13), y: this.y + (this.flipH ? 4 : -4), directionRightToLeft: this.flipH});
         this.world.throwableObjects.push(missile);

@@ -49,6 +49,8 @@ class WhispyFire extends MovableObject{
         './img/2.enemies/wispy_fire/death/death_10.png',
     ]
 
+    SOUND_DEATH = new Audio('./audio/2.enemies/whispy_fire/death.wav');
+
     constructor({x,y}) {
         super().loadImage('./img/2.enemies/wispy_fire/idle_flicker/idle_1.png');
         this.loadImages(this.IMAGES_WEAK_FLICKER);
@@ -71,6 +73,7 @@ class WhispyFire extends MovableObject{
         this.animationInterval = setStoppableInterval(() => {
             if (this.isDead()) {
                 this.playthroughAnimationCycle(this.IMAGES_DEATH,1000 / this.IMAGES_DEATH.length);
+                setTimeout(() => playSound({sound: this.SOUND_DEATH, playbackRate: 1}), 250);
                 setTimeout(() =>  this.dead = true, 1000);
                 this.clearIntervals();
             } else if (this.matchesFrameRate(20)) {

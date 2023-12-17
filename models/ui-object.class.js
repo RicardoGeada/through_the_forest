@@ -47,8 +47,14 @@ class UIObject extends DrawableObject {
         })
 
         // create new HTMLImageElement from canvas
-        let img = new Image();
-        img.src = canvas.toDataURL('image/png');
-        return img;
+        let newImage = new Image();
+        newImage.src = canvas.toDataURL('image/png');
+
+        // only return new image if new image was build
+        if(canvas.width != 0 && canvas.height != 0) {
+            return newImage;
+        } else {
+            return this.img;
+        }
     }
 }

@@ -59,13 +59,13 @@ class DrawableObject {
    * @param {CanvasRenderingContext2D} ctx 
    */
   draw(ctx) {
-    ctx.drawImage(
-      this.img,
-      this.flipH ? -this.x : this.x,
-      this.y,
-      this.width,
-      this.height
-    );
+      ctx.drawImage(
+        this.img,
+        this.flipH ? -this.x : this.x,
+        this.y,
+        this.width,
+        this.height
+      );  
   }
 
 

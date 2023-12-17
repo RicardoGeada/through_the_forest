@@ -22,6 +22,7 @@ class ThrowableCharacter extends ThrowableObject {
     this.width = 16;
     this.height = 16;
     this.acceleration = 1;
+    this.speedY = 3;
     this.hitbox.collision = {
       top: 2,
       bottom: -2,

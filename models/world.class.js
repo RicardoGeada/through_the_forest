@@ -49,7 +49,7 @@ class World {
     self.applyPhysicsCoins();
 
     self.checkDamageFromBuildingBlock();
-    if (self.matchesFrameRate(1)) self.checkCharacterEnemyCollision();
+    if (self.matchesFrameRate(2)) self.checkCharacterEnemyCollision();
 
     self.checkIfThrowableCharacterHitsEnemies();
     self.checkIfThrowableSkeletonHitsCharacter();
